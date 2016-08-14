@@ -1,0 +1,2 @@
+# gitignore for node application
+node_modules/
