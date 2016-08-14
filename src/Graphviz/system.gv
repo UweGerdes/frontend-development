@@ -1,0 +1,58 @@
+digraph Frontend {
+	graph [
+		rankdir = "LR"
+	];
+	node [
+		fontsize = "14"
+		shape = "record"
+	];
+	edge [
+	];
+
+	"Projekt" [
+		label = "Projekt | <htdocs> /htdocs | <src> /src | <build> /build | <tests> /tests"
+	];
+	"Sources" [
+		label = "<Sources> Sources | <Less> /less | <JavaScript> /js | <Graphviz> /graphviz"
+	];
+	"Tests" [
+		label = "<Tests> Tests | <Selenium> Selenium | <CasperJS> CasperJS | Mocha"
+	];
+	"Webserver" [
+		label = "<Webserver> Webserver | <PHP> PHP / MySQL | <login> /login | <css> /css | <js> /js | <img> /img/gv"
+	];
+	"Build" [
+		label = "<BuildTools> Build Tools | <Gulp> Gulp"
+	];
+	"Entwicklungsumgebung" [
+		label = "<Entwicklungsumgebung> Entwicklungsumgebung | <Datenbank> Datenbank | <Versionskontrolle> Versionskontrolle"
+	];
+	"Login" [
+		label = "Web Application"
+		shape = "ellipse"
+	];
+	"Datensicherung" [
+		label = "Datensicherung"
+		shape = "ellipse"
+	];
+
+	"Projekt":htdocs -> "Webserver":Webserver;
+	"Projekt":src -> "Sources":Sources;
+	"Projekt":tests -> "Tests":Tests;
+	"Projekt":build -> "Build":BuildTools;
+	"Build":Gulp -> "Sources":Less;
+	"Build":Gulp -> "Sources":JavaScript;
+	"Build":Gulp -> "Sources":Graphviz;
+	"Build":Gulp -> "Tests":Tests;
+	"Sources":Sources -> "Entwicklungsumgebung":Versionskontrolle;
+	"Sources":Less -> "Webserver":css;
+	"Sources":JavaScript -> "Webserver":js;
+	"Sources":Graphviz -> "Webserver":img;
+	"Webserver":login -> "Login";
+	"Webserver":login -> "Entwicklungsumgebung":Versionskontrolle;
+	"Webserver":PHP -> "Entwicklungsumgebung":Datenbank;
+	"Tests":Tests -> "Entwicklungsumgebung":Versionskontrolle;
+	"Tests":Tests -> "Login";
+	"Entwicklungsumgebung":Versionskontrolle -> "Datensicherung";
+	"Entwicklungsumgebung":Datenbank -> "Datensicherung";
+}

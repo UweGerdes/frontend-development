@@ -1,0 +1,51 @@
+digraph Docker {
+	graph [
+		rankdir = "LR"
+	];
+	node [
+		fontsize = "14"
+		shape = "record"
+	];
+	edge [
+	];
+
+	"Data Container" [
+		label = "{ {<Data> Data Container | <htdocs> /var/www/htdocs | <mysql> /var/lib/mysql} }"
+	];
+
+	"HTTP Sever" [
+		label = "{ { <Webserver> HTTP Sever | <data> nginx } }"
+	];
+
+	"PHP-FPM Sever" [
+		label = "{ { <PHP-Server> PHP-FPM Sever | <data> php-fpm } }"
+	];
+
+	"Datenbank-Sever" [
+		label = "{ { <DB-Server> Datenbank-Sever | <data> mysql } }"
+	];
+
+	"Browser" [
+		label = "Browser"
+		shape = "ellipse"
+	];
+
+	"File System" [
+		label = "File-System"
+		shape = "ellipse"
+	];
+
+	subgraph cluster_0 {
+		label = "Docker";
+		fontsize = "20px";
+		color=grey;
+		node [style=filled,color=white];
+		"Datenbank-Sever":"data" -> "Data Container":"mysql" [color=black];
+		"HTTP Sever":"data" -> "Data Container":"htdocs" [color=black];
+		"PHP-FPM Sever":"data" -> "Data Container":"htdocs" [color=black];
+		"HTTP Sever" -> "PHP-FPM Sever" [constraint=false, color=green, label="php:9000"];
+		"PHP-FPM Sever" -> "Datenbank-Sever" [constraint=false, color=green, label="mysql:3306"];
+	}
+	"HTTP Sever" -> "Browser" [constraint=false, color=green, label="localhost:3080"];
+	"Data Container" -> "File System" [color=black];
+}

@@ -1,0 +1,5 @@
+
+AuthType Basic
+AuthName "no access to templates"
+AuthUserFile ./.htpasswd
+Require valid-user

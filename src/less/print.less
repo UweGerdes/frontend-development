@@ -1,0 +1,33 @@
+.noprint {
+	display: none;
+}
+a:link, a:visited {
+	text-decoration: none;
+	color: black;
+}
+a:link:after, a:visited:after {
+	content: attr(href);
+	background: #ddd;
+	text-decoration: none;
+	padding: 0 0.3em;
+	display: inline-block;
+	margin-left: 0.2em;
+}
+
+#main {
+	width: 95%;
+	min-width: 0;
+	max-width: 100%;
+	min-height: 100%;
+	position: relative;
+	margin: 0 0 0 5%;
+	padding: 10px;
+}
+
+#content {
+	margin: 20px auto;
+}
+
+#footer {
+	background: #fff;
+}

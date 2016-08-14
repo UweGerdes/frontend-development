@@ -1,0 +1,169 @@
+/* Style-Sheet von Uwe Gerdes, entwicklung@uwegerdes.de */
+@import url(https://fonts.googleapis.com/css?family=Signika:300,600);
+
+@viewport{
+	width:device-width
+}
+
+body {
+	padding: 0px;
+	margin: 0px;
+	color: #000;
+	background-color: #fff;
+	font-family: Signika, Verdana, sans-serif;
+	font-size: 16px;
+}
+h1 {
+	font-size: 2em;
+	font-weight: bold;
+	color: #009;
+	margin: 1em 0 .5em;
+}
+h2 {
+	font-size: 1.7em;
+	font-weight: bold;
+	color: #009;
+	margin: 1.2em 0 .5em;
+}
+h3 {
+	font-size: 1.3em;
+	font-weight: bold;
+	color: #000;
+	margin: 1.1em 0 .5em;
+}
+h4 {
+	font-size: 1.2em;
+	font-weight: bold;
+	color: #009;
+	margin: 1.1em 0 .5em;
+}
+h5 {
+	font-size: 1em;
+	font-weight: bold;
+	color: #009;
+	margin: 1.1em 0 .5em;
+}
+p {
+	font-size: 1em;
+	color: #000;
+	margin: 0.6em 0 .5em;
+}
+code {
+	font-family: 'Courier New', Courier, monospace;
+	font-size: 0.9em;
+}
+table {
+}
+tr {
+}
+th {
+	vertical-align: top;
+	text-align: left;
+	font-weight: bold;
+	padding-left: 5px;
+	padding-right: 5px;
+	padding-top: 2px;
+	padding-bottom: 2px;
+	font-size: 10pt;
+}
+td {
+	vertical-align: top;
+	text-align: left;
+	padding-left: 5px;
+	padding-right: 5px;
+	padding-top: 2px;
+	padding-bottom: 2px;
+	font-size: 10pt;
+}
+
+a:link {
+	color: #33F;
+	text-decoration: underline;
+}
+a:visited {
+	color: #006;
+	text-decoration: underline;
+}
+a:active {
+	color: #F00;
+	text-decoration: underline;
+}
+a:hover {
+	color: #C00;
+	text-decoration: underline;
+}
+
+.left   {
+	text-align: left;
+}
+.center {
+	text-align: center;
+}
+.right  {
+	text-align: right;
+}
+.top    {
+	vertical-align: top;
+}
+.middle {
+	vertical-align: middle;
+}
+.bottom {
+	vertical-align: bottom;
+}
+
+#main {
+	width: 80%;
+	min-width: 300px;
+	max-width: 1280px;
+	min-height: 100%;
+	position: relative;
+	margin: 0 auto;
+	padding: 10px;
+}
+
+@footerheight: 25px;
+#content {
+	margin-bottom: @footerheight + 25px;
+}
+
+#footer {
+	position: fixed;
+	bottom: 0;
+	left: 0;
+	right: 0;
+	background: #ddd;
+	min-height: @footerheight;
+	text-align: center;
+	padding-top: 10px;
+
+	.copyright {
+		font-size: 1em;
+		font-family: Arial, Helvetica, sans-serif;
+		color: #000;
+
+		a:link, a:visited, a:active {
+			text-decoration: none;
+			color: #000;
+		}
+	}
+
+	ul.footerlinks {
+		width: 80%;
+		min-width: 300px;
+		max-width: 1280px;
+		margin: 0 auto;
+		width: auto;
+		margin: 0;
+		padding: 0;
+
+		li {
+			float: left;
+			margin: 0;
+			padding: 0 20px;
+			list-style: none;
+		}
+	}
+}
+
+

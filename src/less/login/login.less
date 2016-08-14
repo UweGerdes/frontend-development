@@ -1,0 +1,135 @@
+/*
+ * phplogin application specific layout
+ */
+@import url(https://fonts.googleapis.com/css?family=Signika:300,600);
+
+@fontFamily: Signika, Verdana, sans-serif;
+@fontSizeLarge: 16px;
+@lineHeightLarge: 24px;
+@fontSizeMedium: 14px;
+@lineHeightMedium: 21px;
+@viewport{
+	width:device-width
+}
+body {
+	background-color: #f5f5f5;
+	font-family: @fontFamily;
+}
+
+.form-small {
+	padding-top: 40px;
+	padding-bottom: 40px;
+
+	h1, h2, h3, p {
+		text-align: center;
+		margin-bottom: 20px;
+	}
+
+	.form-horizontal {
+		font-size: @fontSizeLarge;
+		line-height: @lineHeightLarge;
+		width: 500px;
+		padding: 19px 29px 29px;
+		margin: 0 auto 20px;
+		background-color: #fff;
+		border: 1px solid #e5e5e5;
+		border-radius: 5px;
+		box-shadow: 0 1px 2px rgba(0,0,0,.05);
+
+		input[type="text"],
+		input[type="password"] {
+			font-size: @fontSizeLarge;
+			height: auto;
+			margin-bottom: 5px;
+			padding: 7px 9px;
+		}
+
+		.input-medium {
+			width: 150px;
+		}
+
+		.input-large {
+			width: 250px;
+		}
+		label {
+			font-size: @fontSizeLarge;
+			line-height: @lineHeightLarge;
+		}
+
+		.control-label {
+			padding-top: 6px;
+		}
+
+		.control-group .withPadding {
+			padding-top: 5px;
+		}
+
+		.onlyText {
+			.control-label {
+				padding-top: 0px;
+			}
+		}
+	}
+
+	div.form-horizontal {
+		div.control-group label.control-label {
+			padding-top: 0px;
+		}
+	}
+}
+
+/* layout for all forms */
+form {
+	.inputError {
+		label {
+			color:#ff0000;
+			font-weight: bold;
+		}
+		input {
+			border-color:#ff6666;
+		}
+	}
+}
+
+/* layout for specific pages */
+#loginBody,
+#loginBody .form-small {
+	form {
+		max-width: 300px;
+		input[type="text"],
+		input[type="email"],
+		input[type="password"] {
+			width: 300px;
+		}
+
+		.checkbox {
+			font-size: @fontSizeMedium;
+			line-height: @lineHeightMedium;
+			padding-top: 10px;
+			padding-bottom: 15px;
+		}
+	}
+
+	a.newAccountLink {
+		display: inline-block;
+		width: 160px;
+		text-align: center;
+	}
+}
+
+div#newAccountAccept {
+	.control-label, .controls {
+		padding-top: 0px;
+	}
+
+	.control-group {
+		margin-bottom: 10px;
+	}
+}
+
+a {
+	border-radius: 5px;
+	box-shadow: 0 1px 2px rgba(0,0,0,.05);
+    display: flex;
+}
+
