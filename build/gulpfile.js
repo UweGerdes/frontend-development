@@ -73,7 +73,7 @@ gulp.task('less', function () {
 });
 
 /*
- * markdown task to convert all .md files to .html in the same directory
+ * markdown task to convert .md files to .html in the same directory
  * don't watch subdirectories if node_modules or vendor are present
  */
 watchFiles.markdown = [

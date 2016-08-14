@@ -14,6 +14,8 @@ You need Node.JS on your system.
 
 To use the gulpfile.js you have to install the required node modules with: `npm install`.
 
+If you want to use Graphviz please install it on your system.
+
 # Usage
 
 Now you should start `gulp` and the default task starts a build and and the watch task for my development environment.

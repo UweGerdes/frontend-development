@@ -7,7 +7,7 @@
     "development",
     "gulp"
   ],
-  "license": "(ISC OR GPL-3.0)",
+  "license": "MIT",
   "author": {
     "name": "Uwe Gerdes",
     "email": "entwicklung@uwegerdes.de",
