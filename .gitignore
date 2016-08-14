@@ -1,7 +1,7 @@
 # gitignore for frontend-development project
 /htdocs/css/
 /htdocs/img/gv/
-/htdocs/login/css/application.css
+/htdocs/login/css/login.css
 /htdocs/login/css/bootstrap.css
 README.html
 
