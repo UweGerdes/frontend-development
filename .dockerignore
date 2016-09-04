@@ -1,0 +1,5 @@
+# dockerignore for gulp-frontend-dev-test
+README.md
+test-forms/
+tests.*
+*.md

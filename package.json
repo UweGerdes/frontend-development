@@ -1,0 +1,23 @@
+{
+  "name": "gulp-frontend-dev-test",
+  "version": "1.0.1",
+  "description": "Gulp package for testing forms",
+  "keywords": [
+    "frontend",
+    "gulp",
+    "test"
+  ],
+  "license": "MIT",
+  "author": {
+    "name": "Uwe Gerdes",
+    "email": "entwicklung@uwegerdes.de"
+  },
+  "devDependencies": {
+    "dateformat": "^1.0.12",
+    "del": "^1.1.1",
+    "gulp": "^3.8.10",
+    "gulp-jshint": "^2.0.1",
+    "jshint": "^2.9.3",
+    "run-sequence": "^1.1.5"
+  }
+}

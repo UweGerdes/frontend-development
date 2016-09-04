@@ -1,0 +1,3 @@
+# don't git the results but this file
+*
+!.gitignore

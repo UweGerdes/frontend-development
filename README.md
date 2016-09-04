@@ -13,4 +13,6 @@ To run the application you have to install and configure:
 
 There is another way: install [Docker](https://www.docker.com/) and use the preconfigurations included in the `docker` subdirectory. A `docker-compose.yml` is included and can be used in every project you have on your system to start and stop the environment and keep them separated.
 
+There is also a `gulpfile.js` for different tasks like compile less and graphviz, check js files, execute tests with CasperJS and more. A `Dockerfile` for that is included.
+
 
