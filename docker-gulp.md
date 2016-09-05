@@ -94,36 +94,24 @@ $ docker run --name npm-proxy-cache -d --restart=always -p 3143:8080 -v /srv/doc
 
 ```bash
 $ docker build -t uwegerdes/gulp-frontend-dev-test .
-$ docker run -it --rm \
+$ docker run -it \
 	--name gulp-frontend-dev-test \
 	-v $(pwd)/package.json:/usr/src/app/package.json \
 	-v $(pwd)/gulpfile.js:/usr/src/app/gulpfile.js \
-	-v $(pwd)/test-forms.js:/usr/src/app/test-forms.js \
-	-v $(pwd)/config:/usr/src/app/config \
-	-v $(pwd)/results:/usr/src/app/results \
+	-v $(pwd)/tests:/usr/src/app/tests \
 	--add-host frontend.local:192.168.1.18 \
+	-e TZ=Europe/Berlin \
 	uwegerdes/gulp-frontend-dev-test \
 	bash
 ```
 
-To install more npm packages to your (running) gulp-frontend-dev-test docker container use (use watch task to have it running):
+In the shell run your favourite gulp commands or install more packages.
 
-```bash
-$ docker exec -it gulp-frontend-dev-test npm --proxy http://192.168.1.18:3143 --https-proxy http://192.168.1.18:3143 --strict-ssl false install --save-dev new-package
-```
-
-Restart the container after update and attach to the container to see the output:
+Restart the container after install/update and attach to the container to reconnect (just hit RETURN to get a prompt):
 
 ```bash
 $ docker restart gulp-frontend-dev-test && docker attach gulp-frontend-dev-test
 ```
-
-To run a gulp target in your (running) gulp-frontend-dev-test docker container use (use watch task to have it running):
-
-```bash
-$ docker exec -it gulp-frontend-dev-test gulp [target]
-```
-
 
 Perhaps you want to add a watch target for gulpfile.js and package.json which restarts the gulp process using a bash script inside the container. But be careful when the gulpfile.js has errors: it will exit and you can't access it with exec.
 Correct your errors and run the container again (-rm flag).

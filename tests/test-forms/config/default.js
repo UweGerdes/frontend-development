@@ -3,7 +3,7 @@
 // (c) Uwe Gerdes, entwicklung@uwegerdes.de
 
 var domain = 'http://frontend.local';
-var baseDir = '/phpmvclogin/';
+var baseDir = '/login/';
 var baseUrl = domain + baseDir;
 
 module.exports = {
@@ -17,14 +17,14 @@ module.exports = {
 			title1: 'Bitte anmelden',
 			elements: {
 				'//body[@id="loginBody"]': '',
-				'//link[@rel="stylesheet"][@href="/phpmvclogin/css/application.css"]' : '',
+				'//link[@rel="stylesheet"][@href="/login/css/application.css"]' : '',
 				'//*[@id="headline"]': 'Anmelden',
 				'//form[@name="login"]': '',
 				'//input[@type="text"][@name="Username"][@value=""]': '',
 				'//input[@type="password"][@name="Password"]': '',
 				'//input[@type="checkbox"][@name="rememberMe"][@value="ja"]': '',
 				'//*[@type="submit"][@name="submit"]': 'Anmelden',
-				'//a[@href="/phpmvclogin/index.php/newAccount"]': 'Login beantragen',
+				'//a[@href="/login/index.php/newAccount"]': 'Login beantragen',
 				'//div[@id="pagecomplete"][contains(@class,"hidden")]': ''
 			},
 			elementsNotExist: [

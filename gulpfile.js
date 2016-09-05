@@ -11,9 +11,9 @@ var gulp = require('gulp'),
 	fs = require('fs');
 
 var gulpDir = __dirname;
-var testDir = path.join(__dirname, "tests");
-var testLogfile = path.join(testDir, "tests.log");
-var testHtmlLogfile = path.join(testDir, "tests.html");
+var testDir = path.join(__dirname, 'tests');
+var testLogfile = path.join(testDir, 'tests.log');
+var testHtmlLogfile = path.join(testDir, 'tests.html');
 var logMode = 0;
 var txtLog = [];
 var htmlLog = [];
@@ -21,17 +21,17 @@ var watchFiles = {};
 
 // tests
 watchFiles['test-forms-default'] = [
-	path.join(testDir, "tests-forms", 'config', 'default.js')
+	path.join(testDir, 'tests-forms', 'config', 'default.js')
 ];
 gulp.task('test-forms-default', function(callback) {
 	del( [
-			path.join(testDir, "tests-forms", 'results', 'default', '*')
+			path.join(testDir, 'tests-forms', 'results', 'default', '*')
 		], { force: true } );
 	var loader = exec('casperjs test test-forms.js --cfg=config/default.js',
-		{ cwd: path.join(testDir, "tests-forms") },
+		{ cwd: path.join(testDir, 'tests-forms') },
 		function (err, stdout, stderr) {
-			logTxt (stdout.replace(/\u001b\[[^m]+m/g, "").match(/[^\n]*FAIL [^\n]+/g));
-			logHtml(stdout.replace(/\u001b\[[^m]+m/g, "").match(/[^\n]*FAIL [^0-9][^\n]+/g));
+			logTxt (stdout.replace(/\u001b\[[^m]+m/g, '').match(/[^\n]*FAIL [^\n]+/g));
+			logHtml(stdout.replace(/\u001b\[[^m]+m/g, '').match(/[^\n]*FAIL [^0-9][^\n]+/g));
 			callback();
 		}
 	);
@@ -40,17 +40,17 @@ gulp.task('test-forms-default', function(callback) {
 
 
 watchFiles['test-login'] = [
-	path.join(testDir, "tests-forms", 'config', 'login.js')
+	path.join(testDir, 'tests-forms', 'config', 'login.js')
 ];
 gulp.task('test-login', function(callback) {
 	del( [
-			path.join(testDir, "tests-forms", 'results', 'login', '*')
+			path.join(testDir, 'tests-forms', 'results', 'login', '*')
 		], { force: true } );
 	var loader = exec('casperjs test test-forms.js --cfg=config/login.js',
-		{ cwd: path.join(testDir, "tests-forms") },
+		{ cwd: path.join(testDir, 'tests-forms') },
 		function (err, stdout, stderr) {
-			logTxt (stdout.replace(/\u001b\[[^m]+m/g, "").match(/[^\n]*FAIL [^\n]+/g));
-			logHtml(stdout.replace(/\u001b\[[^m]+m/g, "").match(/[^\n]*FAIL [^0-9][^\n]+/g));
+			logTxt (stdout.replace(/\u001b\[[^m]+m/g, '').match(/[^\n]*FAIL [^\n]+/g));
+			logHtml(stdout.replace(/\u001b\[[^m]+m/g, '').match(/[^\n]*FAIL [^0-9][^\n]+/g));
 			callback();
 		}
 	);
@@ -58,8 +58,8 @@ gulp.task('test-login', function(callback) {
 });
 
 watchFiles.lint = [
-	path.join(testDir, "tests-forms", 'config', '*.js'),
-	path.join(testDir, "tests-forms", 'test-forms.js'),
+	path.join(testDir, 'tests-forms', 'config', '*.js'),
+	path.join(testDir, 'tests-forms', 'test-forms.js'),
 	path.join(gulpDir, 'gulpfile.js'),
 	path.join(gulpDir, 'package.json')
 ];
@@ -123,7 +123,7 @@ gulp.task('logTestResults', function(callback) {
 
 // run all test tasks
 watchFiles.tests = [
-	path.join(testDir, "tests-forms", 'test-forms.js')
+	path.join(testDir, 'tests-forms', 'test-forms.js')
 ];
 gulp.task('tests', function(callback) {
 	runSequence('clearTestLog',
@@ -135,7 +135,7 @@ gulp.task('tests', function(callback) {
 // watch task
 gulp.task('watch', function() {
 	Object.keys(watchFiles).forEach(function(task) {
-		gulp.watch( watchFiles[ task ], [ task ] );
+		gulp.watch( watchFiles[ task ], {interval: 1000, mode: 'poll', alwaysStat: true, usePoll: true, usePolling: true}, [ task ] );
 	});
 });
 

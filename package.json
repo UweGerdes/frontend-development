@@ -1,10 +1,11 @@
 {
   "name": "gulp-frontend-dev-test",
-  "version": "1.0.1",
-  "description": "Gulp package for testing forms",
+  "version": "1.0.2",
+  "description": "Gulp package for frontend developement and testing",
   "keywords": [
-    "frontend",
     "gulp",
+    "frontend",
+    "developement",
     "test"
   ],
   "license": "MIT",

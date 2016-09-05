@@ -24,7 +24,7 @@ testCases.push(
 				checkbox2: true
 			}
 		],
-		submit: '//*[@name="submitButton"][@type="submit"]', // XPath to submit button - optional, defaults to '//*[@type="submit"]'
+		submit: '//*[@type="submit"]', // XPath to submit button - optional, defaults to '//*[@type="submit"]'
 		alerts: [ 'An error occured' ], // list of all expected alerts, optional
 		title2: 'expected title of page after submit',
 		elements: {
