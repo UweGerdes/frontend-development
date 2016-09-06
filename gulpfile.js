@@ -32,11 +32,9 @@ gulp.task('test-forms-default', function(callback) {
 		function (err, stdout, stderr) {
 			logExecResults(err, stdout, stderr);
 			callback();
-
 		}
 	);
 	loader.stdout.on('data', function(data) { if(!data.match(/PASS/)) console.log(data.trim()); });
-	loader.stderr.on('data', function(data) { if(!data.match(/PASS/)) console.log(data.trim()); });
 });
 
 
