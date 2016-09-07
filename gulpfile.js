@@ -3,14 +3,27 @@
 // (c) Uwe Gerdes, entwicklung@uwegerdes.de
 
 var gulp = require('gulp'),
-	jshint = require('gulp-jshint'),
 	del = require('del'),
 	exec = require('child_process').exec,
 	runSequence = require('run-sequence'),
 	path = require('path'),
-	fs = require('fs');
+	fs = require('fs'),
+	rename = require('rename'),
+	gutil = require('gulp-util'),
+	less = require('gulp-less'),
+	autoprefixer = require('gulp-autoprefixer'),
+	uglify = require('gulp-uglify'),
+	notify = require('gulp-notify'),
+	changed = require('gulp-changed'),
+	lessChanged = require('gulp-less-changed'),
+	shell = require('gulp-shell'),
+	markdown = require('gulp-markdown'),
+	insert = require('gulp-insert'),
+	jshint = require('gulp-jshint');
 
 var gulpDir = __dirname;
+var srcDir = path.join(__dirname, 'src');
+var destDir = path.join(__dirname, 'htdocs');
 var testDir = path.join(__dirname, 'tests');
 var testLogfile = path.join(testDir, 'tests.log');
 var testHtmlLogfile = path.join(testDir, 'tests.html');
@@ -19,7 +32,47 @@ var txtLog = [];
 var htmlLog = [];
 var watchFiles = {};
 
-// tests
+/*
+ * log only to console, not GUI
+ */
+var log = notify.withReporter(function (options, callback) {
+	callback();
+});
+
+/*
+ * less task watching all less files, only writing sources without **,
+ * includes (path with **) filtered, change check by gulp-less-changed
+ */
+watchFiles.less = [
+	path.join(srcDir, 'less', '**', '*.less'),
+	path.join(srcDir, 'less', '*.less'),
+	path.join(srcDir, 'less', 'login', 'login.less'),
+	path.join(srcDir, 'less', 'login', 'bootstrap.less')
+];
+gulp.task('less', function () {
+	var dest = function(filename) {
+		var srcBase = path.join(srcDir, 'less');
+		return path.join(path.dirname(filename).replace(srcBase, destDir), 'css');
+	};
+	var src = watchFiles.less.filter(function(el){return el.indexOf('/**/') == -1; });
+	return gulp.src( src )
+		.pipe(lessChanged({
+			getOutputFileName: function(file) {
+				return rename( file, { dirname: dest(file), extname: '.css' } );
+			}
+		}))
+		.pipe(less())
+		.on('error', log.onError({ message:  'Error: <%= error.message %>' , title: 'LESS Error'}))
+		.pipe(autoprefixer('last 3 version', 'safari 5', 'ie 8', 'ie 9', 'ios 6', 'android 4'))
+		.pipe(gutil.env.type === 'production' ? uglify() : gutil.noop())
+		.pipe(gulp.dest(function(file) { return dest(file.path); }))
+		.pipe(log({ message: 'written: <%= file.path %>', title: 'Gulp LESS' }))
+		;
+});
+
+/*
+ * tests
+ */
 watchFiles['test-forms-default'] = [
 	path.join(testDir, 'test-forms', 'config', 'default.js')
 ];
