@@ -17,8 +17,6 @@ var gulp = require('gulp'),
 	changed = require('gulp-changed'),
 	lessChanged = require('gulp-less-changed'),
 	shell = require('gulp-shell'),
-	markdown = require('gulp-markdown'),
-	insert = require('gulp-insert'),
 	jshint = require('gulp-jshint');
 
 var gulpDir = __dirname;
@@ -67,6 +65,43 @@ gulp.task('less', function () {
 		.pipe(gutil.env.type === 'production' ? uglify() : gutil.noop())
 		.pipe(gulp.dest(function(file) { return dest(file.path); }))
 		.pipe(log({ message: 'written: <%= file.path %>', title: 'Gulp LESS' }))
+		;
+});
+
+/*
+ * graphviz image generation
+ */
+watchFiles.graphviz = [
+	path.join(srcDir, 'Graphviz', '*.gv')
+];
+gulp.task('graphviz', function () {
+	var dest = path.join(destDir, 'img', 'gv');
+	var destFormat = 'png';
+	return gulp.src(watchFiles.graphviz, {read: false})
+		.pipe(changed(dest, {extension: '.' + destFormat}))
+		.pipe(shell('dot -T' + destFormat + ' "<%= file.path %>" -o "<%= rename(file.path) %>"', {
+			templateData: {
+				rename: function (s) {
+							return s.replace(/^.+\/([^\/]+)\.gv$/, dest + '/$1' + '.' + destFormat);
+						}
+			}
+		}))
+		.on('error', log.onError({ message:  'Error: <%= error.message %>' , title: 'Graphviz Error'}))
+		.pipe(log({ message: 'processed: <%= file.path %>', title: 'Gulp graphviz' }))
+		;
+});
+
+/*
+ * lint javascript files
+ */
+watchFiles.lint = [
+	path.join(gulpDir, 'gulpfile.js'),
+	path.join(gulpDir, 'package.json')
+];
+gulp.task('lint', function(callback) {
+	return gulp.src(watchFiles.lint)
+		.pipe(jshint())
+		.pipe(jshint.reporter('default'))
 		;
 });
 

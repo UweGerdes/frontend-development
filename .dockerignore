@@ -1,9 +1,9 @@
 # dockerignore for gulp-frontend-dev-test
 Arbeit/
-build/
 htdocs/
 src/
 tests/
+tools/
 .git/
 *.md
 

@@ -107,11 +107,21 @@ $ docker run -it \
 	uwegerdes/gulp-frontend-dev-test \
 	bash
 
+$ docker run -it \
+	--name gulp-frontend-dev-test \
+	-v $(pwd):/usr/src/app \
+	--add-host frontend.local:192.168.1.18 \
+	-e TZ=Europe/Berlin \
+	uwegerdes/gulp-frontend-dev-test \
+	bash
+
 	gulp --gulpfile tools/gulpfile.js less
 
-	npm --proxy http://192.168.1.18:3143 --https-proxy http://192.168.1.18:3143 --strict-ssl false --loglevel warn --save-dev install gulp-less gulp-autoprefixer gulp-uglify gulp-notify gulp-changed gulp-less-changed gulp-shell gulp-markdown gulp-insert
+	npm config ls -l
 
-	npm update
+	npm --proxy http://192.168.1.18:3143 --https-proxy http://192.168.1.18:3143 --strict-ssl false --loglevel warn install -g gulp-less
+
+	npm --proxy http://192.168.1.18:3143 --https-proxy http://192.168.1.18:3143 --strict-ssl false --loglevel warn update -g
 ```
 
 In the shell run your favourite gulp commands or install more packages.
