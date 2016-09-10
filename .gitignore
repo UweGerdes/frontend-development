@@ -7,3 +7,9 @@ README.html
 
 # general ignores
 node_modules/
+
+# ignores from docker container
+.bash_history
+.npm/
+.viminfo
+.v8flags*

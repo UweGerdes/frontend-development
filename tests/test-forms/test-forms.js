@@ -50,11 +50,17 @@ module.exports = {
 };
 
  */
+'use strict';
 
 var colorizer = require('colorizer').create('Colorizer'),
 	fs = require('fs'),
 	dump = require('utils').dump,
 	x = require('casper').selectXPath;
+
+if (typeof casper === 'undefined') {
+	var casper = require('casper');
+	console.log('this should satisfy jslint');
+}
 
 var testData = null;
 

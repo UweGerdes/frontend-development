@@ -1,6 +1,15 @@
-// gulpfile for project frontend-developement
-//
-// (c) Uwe Gerdes, entwicklung@uwegerdes.de
+/*
+ * gulpfile for project Frontend
+ *
+ * $ sudo npm install --global gulp
+ * $ cd myProject/build/Gulp
+ * $ npm install
+ *
+ * edit /node_modules/gulp-less/index.js:68 : replace 'done' with 'then'
+ *
+ * (c) Uwe Gerdes, entwicklung@uwegerdes.de
+ */
+'use strict';
 
 var gulp = require('gulp'),
 	del = require('del'),
@@ -122,7 +131,7 @@ gulp.task('test-forms-default', function(callback) {
 			callback();
 		}
 	);
-	loader.stdout.on('data', function(data) { if(!data.match(/PASS/)) console.log(data.trim()); });
+	loader.stdout.on('data', function(data) { if(!data.match(/PASS/)) { console.log(data.trim()); } });
 });
 
 
@@ -140,7 +149,7 @@ gulp.task('test-forms-login', function(callback) {
 			callback();
 		}
 	);
-	loader.stdout.on('data', function(data) { if(!data.match(/PASS/)) console.log(data.trim()); });
+	loader.stdout.on('data', function(data) { if(!data.match(/PASS/)) { console.log(data.trim()); } });
 });
 
 watchFiles.lint = [
@@ -215,7 +224,19 @@ gulp.task('logTestResults', function(callback) {
 	callback();
 });
 
-// run all test tasks
+/*
+ * run all build tasks
+ */
+gulp.task('build', function(callback) {
+	runSequence('less',
+		'graphviz',
+		'lint',
+		callback);
+});
+
+/*
+ * run all test tasks
+ */
 watchFiles.tests = [
 	path.join(testDir, 'test-forms', 'test-forms.js')
 ];
@@ -226,13 +247,17 @@ gulp.task('tests', function(callback) {
 		callback);
 });
 
-// watch task
+/*
+ * watch task
+ */
 gulp.task('watch', function() {
 	Object.keys(watchFiles).forEach(function(task) {
 		gulp.watch( watchFiles[ task ], [ task ] );
 	});
 });
 
-// default task
+/*
+ * default task
+ */
 gulp.task('default', ['watch']);
 
