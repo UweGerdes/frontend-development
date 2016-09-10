@@ -1,9 +1,9 @@
 FROM node:4
 MAINTAINER Uwe Gerdes <entwicklung@uwegerdes.de>
 
-ARG APT_PROXY='http://192.168.1.18:3142'
-ARG NPM_PROXY='--proxy http://192.168.1.18:3143 --https-proxy http://192.168.1.18:3143 --strict-ssl false'
-ARG NPM_LOGLEVEL='--loglevel warn'
+ARG APT_PROXY
+ARG NPM_PROXY
+ARG NPM_LOGLEVEL
 ARG TZ='Europe/Berlin'
 
 ENV DEBIAN_FRONTEND noninteractive
