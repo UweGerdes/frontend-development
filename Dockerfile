@@ -10,7 +10,9 @@ ENV DEBIAN_FRONTEND noninteractive
 ENV NPM_HOME /usr/src/npm
 ENV NODE_PATH ${NPM_HOME}/node_modules
 ENV APP_DIR /usr/src/app
-ENV TZ '${TZ}'
+ENV NPM_PROXY ${NPM_PROXY}
+ENV NPM_LOGLEVEL ${NPM_LOGLEVEL}
+ENV TZ ${TZ}
 
 RUN if [ -n "${APT_PROXY}" ]; then echo "Acquire::http { Proxy \"${APT_PROXY}\"; };" >> /etc/apt/apt.conf.d/01proxy; fi
 
