@@ -1,5 +1,7 @@
 # dockerignore for gulp-frontend
 Arbeit/
+bower.json
+bower_components/
 htdocs/
 LICENSE
 src/

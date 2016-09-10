@@ -1,15 +1,18 @@
 # gitignore for frontend-development project
+# generated files
 /htdocs/css/
 /htdocs/img/gv/
 /htdocs/login/css/
 
 # general ignores
+bower_components/
 node_modules/
 vendor/
 
 # ignores from docker container
 .bash_history
 .cache/
+.config/
 .npm/
 .v8flags*
 .viminfo

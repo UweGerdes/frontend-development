@@ -1,0 +1,26 @@
+{
+  "name": "gulp-frontend",
+  "description": "Gulp package for frontend development and testing",
+  "main": "",
+  "authors": [
+    "{'name': 'Uwe Gerdes'}"
+  ],
+  "license": "MIT",
+  "keywords": [
+    "gulp",
+    "frontend",
+    "development",
+    "test"
+  ],
+  "homepage": "",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "bootstrap": "^3.3.7"
+  }
+}

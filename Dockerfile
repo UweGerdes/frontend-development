@@ -30,6 +30,7 @@ RUN apt-get update && apt-get dist-upgrade -y && \
 	ln -s ${APP_DIR}/package.json ./package.json && \
 	npm ${NPM_LOGLEVEL} ${NPM_PROXY} install && \
 	sed -i -e "s/done/then/" ${NODE_PATH}/gulp-less/index.js && \
+	ln -s ${NODE_PATH}/bower/bin/bower /usr/local/bin/bower && \
 	ln -s ${NODE_PATH}/gulp/bin/gulp.js /usr/local/bin/gulp && \
 	ln -s ${NODE_PATH}/casperjs/bin/casperjs /usr/local/bin/casperjs && \
 	ln -s ${NODE_PATH}/phantomjs-prebuilt/bin/phantomjs /usr/local/bin/phantomjs && \

@@ -99,6 +99,12 @@ $ docker run -it \
 	bash
 ```
 
+Inside the running docker container start `bower install` to load more dependencies, they will be in your project directory (you might want to look inside for using the components):
+
+```bash
+$ bower install
+```
+
 Inside the running docker container start `gulp` with an optional target. If no target is given the default task runs `build` and `watch`:
 
 ```bash
@@ -117,7 +123,7 @@ To install or update node modules use the following commands (`npm` replaces `pa
 
 ```bash
 $ cd ${NPM_HOME} && \
-	npm ${NPM_LOGLEVEL} ${NPM_PROXY} ${NPM_LOGLEVEL} ${NPM_PROXY} --save-dev install [node-module] && \
+	npm ${NPM_LOGLEVEL} ${NPM_PROXY} --save-dev install bower && \
 	cp package.json ../app/ && \
 	cd ${HOME}
 
