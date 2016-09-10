@@ -108,7 +108,10 @@ $ bower install
 Inside the running docker container start `gulp` with an optional target. If no target is given the default task runs `build` and `watch`:
 
 ```bash
-$ gulp [target]
+$ gulp build
+$ gulp lint
+$ gulp less
+$ gulp watch
 ```
 
 Stop `gulp watch` with CTRL-C and exit the container with CTRL-D.

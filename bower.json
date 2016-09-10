@@ -1,9 +1,11 @@
 {
   "name": "gulp-frontend",
   "description": "Gulp package for frontend development and testing",
-  "main": "",
+  "main": [
+    "src/less/layout.less"
+  ],
   "authors": [
-    "{'name': 'Uwe Gerdes'}"
+    { "name": "Uwe Gerdes", "email": "entwicklung@uwegerdes.de" }
   ],
   "license": "MIT",
   "keywords": [
