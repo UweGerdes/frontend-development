@@ -124,7 +124,15 @@ Inside the running docker container start `gulp` with an optional target. If no 
 $ gulp build
 $ gulp lint
 $ gulp less
+
+$ gulp tests
+$ gulp test-forms-default
+$ gulp test-forms-default-slimer
+$ gulp test-forms-login
+
 $ gulp watch
+
+$ gulp
 ```
 
 Stop `gulp watch` with CTRL-C and exit the container with CTRL-D.

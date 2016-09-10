@@ -140,7 +140,7 @@ gulp.task('test-forms-default-slimer', function(callback) {
 	del( [
 			path.join(testDir, 'test-forms', 'results', 'default', '*')
 		], { force: true } );
-	var loader = exec('xvfb-run -a casperjs --engine=slimerjs test test-forms.js --cfg=config/default.js',
+	var loader = exec('xvfb-run -a casperjs --engine=slimerjs test test-forms.js --cfg=config/default.js --dumpDir=./results/default-slimerjs/',
 		{ cwd: path.join(testDir, 'test-forms') },
 		function (err, stdout, stderr) {
 			logExecResults(err, stdout, stderr);

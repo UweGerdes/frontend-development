@@ -63,7 +63,7 @@ if (typeof casper === 'undefined') {
 }
 
 var testData = null;
-
+console.log(casper.cli.options.dumpDir);
 if (casper.cli.options.cfg) {
 	var path = casper.cli.options.cfg;
 	if (fs.exists(fs.absolute(fs.workingDirectory + '/' + path))) {
@@ -76,7 +76,9 @@ if (casper.cli.options.cfg) {
 	casper.echo('Executing default: "' + fs.absolute(fs.workingDirectory + '/config/my_test.js') + '"', 'INFO');
 	testData = require(fs.absolute(fs.workingDirectory + '/config/my_test.js'));
 }
-
+if (casper.cli.options.dumpDir !== '') {
+	testData.dumpDir = casper.cli.options.dumpDir;
+}
 if (testData) {
 	fs.makeTree(testData.dumpDir);
 
