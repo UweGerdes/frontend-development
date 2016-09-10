@@ -1,11 +1,11 @@
 {
   "name": "gulp-frontend",
   "version": "1.0.4",
-  "description": "Gulp package for frontend developement and testing",
+  "description": "Gulp package for frontend development and testing",
   "keywords": [
     "gulp",
     "frontend",
-    "developement",
+    "development",
     "test"
   ],
   "license": "MIT",
@@ -33,9 +33,9 @@
     "run-sequence": "^1.1.5",
     "slimerjs": "^0.906.2"
   },
-  "repository" : {
-    "type" : "git",
-    "url" : "https://github.com/uwegerdes/frontend-developement.git"
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/uwegerdes/frontend-development.git"
   },
   "scripts": {
     "start": "gulp"

@@ -1,6 +1,4 @@
-# docker with jshint and testing environment GulpJS, PhantomJS, CasperJS, SlimerJS
-
-test html form input and result
+# Dockerfile for frontend development and testing environment with GulpJS, PhantomJS, CasperJS, SlimerJS
 
 ## Installation
 
@@ -8,9 +6,11 @@ My system is Ubuntu 16.04 - perhaps there are some other steps to be taken on Wi
 
 You may also try this installation in a virtual machine. It worked for me on an Ubuntu 16.04 (I hope all dependencies are included here).
 
-Or build a Docker image using the supplied Dockerfile.
+Or build a Docker image using the supplied Dockerfile (and keep your project directory clean from node_modules).
 
-Some other software is required on a blank Ubuntu system:
+# Installation on you OS (no docker)
+
+Some software is required on a blank Ubuntu system:
 
 ```bash
 $ sudo apt-get install g++ git imagemagick python
@@ -24,18 +24,16 @@ Install [Node.js](https://nodejs.org/en/) (my version is 4.4.7, don't use the ve
 $ sudo npm install -g casperjs phantomjs-prebuilt slimerjs
 ```
 
-The above version number for phantomjs is the npm installer version - it installs PhantomJS 1.9.8.
-
 Now you should clone this repository in a project directory:
 
 ```bash
-$ git clone https://bitbucket.org/uwegerdes/test-forms.git
+$ git clone https://bitbucket.org/uwegerdes/frontend-development.git
 ```
 
 Some node modules have to be installed:
 
 ```bash
-$ cd test-forms
+$ cd frontend-development
 $ npm install
 ```
 
@@ -52,9 +50,8 @@ Use the default config file or edit your own.
 Start the tests with:
 
 ```bash
-$ cd test-forms
-$ casperjs test test-forms.js --cfg=config/default.js
-$ casperjs test --engine=slimerjs test-forms.js --cfg=config/default.js
+$ cd frontend-development
+$ gulp [target]
 ```
 
 Test results are saved in the `results` subdirectory.
@@ -68,9 +65,9 @@ $ sudo apt-get install xvfb
 $ xvfb-run -a [-e /dev/stdout] casperjs test --engine=slimerjs test-forms.js --cfg=config/default.js
 ```
 
-## Use Docker uwegerdes/gulp-frontend
+# Docker uwegerdes/gulp-frontend
 
-During developement I've used cache docker to speed up the building of the docker image.
+During development I've used cache docker to speed up the building of the docker image.
 
 I'm using some firewall settings - make sure the localhost ports 3142 and 3143 are open for Docker (mine works in the subnet 172.17.0.0/24).
 
@@ -93,20 +90,6 @@ $ docker run --name npm-proxy-cache -d --restart=always -p 3143:8080 -v /srv/doc
 ## Create docker image
 
 ```bash
-$ docker build -t uwegerdes/gulp-frontend-dev-test .
-$ docker run -it \
-	--name gulp-frontend-dev-test \
-	-v $(pwd)/package.json:/usr/src/app/package.json \
-	-v $(pwd)/gulpfile.js:/usr/src/app/gulpfile.js \
-	-v $(pwd)/tests:/usr/src/app/tests \
-	-v $(pwd)/tools:/usr/src/app/tools \
-	-v $(pwd)/src:/usr/src/app/src \
-	-v $(pwd)/htdocs:/usr/src/app/htdocs \
-	--add-host frontend.local:192.168.1.18 \
-	-e TZ=Europe/Berlin \
-	uwegerdes/gulp-frontend-dev-test \
-	bash
-
 $ docker build -t uwegerdes/gulp-frontend .
 $ docker run -it \
 	--name gulp-frontend \
@@ -114,30 +97,39 @@ $ docker run -it \
 	--add-host frontend.local:192.168.1.18 \
 	uwegerdes/gulp-frontend \
 	bash
-
-	gulp --gulpfile tools/gulpfile.js less
-
-	npm config ls -l
-
-	cd /usr/arc/npm && npm --proxy http://192.168.1.18:3143 --https-proxy http://192.168.1.18:3143 --strict-ssl false --loglevel warn install gulp-less
-
-	npm --proxy http://192.168.1.18:3143 --https-proxy http://192.168.1.18:3143 --strict-ssl false --loglevel warn update
-
-// use global gulp and modules
-if (argv.g) {
-  env.modulePath = '/usr/lib/node_modules/gulp/';
-  env.modulePath = '/usr/src/npm/node_modules/gulp/';
-  env.modulePackage.version = cliPackage.version;
-}
 ```
 
-In the shell run your favourite gulp commands or install more packages.
+Inside the running docker container start `gulp` with an optional target. If no target is given the default task runs `build` and `watch`:
 
-Restart the container after install/update and attach to the container to reconnect (just hit RETURN to get a prompt):
+```bash
+$ gulp [target]
+```
+
+Stop `gulp watch` with CTRL-C and exit the container with CTRL-D.
+
+Restart the container and attach to the container to reconnect (just hit RETURN to get a prompt):
 
 ```bash
 $ docker restart gulp-frontend && docker attach gulp-frontend
 ```
+
+To install or update node modules use the following commands (`npm` replaces `package.json` so you probably want to copy it back to your project):
+
+```bash
+$ cd ${NPM_HOME} && \
+	npm ${NPM_LOGLEVEL} ${NPM_PROXY} ${NPM_LOGLEVEL} ${NPM_PROXY} --save-dev install [node-module] && \
+	cp package.json ../app/ && \
+	cd ${HOME}
+
+$ cd ${NPM_HOME} && \
+	npm ${NPM_LOGLEVEL} ${NPM_PROXY} update && \
+	cp package.json ../app/ && \
+	cd ${HOME}
+```
+
+You can also restart the container in another project which uses gulp.
+
+If you think of removing a container after installing some node modules and want to run it later and *must* call the update command above inside the new container to reinstall the modules. Or you can rebuild the image, the new packages are included too.
 
 Perhaps you want to add a watch target for gulpfile.js and package.json which restarts the gulp process using a bash script inside the container. But be careful when the gulpfile.js has errors: it will exit and you can't access it with exec.
 Correct your errors and run the container again (-rm flag).

@@ -37,7 +37,7 @@ var testHtmlLogfile = path.join(testDir, 'tests.html');
 var logMode = 0;
 var txtLog = [];
 var htmlLog = [];
-var watchFiles = {};
+var watchFilesFor = {};
 
 /*
  * log only to console, not GUI
@@ -50,7 +50,7 @@ var log = notify.withReporter(function (options, callback) {
  * less task watching all less files, only writing sources without **,
  * includes (path with **) filtered, change check by gulp-less-changed
  */
-watchFiles.less = [
+watchFilesFor.less = [
 	path.join(srcDir, 'less', '**', '*.less'),
 	path.join(srcDir, 'less', '*.less'),
 	path.join(srcDir, 'less', 'login', 'login.less'),
@@ -61,7 +61,7 @@ gulp.task('less', function () {
 		var srcBase = path.join(srcDir, 'less');
 		return path.join(path.dirname(filename).replace(srcBase, destDir), 'css');
 	};
-	var src = watchFiles.less.filter(function(el){return el.indexOf('/**/') == -1; });
+	var src = watchFilesFor.less.filter(function(el){return el.indexOf('/**/') == -1; });
 	return gulp.src( src )
 		.pipe(lessChanged({
 			getOutputFileName: function(file) {
@@ -80,13 +80,13 @@ gulp.task('less', function () {
 /*
  * graphviz image generation
  */
-watchFiles.graphviz = [
+watchFilesFor.graphviz = [
 	path.join(srcDir, 'Graphviz', '*.gv')
 ];
 gulp.task('graphviz', function () {
 	var dest = path.join(destDir, 'img', 'gv');
 	var destFormat = 'png';
-	return gulp.src(watchFiles.graphviz, {read: false})
+	return gulp.src(watchFilesFor.graphviz, {read: false})
 		.pipe(changed(dest, {extension: '.' + destFormat}))
 		.pipe(shell('dot -T' + destFormat + ' "<%= file.path %>" -o "<%= rename(file.path) %>"', {
 			templateData: {
@@ -103,12 +103,12 @@ gulp.task('graphviz', function () {
 /*
  * lint javascript files
  */
-watchFiles.lint = [
+watchFilesFor.lint = [
 	path.join(gulpDir, 'gulpfile.js'),
 	path.join(gulpDir, 'package.json')
 ];
 gulp.task('lint', function(callback) {
-	return gulp.src(watchFiles.lint)
+	return gulp.src(watchFilesFor.lint)
 		.pipe(jshint())
 		.pipe(jshint.reporter('default'))
 		;
@@ -117,7 +117,7 @@ gulp.task('lint', function(callback) {
 /*
  * tests
  */
-watchFiles['test-forms-default'] = [
+watchFilesFor['test-forms-default'] = [
 	path.join(testDir, 'test-forms', 'config', 'default.js')
 ];
 gulp.task('test-forms-default', function(callback) {
@@ -134,8 +134,21 @@ gulp.task('test-forms-default', function(callback) {
 	loader.stdout.on('data', function(data) { if(!data.match(/PASS/)) { console.log(data.trim()); } });
 });
 
+gulp.task('test-forms-default-slimer', function(callback) {
+	del( [
+			path.join(testDir, 'test-forms', 'results', 'default', '*')
+		], { force: true } );
+	var loader = exec('xvfb-run -a -e ./xvfb.stdout casperjs --engine=slimerjs test test-forms.js --cfg=config/default.js',
+		{ cwd: path.join(testDir, 'test-forms') },
+		function (err, stdout, stderr) {
+			logExecResults(err, stdout, stderr);
+			callback();
+		}
+	);
+	loader.stdout.on('data', function(data) { if(!data.match(/PASS/)) { console.log(data.trim()); } });
+});
 
-watchFiles['test-forms-login'] = [
+watchFilesFor['test-forms-login'] = [
 	path.join(testDir, 'test-forms', 'config', 'login.js')
 ];
 gulp.task('test-forms-login', function(callback) {
@@ -152,14 +165,14 @@ gulp.task('test-forms-login', function(callback) {
 	loader.stdout.on('data', function(data) { if(!data.match(/PASS/)) { console.log(data.trim()); } });
 });
 
-watchFiles.lint = [
+watchFilesFor.lint = [
 	path.join(testDir, 'test-forms', 'config', '*.js'),
 	path.join(testDir, 'test-forms', 'test-forms.js'),
 	path.join(gulpDir, 'gulpfile.js'),
 	path.join(gulpDir, 'package.json')
 ];
 gulp.task('lint', function(callback) {
-	return gulp.src(watchFiles.lint)
+	return gulp.src(watchFilesFor.lint)
 		.pipe(jshint())
 		.pipe(jshint.reporter('default')
 	);
@@ -237,7 +250,7 @@ gulp.task('build', function(callback) {
 /*
  * run all test tasks
  */
-watchFiles.tests = [
+watchFilesFor.tests = [
 	path.join(testDir, 'test-forms', 'test-forms.js')
 ];
 gulp.task('tests', function(callback) {
@@ -251,13 +264,17 @@ gulp.task('tests', function(callback) {
  * watch task
  */
 gulp.task('watch', function() {
-	Object.keys(watchFiles).forEach(function(task) {
-		gulp.watch( watchFiles[ task ], [ task ] );
+	Object.keys(watchFilesFor).forEach(function(task) {
+		gulp.watch( watchFilesFor[task], [ task ] );
 	});
 });
 
 /*
- * default task
+ * default task: run all build tasks and watch
  */
-gulp.task('default', ['watch']);
+gulp.task('default', function(callback) {
+	runSequence('build',
+		'watch',
+		callback);
+});
 

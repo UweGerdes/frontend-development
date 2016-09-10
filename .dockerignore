@@ -1,9 +1,18 @@
-# dockerignore for gulp-frontend-dev-test
+# dockerignore for gulp-frontend
 Arbeit/
 htdocs/
+LICENSE
 src/
 tests/
 tools/
-.git/
+*.html
 *.md
-
+.bash_history
+.cache/
+.editorconfig
+.gitignore
+.git/
+.jshintrc
+.npm/
+.v8flags*
+.viminfo
