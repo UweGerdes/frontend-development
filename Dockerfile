@@ -16,15 +16,15 @@ ENV TZ '${TZ}'
 
 RUN if [ -n "${APT_PROXY}" ]; then echo "Acquire::http { Proxy \"${APT_PROXY}\"; };" >> /etc/apt/apt.conf.d/01proxy; fi
 
+COPY package.json ${APP_DIR}/
 RUN apt-get update && \
 	apt-get dist-upgrade -y && \
 	apt-get install -y sudo vim imagemagick graphviz && \
 	apt-get clean && \
-	rm -rf /var/lib/apt/lists/*
-
-RUN mkdir -p ${APP_DIR} && mkdir -p ${NPM_PATH}
-COPY package.json ${APP_DIR}
-RUN cd ${NPM_PATH} && \
+	rm -rf /var/lib/apt/lists/* && \
+	mkdir -p ${APP_DIR} && \
+	mkdir -p ${NPM_PATH} && \
+	cd ${NPM_PATH} && \
 	ln -s ${APP_DIR}/package.json ./package.json && \
 	npm ${NPM_LOGLEVEL} ${NPM_PROXY} install && \
 	ln -s ${NODE_PATH}/gulp/bin/gulp.js /usr/local/bin/gulp && \

@@ -16,7 +16,7 @@ digraph Frontend {
 		label = "<Sources> Sources | <Less> /less | <JavaScript> /js | <Graphviz> /graphviz"
 	];
 	"Tests" [
-		label = "<Tests> Tests | <CasperJS> CasperJS | <Selenium> Selenium | Mocha"
+		label = "<Tests> Tests | <CasperJS> CasperJS | <Selenium> Selenium | Mocha / Chai"
 	];
 	"Webserver" [
 		label = "<Webserver> Webserver | <PHP> PHP / MySQL | <login> /login | <css> /css | <js> /js | <img> /img/gv"
