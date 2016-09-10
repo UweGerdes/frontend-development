@@ -4,7 +4,6 @@ htdocs/
 LICENSE
 src/
 tests/
-tools/
 *.html
 *.md
 .bash_history
