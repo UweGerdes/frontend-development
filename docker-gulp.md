@@ -107,10 +107,10 @@ $ gulp [target]
 
 Stop `gulp watch` with CTRL-C and exit the container with CTRL-D.
 
-Restart the container and attach to the container to reconnect (just hit RETURN to get a prompt):
+Restart and attach to the container (just hit RETURN to get a prompt):
 
 ```bash
-$ docker restart gulp-frontend && docker attach gulp-frontend
+$ docker start --attach -i gulp-frontend
 ```
 
 To install or update node modules use the following commands (`npm` replaces `package.json` so you probably want to copy it back to your project):

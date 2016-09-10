@@ -19,6 +19,7 @@ var gulp = require('gulp'),
 	fs = require('fs'),
 	rename = require('rename'),
 	gutil = require('gulp-util'),
+//	gulpif = require('gulp-if'),
 	less = require('gulp-less'),
 	autoprefixer = require('gulp-autoprefixer'),
 	uglify = require('gulp-uglify'),
@@ -73,6 +74,7 @@ gulp.task('less', function () {
 		.pipe(autoprefixer('last 3 version', 'safari 5', 'ie 8', 'ie 9', 'ios 6', 'android 4'))
 		.pipe(gutil.env.type === 'production' ? uglify() : gutil.noop())
 		.pipe(gulp.dest(function(file) { return dest(file.path); }))
+//		.pipe(gulpif(options.env === 'production', uglify()))
 		.pipe(log({ message: 'written: <%= file.path %>', title: 'Gulp LESS' }))
 		;
 });
