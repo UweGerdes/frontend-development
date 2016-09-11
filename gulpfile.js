@@ -107,7 +107,8 @@ gulp.task('graphviz', function () {
  */
 watchFilesFor.lint = [
 	path.join(gulpDir, 'gulpfile.js'),
-	path.join(gulpDir, 'package.json')
+	path.join(gulpDir, 'package.json'),
+	path.join(gulpDir, 'tests/**/*.js')
 ];
 gulp.task('lint', function(callback) {
 	return gulp.src(watchFilesFor.lint)
@@ -165,19 +166,6 @@ gulp.task('test-forms-login', function(callback) {
 		}
 	);
 	loader.stdout.on('data', function(data) { if(!data.match(/PASS/)) { console.log(data.trim()); } });
-});
-
-watchFilesFor.lint = [
-	path.join(testDir, 'test-forms', 'config', '*.js'),
-	path.join(testDir, 'test-forms', 'test-forms.js'),
-	path.join(gulpDir, 'gulpfile.js'),
-	path.join(gulpDir, 'package.json')
-];
-gulp.task('lint', function(callback) {
-	return gulp.src(watchFilesFor.lint)
-		.pipe(jshint())
-		.pipe(jshint.reporter('default')
-	);
 });
 
 // helper functions
