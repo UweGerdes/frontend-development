@@ -23,7 +23,7 @@ var url = casper.cli.options.url || 'http://frontend.local/',
 
 var verbose = true;
 
-var results = {};
+var result = {};
 
 casper.echo('loading: ' + url + ', selector: "' + selector + '", saving "' + dest + '.*"', 'INFO');
 try {
@@ -141,53 +141,42 @@ casper.viewport(width, 700);
 
 casper.start();
 
-	casper.open(url, function() {
-		this.echo('searching for "' + selector + '"', 'INFO');
-		casper.evaluate(_setTestClass);
-	})
-	.then(function() {
-		if (hover !== '') {
-			this.echo('hover to "' + hover + '"', 'INFO');
-			casper.mouse.move(hover);
-		}
-	})
-	.then(function() {
-		results[selector] = this.evaluate(_getStyles, selector, hover); // evaluate in browser
-	})
-	.then(function() {
-	Object.keys(results).forEach(function(selector) {
-		var result = results[selector];
-		var name = safeFilename(selector);
-		if (result && result.length > 0) {
-			var html;
-			if (selector.indexOf('/') === 0) {
-				html = casper.getHTML(x(selector), true);
-			} else {
-				html = casper.getHTML(selector, true);
-			}
-			fs.write(destDir + '/' + name + '.html', html);
-			casper.echo(destDir + '/' + name + '.html' + ' saved', 'INFO');
-			fs.write(destDir + '/' + name + '.json', JSON.stringify(result, undefined, 4), 0);
-			casper.echo(destDir + '/' + name + '.json' + ' saved', 'INFO');
-			if (selector.indexOf('/') === 0) {
-				casper.captureSelector(destDir + '/' + name + '.png', x(selector), { format: 'png' });
-			} else {
-				casper.captureSelector(destDir + '/' + name + '.png', selector, { format: 'png' });
-			}
-			casper.echo(destDir + '/' + name + '.png' + ' saved', 'INFO');
+casper.open(url, function() {
+	this.echo('searching for "' + selector + '"', 'INFO');
+	casper.evaluate(_setTestClass);
+})
+.then(function() {
+	if (hover !== '') {
+		this.echo('hover to "' + hover + '"', 'INFO');
+		casper.mouse.move(hover);
+	}
+})
+.then(function() {
+	result = this.evaluate(_getStyles, selector, hover); // evaluate in browser
+})
+.then(function() {
+	if (result && result.length > 0) {
+		var html;
+		if (selector.indexOf('/') === 0) {
+			html = casper.getHTML(x(selector), true);
 		} else {
-			casper.echo('element not found: "' + selector + '"', 'ERROR');
+			html = casper.getHTML(selector, true);
 		}
-	});
-	fs.write(destDir + '/page.html', casper.getHTML(), 0);
-	casper.echo(destDir + '/page.html' + ' saved', 'INFO');
-	casper.capture(destDir + '/page.png', undefined, { format: 'png' });
-	casper.echo(destDir + '/page.png' + ' saved', 'INFO');
+		fs.write(dest + '.html', html);
+		casper.echo(dest + '.html' + ' saved', 'INFO');
+		fs.write(dest + '.css.json', JSON.stringify(result, undefined, 4), 0);
+		casper.echo(dest + '.css.json' + ' saved', 'INFO');
+		if (selector.indexOf('/') === 0) {
+			casper.captureSelector(dest + '.png', x(selector), { format: 'png' });
+		} else {
+			casper.captureSelector(dest + '.png', selector, { format: 'png' });
+		}
+		casper.echo(dest + '.png' + ' saved', 'INFO');
+	} else {
+		casper.echo('element not found: "' + selector + '"', 'ERROR');
+	}
 });
+
 casper.run(function() {
 	this.exit();
 });
-
-function safeFilename(name) {
-	return name.replace(/[ ?#/:\(\)<>|\\]/g, "_").trim();
-}
