@@ -5,7 +5,7 @@
  */
 'use strict';
 
-function getStyles(element1, element2, properties) {
+function getStyles(element1, properties) {
 	var result = [];
 	var what = {};
 	for(var i in properties) {
