@@ -168,6 +168,24 @@ gulp.task('test-forms-login', function(callback) {
 	loader.stdout.on('data', function(data) { if(!data.match(/PASS/)) { console.log(data.trim()); } });
 });
 
+watchFilesFor['responsive-check-default'] = [
+	path.join(testDir, 'responsive-check', 'config', 'default.js'),
+	path.join(testDir, 'responsive-check', 'responsive-check.js')
+];
+gulp.task('responsive-check-default', function(callback) {
+	del( [
+			path.join(testDir, 'responsive-check', 'results', 'default', '*')
+		], { force: true } );
+	var loader = exec('node responsive-check.js',
+		{ cwd: path.join(testDir, 'responsive-check') },
+		function (err, stdout, stderr) {
+			logExecResults(err, stdout, stderr);
+			callback();
+		}
+	);
+	loader.stdout.on('data', function(data) { if(!data.match(/PASS/)) { console.log(data.trim()); } });
+});
+
 // helper functions
 var logExecResults = function (err, stdout, stderr) {
 	logTxt (stdout.replace(/\u001b\[[^m]+m/g, '').match(/[^\n]*FAIL [^\n]+/g));

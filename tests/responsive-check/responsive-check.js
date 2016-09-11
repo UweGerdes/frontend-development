@@ -20,7 +20,7 @@ var config = require('./' + configFile);
 
 var verbose = process.argv.indexOf('-v') > -1;
 
-var resultsDir = 'results';
+var resultsDir = './results';
 var destDir = path.join(resultsDir, config.destDir);
 var pagesExpected = [];
 var pagesLoaded = {};
@@ -58,11 +58,16 @@ function load() {
 }
 
 function loadPage(config, engine, width, callback) {
-	var page = {};
+	var page = {
+		'url': config.url,
+		'selector': config.selector,
+		'engine': engine,
+		'width': width
+	};
 	var args = ['./bin/load-page.js',
-		'--url="' + config.url + '"',
-		'--selector="' + config. selector + '"',
-		'--destDir="' + config.destDir + '"',
+		'--url="' + page.url + '"',
+		'--selector="' + page. selector + '"',
+		'--dest="' + path.join(destDir, pageKey(engine, width)) + '"',
 		'--engine="' + engine + '"',
 		'--width="' + width + '"'];
 	var cmd = 'casperjs';
@@ -71,7 +76,11 @@ function loadPage(config, engine, width, callback) {
 		cmd = 'xvfb-run -a casperjs';
 //			cmd = 'casperjs';
 	}
-	console.log('starting: ' + cmd + ' ' + args.join(' '));
+	if (verbose) {
+		console.log('starting: ' + cmd + ' ' + args.join(' '));
+	} else {
+		console.log('starting: ' + page.selector + ' ' + pageKey(engine, width));
+	}
 	var loader = exec(cmd + ' ' + args.join(' '),
 		function (error, stdout, stderr) {
 			logExecResult('loaded page ' + page.url, error, "", stderr);
@@ -85,7 +94,6 @@ function loadPage(config, engine, width, callback) {
 			console.log('load ' + page.url + ' exit: ' + code);
 		}
 		page.loaded = true;
-		pagesLoaded++;
 		callback(page);
 	});
 }
@@ -95,9 +103,10 @@ var addResult = function(page) {
 		'width': '' + page.width,
 		'html': page.htmlFilename,
 		'png': page.pngFilename,
-		'styles': page.stylesFilename
+		'styles': page.stylesFilename,
+		'loaded': page.loaded
 	};
-	console.log('finished ' + pageKey(page.engine, page.width));
+	console.log('finished: ' + page.selector + ' ' + pageKey(page.engine, page.width));
 	if (pagesExpected.length == Object.keys(pagesLoaded).length) {
 		console.log('finished all');
 		// TODO create result page and trigger livereload

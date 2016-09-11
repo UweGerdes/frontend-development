@@ -2,7 +2,7 @@
  * Load page and take screenshot of element, save the html code and styles
  * add additional information like "hasHorizontalScrollbar"
  *
- * casperjs load-page.js --url="http://frontend.local/login/" --selector="form" --dest=../results/testcase --width=720'];
+ * casperjs load-page.js --url="http://frontend.local/login/" --selector="form" --dest=./results/testcase --width=720'];
  *
  * additional argument to overwrite config settings:
  * --hover="#submit" --blacklist="adserv,doubleclick" --whitelist="trustedhostname.de"
@@ -17,7 +17,7 @@ var casper = require('casper').create(),
 
 var url = casper.cli.options.url || 'http://frontend.local/',
 	selector = casper.cli.options.selector || 'form',
-	dest = casper.cli.options.dest || '../results/testcase/phantomjs_720',
+	dest = casper.cli.options.dest || './results/default/phantomjs_720',
 	width = parseInt(casper.cli.options.width) || 720,
 	hover = '';
 
@@ -52,10 +52,10 @@ casper.on('http.status.404', function(resource) {
 // block external resources
 casper.options.onResourceRequested = function(C, requestData, request) {
 	if ( requestData.url.match(/https?:\/\//) ) {
-//		casper.echo('skipped: ' + requestData.url, 'WARNING');
-		request.abort();
-	} else {
 		if (verbose) { casper.echo('loading: ' + requestData.url, 'INFO'); }
+//		request.abort();
+	} else {
+		casper.echo('loading: ' + requestData.url, 'INFO');
 	}
 };
 
@@ -137,15 +137,14 @@ function _setTestClass(selector) {
 	document.querySelector(selector || 'body').classList.add('test');
 }
 
-casper.viewport(width, 700);
-
 casper.start();
+
 
 casper.open(url, function() {
 	this.echo('searching for "' + selector + '"', 'INFO');
 	casper.evaluate(_setTestClass);
-})
-.then(function() {
+});
+casper.then(function() {
 	if (hover !== '') {
 		this.echo('hover to "' + hover + '"', 'INFO');
 		casper.mouse.move(hover);
@@ -174,6 +173,8 @@ casper.open(url, function() {
 		casper.echo(dest + '.png' + ' saved', 'INFO');
 	} else {
 		casper.echo('element not found: "' + selector + '"', 'ERROR');
+		fs.write(dest + '_page.html', casper.getHTML(), 0);
+		casper.echo(dest + '_page.html' + ' saved', 'INFO');
 	}
 });
 
