@@ -21,20 +21,22 @@ var url = casper.cli.options.url || 'http://frontend.local/',
 	width = parseInt(casper.cli.options.width) || 720,
 	hover = '';
 
-var verbose = true;
+var verbose = false;
 
 var result = {};
+var hasScrollbar;
 
-casper.echo('loading: ' + url + ', selector: "' + selector + '", saving "' + dest + '.*"', 'INFO');
+if (verbose) {
+	casper.echo('loading: ' + url + ', selector: "' + selector + '", saving "' + dest + '.*"', 'INFO');
+}
 try {
 	var destDir = dest.replace(/(.+)\/.+/, '$1');
-	console.log('destDir: ' + destDir);
-	if (fs.stat(destDir) && !fs.stat(destDir).isDirectory()) {
-		console.log('can\'t create ' + destDir);
+	if (!fs.isDirectory(destDir)) {
+		fs.makeTree(destDir);
+		console.log('created ' + destDir);
 	}
 } catch(err) {
-	fs.makeTree(destDir);
-	console.log('created ' + destDir);
+	console.log('can\'t create ' + destDir + '\n' + err);
 }
 
 // event handling
@@ -47,6 +49,12 @@ casper.on('error', function(msg, backtrace) {
 });
 casper.on('http.status.404', function(resource) {
 	this.echo('ERROR 404: ' + resource.url, 'ERROR');
+});
+casper.on('page.error', function(msg, trace) {
+	this.echo('page.error: ' + msg + '\n' + trace2string(trace), 'WARNING');
+});
+casper.on('remote.alert', function (message) {
+	this.echo("// alert: " + message, 'WARNING');
 });
 
 // block external resources
@@ -132,6 +140,11 @@ function _getStyles(selector, hover) {
 	return elements;
 }
 
+// check for horizontal scroll bar
+function _checkHorizontalScrollbar(selector) {
+	return document.body.scrollWidth > document.body.offsetWidth;
+}
+
 // set test class for element
 function _setTestClass(selector) {
 	document.querySelector(selector || 'body').classList.add('test');
@@ -139,6 +152,7 @@ function _setTestClass(selector) {
 
 casper.start();
 
+casper.viewport(width, 700);
 
 casper.open(url, function() {
 	this.echo('searching for "' + selector + '"', 'INFO');
@@ -154,6 +168,12 @@ casper.then(function() {
 	result = this.evaluate(_getStyles, selector, hover); // evaluate in browser
 })
 .then(function() {
+	hasScrollbar = this.evaluate(_checkHorizontalScrollbar, selector); // evaluate in browser
+	if (hasScrollbar === true) {
+		this.echo('page has horizontal scrollbar', 'WARNING');
+	}
+})
+.then(function() {
 	if (result && result.length > 0) {
 		var html;
 		if (selector.indexOf('/') === 0) {
@@ -161,16 +181,20 @@ casper.then(function() {
 		} else {
 			html = casper.getHTML(selector, true);
 		}
-		fs.write(dest + '.html', html);
-		casper.echo(dest + '.html' + ' saved', 'INFO');
+		//fs.write(dest + '.html', html);
+		//casper.echo(dest + '.html' + ' saved', 'INFO');
 		fs.write(dest + '.css.json', JSON.stringify(result, undefined, 4), 0);
-		casper.echo(dest + '.css.json' + ' saved', 'INFO');
+		if (verbose) {
+			casper.echo(dest + '.css.json' + ' saved', 'INFO');
+		}
 		if (selector.indexOf('/') === 0) {
 			casper.captureSelector(dest + '.png', x(selector), { format: 'png' });
 		} else {
 			casper.captureSelector(dest + '.png', selector, { format: 'png' });
 		}
-		casper.echo(dest + '.png' + ' saved', 'INFO');
+		if (verbose) {
+			casper.echo(dest + '.png' + ' saved', 'INFO');
+		}
 	} else {
 		casper.echo('element not found: "' + selector + '"', 'ERROR');
 		fs.write(dest + '_page.html', casper.getHTML(), 0);
@@ -181,3 +205,15 @@ casper.then(function() {
 casper.run(function() {
 	this.exit();
 });
+
+function trace2string(trace) {
+	var result = [];
+	Object.keys(trace).forEach(function (entry) {
+		var lines = [];
+		Object.keys(trace[entry]).forEach(function (key) {
+			lines.push(trace[entry][key]);
+		});
+		result.push(lines.join(' '));
+	});
+	return result.join('\n');
+}

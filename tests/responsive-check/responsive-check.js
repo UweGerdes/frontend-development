@@ -86,9 +86,9 @@ function loadPage(config, engine, width, callback) {
 			logExecResult('loaded page ' + page.url, error, "", stderr);
 		}
 	);
-	loader.stdout.on('data', function(data) { if (verbose || data.indexOf('element not found') > -1) { console.log(pageKey + ': ' + data.trim()); } });
-	loader.stderr.on('data', function(data) { console.log(pageKey + ' stderr: ' + data.trim()); });
-	loader.on('error', function(err) { console.log(pageKey + ' error: ' + err.trim()); });
+	loader.stdout.on('data', function(data) { console.log(pageKey(engine, width) + ': ' + data.trim()); });
+	loader.stderr.on('data', function(data) { console.log(pageKey(engine, width) + ' stderr: ' + data.trim()); });
+	loader.on('error', function(err) { console.log(pageKey(engine, width) + ' error: ' + err.trim()); });
 	loader.on('close', function(code) {
 		if (code > 0) {
 			console.log('load ' + page.url + ' exit: ' + code);

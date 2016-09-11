@@ -170,7 +170,8 @@ gulp.task('test-forms-login', function(callback) {
 
 watchFilesFor['responsive-check-default'] = [
 	path.join(testDir, 'responsive-check', 'config', 'default.js'),
-	path.join(testDir, 'responsive-check', 'responsive-check.js')
+	path.join(testDir, 'responsive-check', 'responsive-check.js'),
+	path.join(testDir, 'responsive-check', 'bin', 'load-page.js')
 ];
 gulp.task('responsive-check-default', function(callback) {
 	del( [
@@ -213,17 +214,21 @@ var logHtml = function (msg) {
 };
 
 var writeTxtLog = function () {
-	fs.appendFileSync(testLogfile, txtLog.join('\n') + '\n');
+	if (txtLog.length > 0) {
+		fs.writeFileSync(testLogfile, txtLog.join('\n') + '\n');
+	}
 };
 
 var writeHtmlLog = function () {
-	var html = '<!DOCTYPE html>\n<html>\n<head>\n<meta charset="utf-8" />\n' +
-			'<title>Testergebnisse</title>\n' +
-			'<link href="compare-layouts/css/index.css" rel="stylesheet" />\n' +
-			'</head>\n<body><h1>Testergebnisse</h1>\n<ul>\n';
-	html += htmlLog.join('\n');
-	html += '</ul>\n</body>\n</html>';
-	fs.appendFileSync(testHtmlLogfile, html);
+	if (htmlLog.length > 0) {
+		var html = '<!DOCTYPE html>\n<html>\n<head>\n<meta charset="utf-8" />\n' +
+				'<title>Testergebnisse</title>\n' +
+				'<link href="compare-layouts/css/index.css" rel="stylesheet" />\n' +
+				'</head>\n<body><h1>Testergebnisse</h1>\n<ul>\n';
+		html += htmlLog.join('\n');
+		html += '</ul>\n</body>\n</html>';
+		fs.writeFileSync(testHtmlLogfile, html);
+	}
 };
 
 gulp.task('clearTestLog', function() {

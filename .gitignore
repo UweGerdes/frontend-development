@@ -3,6 +3,8 @@
 /htdocs/css/
 /htdocs/img/gv/
 /htdocs/login/css/
+/tests/tests.log
+/tests/tests.html
 
 # general ignores
 bower_components/
