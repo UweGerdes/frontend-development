@@ -13,6 +13,7 @@ vendor/
 .bash_history
 .cache/
 .config/
+.gitconfig
 .npm/
 .v8flags*
 .viminfo

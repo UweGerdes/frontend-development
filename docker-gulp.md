@@ -112,10 +112,12 @@ $ docker run -it \
 	bash
 ```
 
-Inside the running docker container start `bower install` to load more dependencies, they will be in your project directory (you might want to look inside for using the components):
+Inside the running docker container start `bower install` to load more dependencies, they will be in your project directory (you might want to look inside for using the components) and set your git settings - you can `git commit` et.al. inside the container:
 
 ```bash
 $ bower install
+$ git config --global user.name "Your Name"
+$ git config --global user.email "you@example.com"
 ```
 
 Inside the running docker container start `gulp` with an optional target. If no target is given the default task runs `build` and `watch`:
@@ -141,6 +143,8 @@ Restart and attach to the container (just hit RETURN to get a prompt):
 
 ```bash
 $ docker start --attach -i gulp-frontend
+
+
 ```
 
 To install or update node modules use the following commands (`npm` replaces `package.json` so you probably want to copy it back to your project):
