@@ -58,16 +58,14 @@ function load() {
 }
 
 function loadPage(config, engine, width, callback) {
+	var dest = path.join(destDir, pageKey(engine, width));
 	var page = {
-		'url': config.url,
-		'selector': config.selector,
-		'engine': engine,
-		'width': width
+		'loaded': false
 	};
 	var args = ['./bin/load-page.js',
-		'--url="' + page.url + '"',
-		'--selector="' + page. selector + '"',
-		'--dest="' + path.join(destDir, pageKey(engine, width)) + '"',
+		'--url="' + config.url + '"',
+		'--selector="' + config.selector + '"',
+		'--dest="' + dest + '"',
 		'--engine="' + engine + '"',
 		'--width="' + width + '"'];
 	var cmd = 'casperjs';
@@ -99,17 +97,12 @@ function loadPage(config, engine, width, callback) {
 }
 
 var addResult = function(page) {
-	pagesLoaded[pageKey(page.engine, page.width)] = {
-		'width': '' + page.width,
-		'html': page.htmlFilename,
-		'png': page.pngFilename,
-		'styles': page.stylesFilename,
-		'loaded': page.loaded
-	};
+	pagesLoaded[pageKey(page.engine, page.width)] = { page };
 	console.log('finished: ' + page.selector + ' ' + pageKey(page.engine, page.width));
 	if (pagesExpected.length == Object.keys(pagesLoaded).length) {
 		console.log('finished all');
 		// TODO create result page and trigger livereload
+		//createHtmlPage(config, pagesLoaded);
 	}
 };
 

@@ -78,6 +78,30 @@ gulp.task('less', function () {
 		.pipe(log({ message: 'written: <%= file.path %>', title: 'Gulp LESS' }))
 		;
 });
+watchFilesFor.lessResponsiveCheck = [
+	path.join(srcDir, 'less', 'responsive-check', '**', '*.less'),
+	path.join(srcDir, 'less', 'responsive-check', 'app.less')
+];
+gulp.task('lessResponsiveCheck', function () {
+	var dest = function(filename) {
+		return path.join(path.dirname(filename), 'css');
+	};
+	var src = watchFilesFor.less.filter(function(el){return el.indexOf('/**/') == -1; });
+	return gulp.src( src )
+		.pipe(lessChanged({
+			getOutputFileName: function(file) {
+				return rename( file, { dirname: dest(file), extname: '.css' } );
+			}
+		}))
+		.pipe(less())
+		.on('error', log.onError({ message:  'Error: <%= error.message %>' , title: 'LESS Error'}))
+		.pipe(autoprefixer('last 3 version', 'safari 5', 'ie 8', 'ie 9', 'ios 6', 'android 4'))
+		.pipe(gutil.env.type === 'production' ? uglify() : gutil.noop())
+		.pipe(gulp.dest(function(file) { return dest(file.path); }))
+//		.pipe(gulpif(options.env === 'production', uglify()))
+		.pipe(log({ message: 'written: <%= file.path %>', title: 'Gulp LESS' }))
+		;
+});
 
 /*
  * graphviz image generation
