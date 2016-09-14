@@ -18,22 +18,21 @@ var fs = require('fs'),
 	express = require('express'),
 	bodyParser = require('body-parser'),
 	logger = require('morgan'),
-	dateFormat = require('dateformat'),
 	_eval = require('eval'),
 	interfaces = os.networkInterfaces(),
 	app = express();
 
 var httpPort = process.env.httpPort;
 
-var configDir = path.join(__dirname, 'config'),
-	resultsDir = path.join(__dirname, 'results');
+var configDir = path.join('./', 'config'),
+	resultsDir = path.join('./', 'results');
 
 if (!fs.existsSync(resultsDir)) {
 	fs.mkdirSync(resultsDir);
 }
 
 var running = [],
-	configs = [];
+	configs = getConfigs();
 
 // Log the requests
 app.use(logger('dev'));
@@ -47,29 +46,27 @@ app.use(express.static(__dirname));
 
 // Handle form post requests for result view
 app.post('/result/:config', function(req, res){
-	var list = getList(res);
 	var config = {};
-	var action = 'show';
 	console.log('post: ' + req.params.config + ' ' + req.params.action);
 	if (req.params.config) {
-		if(fs.existsSync(path.join(configDir, req.params.config + '.js'))) {
-			config = getConfig(req.params.config);
+		var configFilename = path.join(configDir, req.params.config + '.js');
+		if(fs.existsSync()) {
+			config = require(configFilename);
+			res.render('resultView.ejs', {
+				config: config,
+				httpPort: httpPort
+			});
 		} else {
-			config.error = 'config file not found: ./config/' + req.params.config + '.js';
-			console.log('config file not found: ./config/' + req.params.config + '.js');
+			config.error = 'config file not found: ' + configFilename;
+			res.status(404)
+				.send('config file not found: ' + configFilename);
 		}
+
 	}
-	res.render('resultView.ejs', {
-		list: list,
-		config: config,
-		action: action,
-		httpPort: httpPort,
-		running: running
-	});
 });
 
 // Handle AJAX requests for run configs
-app.get('/run/:config/:verbose?', function(req, res){
+app.get('/start/:config/:verbose?', function(req, res){
 	if (req.params.config == 'all') {
 		configs.forEach(function(config) {
 			runConfigAsync(config, req.params.verbose, res);
@@ -79,7 +76,7 @@ app.get('/run/:config/:verbose?', function(req, res){
 	}
 });
 
-// Handle AJAX requests for run configs
+// Handle AJAX requests for clear results
 app.get('/clear/:config', function(req, res){
 	if (req.params.config == 'all') {
 		configs.forEach(function(config) {
@@ -115,114 +112,26 @@ for (var k in interfaces) {
 console.log('compare-layouts server listening on http://' + addresses[0] + ':' + httpPort);
 
 // Model //
-// get list of configurations and result status
-function getList(res) {
+// get configurations
+function getConfigs() {
 	configs = [];
 	fs.readdirSync(configDir).forEach(function(fileName) {
 		var configName = fileName.replace(/\.js/, '');
-		configs.push(getItem(configName));
-	});
-	configs.forEach(function(config) {
-		config.result = getResult(config.data.destDir);
-		getSummary(config);
+		configs[configName] = getConfig(configName);
 	});
 	return configs;
 }
 
-// get full config info
-function getItem(configName) {
-	var config = { name: configName };
-	config.data = getConfigData(configName);
-	config.lastRun = 'Keine Daten';
-	try {
-		var fileStat = fs.statSync(path.join(resultsDir, config.data.destDir, 'index.json'));
-		config.lastRun = dateFormat(fileStat.mtime, "dd.mm.yyyy, HH:MM:ss");
-	} catch (err) {
-		if (err.length > 0 && err.code != 'ENOENT') {
-			console.log(configName + ' error: ' + JSON.stringify(err, null, 4));
-		}
-	}
-	return config;
-}
-
-// get data for config
-function getConfig(configName) {
-	var config = { name: configName };
-	config.file = getConfigFile(configName);
-	config.data = getConfigData(configName);
-	try {
-		var fileStat = fs.statSync(path.join(resultsDir, config.data.destDir, 'index.json'));
-		config.lastRun = dateFormat(fileStat.mtime, "dd.mm.yyyy, HH:MM:ss");
-	} catch (err) {
-		config.lastRun = 'Keine Daten im Verzeichnis ./results';
-		if (err.length > 0 && err.code != 'ENOENT') {
-			console.log(configName + ' error: ' + JSON.stringify(err, null, 4));
-		}
-	}
-	if (config.data.destDir) {
-		config.logfile = getLogfile(config.data.destDir);
-		config.result = getResult(config.data.destDir);
-	}
-	return config;
-}
-
-// get content of config file
-function getConfigFile(configName) {
-	var content = 'not found';
-	var configPath = path.join(configDir, configName + '.js');
-	if (fs.existsSync(configPath)) {
-		content = fs.readFileSync(configPath).toString();
-	}
-	return content;
-}
-
 // get data from config file
-function getConfigData(configName) {
+function getConfig(configName) {
 	var configData = '';
+	var configFilename = path.join(configDir, configName + '.js');
 	try {
-		var configFileContent = getConfigFile(configName);
-		configData = _eval(configFileContent);
+		configData = _eval( fs.readFileSync( configFilename ).toString() );
 	} catch (err) {
-		//config.error = err;
+		console.log('config file error: ' + configFilename);
 	}
 	return configData;
-}
-
-// get log file content
-function getLogfile(destDir) {
-	var logfilePath = path.join(__dirname, 'results', destDir, 'console.log');
-	var logfileContent = "";
-	try {
-		logfileContent = replaceAnsiColors(fs.readFileSync(logfilePath).toString().replace(/\n\n/g, '\n'));
-	} catch (err) {
-		// no log file
-	}
-	return logfileContent;
-}
-
-// get result data
-function getResult(destDir) {
-	var result = {};
-	try {
-		result = JSON.parse(fs.readFileSync(path.join(resultsDir, destDir, 'index.json')));
-	} catch (err) {
-		// probably file not found
-	}
-	return result;
-}
-
-// calculate result summary
-function getSummary(config) {
-	config.success = true;
-	config.totalTests = 0;
-	config.failedTests = 0;
-	Object.keys(config.result).forEach(function (key) {
-		if ( ! config.result[key].success ) {
-			config.success = false;
-			config.failedTests++;
-		}
-		config.totalTests++;
-	});
 }
 
 // start compare-layouts with config file
