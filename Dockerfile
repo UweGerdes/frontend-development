@@ -5,6 +5,8 @@ ARG APT_PROXY
 ARG NPM_PROXY
 ARG NPM_LOGLEVEL
 ARG TZ='Europe/Berlin'
+ARG UID='1000''
+ARG GID='1000'
 
 ENV DEBIAN_FRONTEND noninteractive
 ENV NPM_HOME /usr/src/npm
@@ -37,7 +39,7 @@ RUN apt-get update && apt-get dist-upgrade -y && \
 	ln -s ${NODE_PATH}/casperjs/bin/casperjs /usr/local/bin/casperjs && \
 	ln -s ${NODE_PATH}/phantomjs-prebuilt/bin/phantomjs /usr/local/bin/phantomjs && \
 	ln -s ${NODE_PATH}/slimerjs/bin/slimerjs /usr/local/bin/slimerjs && \
-	useradd -s /bin/bash node && \
+	useradd --uid ${UID} --gid ${GID} -s /bin/bash node && \
 	adduser node sudo && \
 	echo "node:node" | chpasswd && \
 	chown -R node:node ${APP_DIR} && \
