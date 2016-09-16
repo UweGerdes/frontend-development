@@ -143,15 +143,13 @@ Restart and attach to the container (just hit RETURN to get a prompt):
 
 ```bash
 $ docker start --attach -i gulp-frontend
-
-
 ```
 
 To install or update node modules use the following commands (`npm` replaces `package.json` so you probably want to copy it back to your project):
 
 ```bash
 $ cd ${NPM_HOME} && \
-	npm ${NPM_LOGLEVEL} ${NPM_PROXY} --save-dev install bower && \
+	npm ${NPM_LOGLEVEL} ${NPM_PROXY} --save-dev install [node_module] && \
 	cp package.json ../app/ && \
 	cd ${HOME}
 

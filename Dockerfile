@@ -5,8 +5,9 @@ ARG APT_PROXY
 ARG NPM_PROXY
 ARG NPM_LOGLEVEL
 ARG TZ='Europe/Berlin'
-ARG UID='1000''
+ARG UID='1000'
 ARG GID='1000'
+ARG HTTP_PORT='5382'
 
 ENV DEBIAN_FRONTEND noninteractive
 ENV NPM_HOME /usr/src/npm
@@ -15,6 +16,7 @@ ENV APP_DIR /usr/src/app
 ENV NPM_PROXY ${NPM_PROXY}
 ENV NPM_LOGLEVEL ${NPM_LOGLEVEL}
 ENV TZ ${TZ}
+ENV HTTP_PORT ${HTTP_PORT}
 
 RUN if [ -n "${APT_PROXY}" ]; then echo "Acquire::http { Proxy \"${APT_PROXY}\"; };" >> /etc/apt/apt.conf.d/01proxy; fi
 
@@ -50,5 +52,7 @@ ENV HOME ${APP_DIR}
 WORKDIR ${APP_DIR}
 
 USER node
+
+EXPOSE ${HTTP_PORT}
 
 CMD [ "bash" ]

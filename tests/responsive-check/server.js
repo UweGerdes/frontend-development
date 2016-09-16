@@ -10,19 +10,19 @@
  */
 'use strict';
 
-var fs = require('fs'),
-	fsTools = require('fs-tools'),
-	path = require('path'),
-	os = require('os'),
+var bodyParser = require('body-parser'),
+	_eval = require('eval'),
 	exec = require('child_process').exec,
 	express = require('express'),
-	bodyParser = require('body-parser'),
+	fs = require('fs'),
+	fsTools = require('fs-tools'),
 	logger = require('morgan'),
-	_eval = require('eval'),
+	os = require('os'),
+	path = require('path'),
 	interfaces = os.networkInterfaces(),
 	app = express();
 
-var httpPort = process.env.httpPort;
+var httpPort = process.env.HTTP_PORT;
 
 var configDir = path.join('./', 'config'),
 	resultsDir = path.join('./', 'results');
