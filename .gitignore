@@ -10,12 +10,3 @@
 bower_components/
 node_modules/
 vendor/
-
-# ignores from docker container
-.bash_history
-.cache/
-.config/
-.gitconfig
-.npm/
-.v8flags*
-.viminfo
