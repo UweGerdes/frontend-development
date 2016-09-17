@@ -329,10 +329,10 @@ gulp.task('server', function() {
 gulp.task('gulpfile', function(callback) {
 	runSequence(
 		'lint',
-		'restartGulp',
+		'gulp:restart',
 		callback);
 });
-gulp.task('restartGulp', function() {
+gulp.task('gulp:restart', function() {
 	spawn('gulp', ['default'], {stdio: 'inherit'});
 	process.exit();
 });
@@ -390,4 +390,3 @@ gulp.task('default', function(callback) {
 		'watch',
 		callback);
 });
-
