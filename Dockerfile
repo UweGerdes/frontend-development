@@ -37,7 +37,8 @@ RUN apt-get update && apt-get dist-upgrade -y && \
 	adduser node sudo && \
 	echo "node:node" | chpasswd && \
 	chown -R node:node ${APP_DIR} && \
-	chown -R node:node ${NPM_HOME}
+	chown -R node:node ${NPM_HOME} && \
+	chown -R node:node /usr/local/bin
 
 ENV HOME ${NPM_HOME}
 
