@@ -22,7 +22,8 @@ RUN if [ -n "${APT_PROXY}" ]; then echo "Acquire::http { Proxy \"${APT_PROXY}\";
 
 COPY package.json ${APP_DIR}/
 
-RUN apt-get update && apt-get dist-upgrade -y && \
+RUN apt-get update && \
+	apt-get dist-upgrade -y && \
 	apt-get install -y \
 			graphviz \
 			iceweasel \

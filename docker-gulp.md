@@ -117,7 +117,6 @@ Inside the running docker container start `bower install` to load more dependenc
 
 ```bash
 $ bower install
-$ cd ${HOME}
 $ git config --global user.name "Your Name"
 $ git config --global user.email "you@example.com"
 ```
@@ -150,15 +149,15 @@ $ docker start --attach -i gulp-frontend
 To install or update node modules use the following commands (`npm` replaces `package.json` so you probably want to copy it back to your project):
 
 ```bash
-$ cd ${NPM_HOME} && \
+$ cd ${HOME} && \
 	npm ${NPM_LOGLEVEL} ${NPM_PROXY} --save-dev install [node_module] && \
 	cp package.json ../app/ && \
-	cd ${HOME}
+	cd ${APP_DIR}
 
-$ cd ${NPM_HOME} && \
+$ cd ${HOME} && \
 	npm ${NPM_LOGLEVEL} ${NPM_PROXY} update && \
 	cp package.json ../app/ && \
-	cd ${HOME}
+	cd ${APP_DIR}
 ```
 
 You can also restart the container in another project which uses gulp.

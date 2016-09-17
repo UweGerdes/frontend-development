@@ -17,6 +17,7 @@ var gulp = require('gulp'),
 	runSequence = require('run-sequence'),
 	path = require('path'),
 	fs = require('fs'),
+	glob = require('glob'),
 	rename = require('rename'),
 	gutil = require('gulp-util'),
 //	gulpif = require('gulp-if'),
@@ -29,6 +30,7 @@ var gulp = require('gulp'),
 	lessChanged = require('gulp-less-changed'),
 	server = require('gulp-develop-server'),
 	shell = require('gulp-shell'),
+	spawn = require('child_process').spawn,
 	jshint = require('gulp-jshint');
 
 var gulpDir = __dirname;
@@ -319,6 +321,23 @@ gulp.task('server', function() {
 });
 
 /*
+ * restart gulp if gulpfile.js changed
+ */
+ watchFilesFor.gulpfile = [
+	path.join(gulpDir, 'gulpfile.js')
+];
+gulp.task('gulpfile', function(callback) {
+	runSequence(
+		'lint',
+		'restartGulp',
+		callback);
+});
+gulp.task('restartGulp', function() {
+	spawn('gulp', ['default'], {stdio: 'inherit'});
+	process.exit();
+});
+
+/*
  * run all build tasks
  */
 gulp.task('build', function(callback) {
@@ -348,6 +367,16 @@ gulp.task('tests', function(callback) {
  */
 gulp.task('watch', function() {
 	Object.keys(watchFilesFor).forEach(function(task) {
+		watchFilesFor[task].forEach(function(filename) {
+			glob(filename, function(err, files) {
+				if (err) {
+					console.log(filename + ' error: ' + JSON.stringify(err, null, 4));
+				}
+				if (files.length === 0) {
+					console.log(filename + ' not found');
+				}
+			});
+		});
 		gulp.watch( watchFilesFor[task], [ task ] );
 	});
 });
