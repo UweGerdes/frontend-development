@@ -39,7 +39,7 @@ RUN apt-get update && apt-get dist-upgrade -y && \
 	chown -R node:node ${APP_DIR} && \
 	chown -R node:node ${NPM_HOME}
 
-ENV HOME ${APP_DIR}
+ENV HOME ${NPM_HOME}
 
 WORKDIR ${APP_DIR}
 

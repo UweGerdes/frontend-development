@@ -30,6 +30,7 @@
     "gulp-jshint": "^2.0.1",
     "gulp-less": "^2.0.1",
     "gulp-less-changed": "^1.2.0",
+    "gulp-lesshint": "^2.0.0",
     "gulp-notify": "^2.1.0",
     "gulp-shell": "^0.5.2",
     "gulp-uglify": "^1.0.2",

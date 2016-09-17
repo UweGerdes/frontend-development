@@ -21,6 +21,7 @@ var gulp = require('gulp'),
 	gutil = require('gulp-util'),
 //	gulpif = require('gulp-if'),
 	less = require('gulp-less'),
+	lesshint = require('gulp-lesshint'),
 	autoprefixer = require('gulp-autoprefixer'),
 	uglify = require('gulp-uglify'),
 	notify = require('gulp-notify'),
@@ -49,14 +50,29 @@ var log = notify.withReporter(function (options, callback) {
 });
 
 /*
+ * less files lint and style check
+ */
+watchFilesFor.lessLintStylish = [
+	path.join(srcDir, 'less', '*.less'),
+	path.join(srcDir, 'less', 'login', '*.less'),
+	path.join(testDir, 'responsive-check', 'less', '**', '*.less')
+];
+gulp.task('lessLintStylish', function () {
+	return gulp.src( watchFilesFor.lessLintStylish )
+		.pipe(lesshint())  // enforce style guide
+		.on('error', function (err) {})
+		.pipe(lesshint.reporter())
+		;
+});
+
+/*
  * less task watching all less files, only writing sources without **,
  * includes (path with **) filtered, change check by gulp-less-changed
  */
 watchFilesFor.less = [
 	path.join(srcDir, 'less', '**', '*.less'),
 	path.join(srcDir, 'less', '*.less'),
-	path.join(srcDir, 'less', 'login', 'login.less'),
-	path.join(srcDir, 'less', 'login', 'bootstrap.less')
+	path.join(srcDir, 'less', 'login', '*.less')
 ];
 gulp.task('less', function () {
 	var dest = function(filename) {
@@ -79,15 +95,16 @@ gulp.task('less', function () {
 		.pipe(log({ message: 'written: <%= file.path %>', title: 'Gulp LESS' }))
 		;
 });
+
 watchFilesFor.lessResponsiveCheck = [
-	path.join(srcDir, 'less', 'responsive-check', '**', '*.less'),
-	path.join(srcDir, 'less', 'responsive-check', 'app.less')
+	path.join(testDir, 'responsive-check', 'less', '**', '*.less'),
+	path.join(testDir, 'responsive-check', 'less', 'app.less')
 ];
 gulp.task('lessResponsiveCheck', function () {
 	var dest = function(filename) {
-		return path.join(path.dirname(filename), 'css');
+		return path.join(path.dirname(path.dirname(filename)), 'css');
 	};
-	var src = watchFilesFor.less.filter(function(el){return el.indexOf('/**/') == -1; });
+	var src = watchFilesFor.lessResponsiveCheck.filter(function(el){return el.indexOf('/**/') == -1; });
 	return gulp.src( src )
 		.pipe(lessChanged({
 			getOutputFileName: function(file) {
@@ -305,7 +322,9 @@ gulp.task('server', function() {
  * run all build tasks
  */
 gulp.task('build', function(callback) {
-	runSequence('less',
+	runSequence('lessLintStylish',
+		'less',
+		'lessResponsiveCheck',
 		'graphviz',
 		'lint',
 		callback);

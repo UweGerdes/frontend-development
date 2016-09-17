@@ -23,7 +23,7 @@ var bodyParser = require('body-parser'),
 	app = express();
 
 var httpPort = process.env.HTTP_PORT,
-	baseDir = 'result';
+	baseDir = '/results';
 
 var configDir = path.join(__dirname, 'config'),
 	resultsDir = path.join(__dirname, 'results');
@@ -44,9 +44,10 @@ app.use(bodyParser.urlencoded({extended: true}));
 
 // Serve static files
 app.use(express.static(__dirname));
+console.log(__dirname);
 
 // Handle form post requests for result view
-app.get('/result/:config', function(req, res){
+app.get('/results/:config', function(req, res){
 	var config = {};
 	if (req.params.config) {
 		var configFilename = path.join(configDir, req.params.config + '.js');
