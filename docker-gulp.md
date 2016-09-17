@@ -117,6 +117,7 @@ Inside the running docker container start `bower install` to load more dependenc
 
 ```bash
 $ bower install
+$ cd ${HOME}
 $ git config --global user.name "Your Name"
 $ git config --global user.email "you@example.com"
 ```
