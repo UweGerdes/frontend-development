@@ -23,7 +23,7 @@ var verbose = process.argv.indexOf('-v') > -1;
 var resultsDir = './results';
 var destDir = path.join(resultsDir, config.destDir);
 var pagesExpected = [];
-var pagesLoaded = {};
+var pagesLoaded = [];
 
 if (!fs.existsSync(resultsDir)) {
 	fs.mkdirSync(resultsDir);
@@ -77,7 +77,7 @@ function loadPage(config, engine, width, callback) {
 	if (verbose) {
 		console.log('starting: ' + cmd + ' ' + args.join(' '));
 	} else {
-		console.log('starting: ' + page.selector + ' ' + pageKey(engine, width));
+		console.log('starting: ' + config.selector + ' ' + pageKey(engine, width));
 	}
 	var loader = exec(cmd + ' ' + args.join(' '),
 		function (error, stdout, stderr) {
@@ -92,14 +92,14 @@ function loadPage(config, engine, width, callback) {
 			console.log('load ' + page.url + ' exit: ' + code);
 		}
 		page.loaded = true;
-		callback(page);
+		callback(config.selector, engine, width);
 	});
 }
 
-var addResult = function(page) {
-	pagesLoaded[pageKey(page.engine, page.width)] = { page };
-	console.log('finished: ' + page.selector + ' ' + pageKey(page.engine, page.width));
-	if (pagesExpected.length == Object.keys(pagesLoaded).length) {
+var addResult = function(selector, engine, width) {
+	pagesLoaded.push(pageKey(engine, width));
+	console.log('finished: ' + selector + ' ' + pageKey(engine, width));
+	if (pagesExpected.length == pagesLoaded.length) {
 		console.log('finished all');
 		// TODO create result page and trigger livereload
 		//createHtmlPage(config, pagesLoaded);

@@ -44,7 +44,6 @@ app.use(bodyParser.urlencoded({extended: true}));
 
 // Serve static files
 app.use(express.static(__dirname));
-console.log(__dirname);
 
 // Handle form post requests for result view
 app.get('/results/:config', function(req, res){
