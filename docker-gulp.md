@@ -89,7 +89,7 @@ $ docker run --name npm-proxy-cache -d --restart=always -p 3143:8080 -v /srv/doc
 
 ## Create docker image
 
-Here are the commands to build the docker image - mind the '.' at the end of the commands (meaning use current directory containing `Dockerfile` and other files needed for build)
+Here are the commands to build the docker image - mind the '.' at the end of the commands (meaning use current directory containing `Dockerfile` and other files needed for build). The build-args might be ommitted.
 
 ```bash
 $ docker build -t uwegerdes/gulp-frontend .
@@ -98,6 +98,7 @@ $ docker build -t uwegerdes/gulp-frontend \
 	--build-arg NPM_PROXY='--proxy http://192.168.1.18:3143 --https-proxy http://192.168.1.18:3143 --strict-ssl false' \
 	--build-arg NPM_LOGLEVEL='--loglevel warn' \
 	--build-arg TZ='Europe/Berlin' \
+	--build-arg HTTP_PORT='5382' \
 	.
 ```
 

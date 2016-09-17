@@ -26,6 +26,7 @@ var gulp = require('gulp'),
 	notify = require('gulp-notify'),
 	changed = require('gulp-changed'),
 	lessChanged = require('gulp-less-changed'),
+	server = require('gulp-develop-server'),
 	shell = require('gulp-shell'),
 	jshint = require('gulp-jshint');
 
@@ -274,6 +275,32 @@ gulp.task('logTestResults', function(callback) {
 	callback();
 });
 
+// start responsive-check server
+gulp.task('server:start', function() {
+//	var lifereloadPort = 35731;
+    server.listen({
+			path: path.join(testDir, 'responsive-check', 'server.js'),
+			cwd: path.join(testDir, 'responsive-check')
+		}
+//		, livereload.listen({ port: lifereloadPort })
+	);
+//	console.log('responsive-check livereload listening on ' + lifereloadPort);
+});
+// restart server if server.js changed
+watchFilesFor.server = [
+	path.join(testDir, 'responsive-check', 'server.js')
+];
+gulp.task('server', function() {
+	server.changed(function(error) {
+		if( error ) {
+			console.log('tests/responsive-check/server.js restart error: ' + JSON.stringify(error, null, 4));
+		} else {
+			console.log('tests/responsive-check/server.js restarted');
+//			livereload.changed(file.path);
+		}
+	});
+});
+
 /*
  * run all build tasks
  */
@@ -311,6 +338,7 @@ gulp.task('watch', function() {
  */
 gulp.task('default', function(callback) {
 	runSequence('build',
+		'server:start',
 		'watch',
 		callback);
 });

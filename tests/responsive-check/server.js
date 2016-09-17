@@ -22,10 +22,11 @@ var bodyParser = require('body-parser'),
 	interfaces = os.networkInterfaces(),
 	app = express();
 
-var httpPort = process.env.HTTP_PORT;
+var httpPort = process.env.HTTP_PORT,
+	baseDir = 'result';
 
-var configDir = path.join('./', 'config'),
-	resultsDir = path.join('./', 'results');
+var configDir = path.join(__dirname, 'config'),
+	resultsDir = path.join(__dirname, 'results');
 
 if (!fs.existsSync(resultsDir)) {
 	fs.mkdirSync(resultsDir);
@@ -45,23 +46,22 @@ app.use(bodyParser.urlencoded({extended: true}));
 app.use(express.static(__dirname));
 
 // Handle form post requests for result view
-app.post('/result/:config', function(req, res){
+app.get('/result/:config', function(req, res){
 	var config = {};
-	console.log('post: ' + req.params.config + ' ' + req.params.action);
 	if (req.params.config) {
 		var configFilename = path.join(configDir, req.params.config + '.js');
-		if(fs.existsSync()) {
+		if(fs.existsSync(configFilename)) {
 			config = require(configFilename);
 			res.render('resultView.ejs', {
 				config: config,
-				httpPort: httpPort
+				httpPort: httpPort,
+				baseDir: baseDir + '/' + req.params.config
 			});
 		} else {
 			config.error = 'config file not found: ' + configFilename;
 			res.status(404)
 				.send('config file not found: ' + configFilename);
 		}
-
 	}
 });
 
