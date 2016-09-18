@@ -1,0 +1,66 @@
+// Styles for compare-layouts -  special stylings for application pages
+
+@import "../vars.less";
+
+#app {
+	#container {
+		min-width: 1000px;
+		width: 80%;
+		max-width: 1400px;
+		margin: 0 auto @footer_height auto;
+		clear: both;
+
+		.head {
+
+			&:after {
+				content: "";
+				clear: both;
+				display: block;
+			}
+
+			& > h1:first-child {
+				margin-top: 0;
+			}
+		}
+	}
+
+	img {
+		border: 1px dotted #808080;
+	}
+
+	img:hover {
+		border-color: #ffffff;
+	}
+
+	#error {
+		h2 {
+			color: #cc0000;
+		}
+	}
+}
+
+.buttonContainer {
+	float: left;
+}
+
+.button {
+	text-decoration: none;
+	display: block;
+	float: left;
+	border: 1px solid grey;
+	border-radius: 4px;
+	padding: 5px 10px;
+	color: #000000;
+	font-size: 1.5em;
+	font-weight: bold;
+	margin-right: 25px;
+	background-color: #ffbb00;
+}
+
+.success {
+	color: #00BB00;
+}
+
+.fail {
+	color: #DD0000;
+}

@@ -1,7 +1,7 @@
 /*
  * load html pages in different screen widths
  *
- * --cfg=config/name.js: config file
+ * node responsive-check.js --cfg=config/<configname>.js
  *
  * (c) Uwe Gerdes, entwicklung@uwegerdes.de
  */
@@ -23,7 +23,7 @@ var verbose = process.argv.indexOf('-v') > -1;
 var resultsDir = './results';
 var destDir = path.join(resultsDir, config.destDir);
 var pagesExpected = [];
-var pagesLoaded = {};
+var pagesLoaded = [];
 
 if (!fs.existsSync(resultsDir)) {
 	fs.mkdirSync(resultsDir);
@@ -58,16 +58,14 @@ function load() {
 }
 
 function loadPage(config, engine, width, callback) {
+	var dest = path.join(destDir, pageKey(engine, width));
 	var page = {
-		'url': config.url,
-		'selector': config.selector,
-		'engine': engine,
-		'width': width
+		'loaded': false
 	};
 	var args = ['./bin/load-page.js',
-		'--url="' + page.url + '"',
-		'--selector="' + page. selector + '"',
-		'--dest="' + path.join(destDir, pageKey(engine, width)) + '"',
+		'--url="' + config.url + '"',
+		'--selector="' + config.selector + '"',
+		'--dest="' + dest + '"',
 		'--engine="' + engine + '"',
 		'--width="' + width + '"'];
 	var cmd = 'casperjs';
@@ -79,7 +77,7 @@ function loadPage(config, engine, width, callback) {
 	if (verbose) {
 		console.log('starting: ' + cmd + ' ' + args.join(' '));
 	} else {
-		console.log('starting: ' + page.selector + ' ' + pageKey(engine, width));
+		console.log('starting: ' + config.selector + ' ' + pageKey(engine, width));
 	}
 	var loader = exec(cmd + ' ' + args.join(' '),
 		function (error, stdout, stderr) {
@@ -94,22 +92,17 @@ function loadPage(config, engine, width, callback) {
 			console.log('load ' + page.url + ' exit: ' + code);
 		}
 		page.loaded = true;
-		callback(page);
+		callback(config.selector, engine, width);
 	});
 }
 
-var addResult = function(page) {
-	pagesLoaded[pageKey(page.engine, page.width)] = {
-		'width': '' + page.width,
-		'html': page.htmlFilename,
-		'png': page.pngFilename,
-		'styles': page.stylesFilename,
-		'loaded': page.loaded
-	};
-	console.log('finished: ' + page.selector + ' ' + pageKey(page.engine, page.width));
-	if (pagesExpected.length == Object.keys(pagesLoaded).length) {
+var addResult = function(selector, engine, width) {
+	pagesLoaded.push(pageKey(engine, width));
+	console.log('finished: ' + selector + ' ' + pageKey(engine, width));
+	if (pagesExpected.length == pagesLoaded.length) {
 		console.log('finished all');
 		// TODO create result page and trigger livereload
+		//createHtmlPage(config, pagesLoaded);
 	}
 };
 

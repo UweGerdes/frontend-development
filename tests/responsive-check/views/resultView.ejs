@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8" />
+<title>Responsive Check <%= config.url %> <%= config.selector %></title>
+<link href="/css/app.css" rel="stylesheet" />
+</head>
+<body>
+	<div class="resultView">
+		<h1>Responsive Check</h1>
+		<h2><%= config.url %> <%= config.selector %></h2>
+		<% config.engines.forEach(function(engine) { %>
+			<% config.widths.forEach(function(width) { %>
+				<div class="result">
+					<div class="result-headline">
+						<%= engine %>, <%= width %>
+					</div>
+					<div class="result-image" style="width: <%= width %>px;">
+						<img src="<%= baseDir %>/<%= engine %>_<%= width %>.png" />
+					</div>
+				</div>
+			<% }) %>
+		<% }) %>
+
+	</div>
+<!--
+		<script>document.write('<script src="http://' + (location.host || 'localhost').split(':')[0] + ':<#%= livereloadPort %#>/livereload.js"></' + 'script>')</script>
+-->
+<br />
+</body>
+

@@ -1,19 +1,13 @@
 # dockerignore for gulp-frontend
 Arbeit/
-bower.json
 bower_components/
 htdocs/
-LICENSE
 src/
 tests/
-*.html
+.git/
+bower.json
+LICENSE
 *.md
-.bash_history
-.cache/
 .editorconfig
 .gitignore
-.git/
 .jshintrc
-.npm/
-.v8flags*
-.viminfo
