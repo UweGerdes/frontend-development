@@ -50,15 +50,16 @@ fs.stat(destDir, function(err, stats) {
 
 function load() {
 	config.engines.forEach(function(engine) {
-		config.widths.forEach(function(width) {
-			pagesExpected.push(pageKey(engine, width));
-			loadPage(config, engine, width, addResult);
+		config.viewports.forEach(function(viewport) {
+			pagesExpected.push(getPageKey(engine, viewport.name));
+			loadPage(config, engine, viewport, addResult);
 		});
 	});
 }
 
-function loadPage(config, engine, width, callback) {
-	var dest = path.join(destDir, pageKey(engine, width));
+function loadPage(config, engine, viewport, callback) {
+	var pageKey = getPageKey(engine, viewport.name);
+	var dest = path.join(destDir, pageKey);
 	var page = {
 		'loaded': false
 	};
@@ -67,7 +68,7 @@ function loadPage(config, engine, width, callback) {
 		'--selector="' + config.selector + '"',
 		'--dest="' + dest + '"',
 		'--engine="' + engine + '"',
-		'--width="' + width + '"'];
+		'--width="' + viewport.viewport.width + '"'];
 	var cmd = 'casperjs';
 	if (engine == 'slimerjs') {
 //			cmd = 'xvfb-run -a -e ./xvfb-run.stdout casperjs';
@@ -77,28 +78,28 @@ function loadPage(config, engine, width, callback) {
 	if (verbose) {
 		console.log('starting: ' + cmd + ' ' + args.join(' '));
 	} else {
-		console.log('starting: ' + config.selector + ' ' + pageKey(engine, width));
+		console.log('starting: ' + config.selector + ' ' + pageKey);
 	}
 	var loader = exec(cmd + ' ' + args.join(' '),
 		function (error, stdout, stderr) {
 			logExecResult('loaded page ' + page.url, error, "", stderr);
 		}
 	);
-	loader.stdout.on('data', function(data) { console.log(pageKey(engine, width) + ': ' + data.trim()); });
-	loader.stderr.on('data', function(data) { console.log(pageKey(engine, width) + ' stderr: ' + data.trim()); });
-	loader.on('error', function(err) { console.log(pageKey(engine, width) + ' error: ' + err.trim()); });
+	loader.stdout.on('data', function(data) { console.log(pageKey + ': ' + data.trim()); });
+	loader.stderr.on('data', function(data) { console.log(pageKey + ' stderr: ' + data.trim()); });
+	loader.on('error', function(err) { console.log(pageKey + ' error: ' + err.trim()); });
 	loader.on('close', function(code) {
 		if (code > 0) {
 			console.log('load ' + page.url + ' exit: ' + code);
 		}
 		page.loaded = true;
-		callback(config.selector, engine, width);
+		callback(config.selector, engine, viewport);
 	});
 }
 
-var addResult = function(selector, engine, width) {
-	pagesLoaded.push(pageKey(engine, width));
-	console.log('finished: ' + selector + ' ' + pageKey(engine, width));
+var addResult = function(selector, engine, viewport) {
+	pagesLoaded.push(getPageKey(engine, viewport.name));
+	console.log('finished: ' + selector + ' ' + getPageKey(engine, viewport.name));
 	if (pagesExpected.length == pagesLoaded.length) {
 		console.log('finished all');
 		// TODO create result page and trigger livereload
@@ -112,7 +113,7 @@ function logExecResult(msgStart, error, stdout, stderr) {
 	if (error !== null)	   { console.log(msgStart + ' error:\n' + JSON.stringify(error, undefined, 4)); }
 }
 
-function pageKey(engine, width) {
-	return engine + '_' + width;
+function getPageKey(engine, name) {
+	return engine + '_' + name;
 }
 

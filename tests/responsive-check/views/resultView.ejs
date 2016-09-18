@@ -10,13 +10,13 @@
 		<h1>Responsive Check</h1>
 		<h2><%= config.url %> <%= config.selector %></h2>
 		<% config.engines.forEach(function(engine) { %>
-			<% config.widths.forEach(function(width) { %>
+			<% config.viewports.forEach(function(viewport) { %>
 				<div class="result">
 					<div class="result-headline">
-						<%= engine %>, <%= width %>
+						<%= engine %>, <%= viewport.name %>
 					</div>
-					<div class="result-image" style="width: <%= width %>px;">
-						<img src="<%= baseDir %>/<%= engine %>_<%= width %>.png" />
+					<div class="result-image" style="width: <%= viewport.viewport.width %>px;height:<%= viewport.viewport.height %>px;">
+						<img src="<%= baseDir %>/<%= engine %>_<%= viewport.name %>.png" />
 					</div>
 				</div>
 			<% }) %>

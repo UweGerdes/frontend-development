@@ -7,7 +7,6 @@ var phantomjs = 'phantomjs';
 
 var baseUrl = 'http://frontend.local/login/index.php/newAccount';
 var selector = 'form[name="newAccount"]';
-var widths = [ 1400, 1024, 768, 550, 360, 320 ];
 var engines = [ phantomjs, slimerjs ];
 var viewports = [
       {
@@ -44,7 +43,6 @@ module.exports = {
 	destDir: 'default',
 	url: baseUrl,
 	selector: selector,
-	widths: widths,
 	viewports: viewports,
 	engines: engines
 };
