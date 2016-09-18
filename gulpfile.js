@@ -28,9 +28,10 @@ var gulp = require('gulp'),
 	notify = require('gulp-notify'),
 	changed = require('gulp-changed'),
 	lessChanged = require('gulp-less-changed'),
+	postMortem = require('gulp-postmortem'),
 	server = require('gulp-develop-server'),
 	shell = require('gulp-shell'),
-	spawn = require('child_process').spawn,
+//	spawn = require('child_process').spawn,
 	jshint = require('gulp-jshint');
 
 var gulpDir = __dirname;
@@ -305,6 +306,9 @@ gulp.task('server:start', function() {
 	);
 //	console.log('responsive-check livereload listening on ' + lifereloadPort);
 });
+gulp.task('server:stop', function() {
+    server.kill();
+});
 // restart server if server.js changed
 watchFilesFor.server = [
 	path.join(testDir, 'responsive-check', 'server.js')
@@ -322,8 +326,12 @@ gulp.task('server', function() {
 
 /*
  * restart gulp if gulpfile.js changed
- */
- watchFilesFor.gulpfile = [
+ *
+ * not working after restart
+ * all tasks are run by default task but neither server starts up nor do watches trigger.
+ * Even the new processes remain orphan when gulp is stopped with CTRL-C
+ *
+watchFilesFor.gulpfile = [
 	path.join(gulpDir, 'gulpfile.js')
 ];
 gulp.task('gulpfile', function(callback) {
@@ -332,10 +340,15 @@ gulp.task('gulpfile', function(callback) {
 		'gulp:restart',
 		callback);
 });
-gulp.task('gulp:restart', function() {
+gulp.task('gulp:restart', ['server:stop'], function() {
 	spawn('gulp', ['default'], {stdio: 'inherit'});
 	process.exit();
 });
+gulp.task('gulp:stop', function() {
+//	process.exit();
+	process.kill(process.pid, 'SIGINT');
+});
+*/
 
 /*
  * run all build tasks
@@ -388,5 +401,15 @@ gulp.task('default', function(callback) {
 	runSequence('build',
 		'server:start',
 		'watch',
+		'postMortem',
 		callback);
+});
+
+/*
+ * gulp postmortem task
+ */
+gulp.task('postMortem', function() {
+	return gulp.src( watchFilesFor.server )
+		.pipe(postMortem({gulp: gulp, tasks: [ 'server:stop' ]}))
+		;
 });
