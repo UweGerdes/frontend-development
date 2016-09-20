@@ -1,25 +1,25 @@
 // Styles for compare-layouts -  special stylings for application pages
 
-@import "../vars.less";
+@import '../vars';
 
-#app {
-	#container {
+.app {
+	.container {
+		clear: both;
+		margin: 0px auto @footer_height auto;
+		max-width: 1400px;
 		min-width: 1000px;
 		width: 80%;
-		max-width: 1400px;
-		margin: 0 auto @footer_height auto;
-		clear: both;
 
 		.head {
 
 			&:after {
-				content: "";
 				clear: both;
+				content: '';
 				display: block;
 			}
 
 			& > h1:first-child {
-				margin-top: 0;
+				margin-top: 0px;
 			}
 		}
 	}
@@ -32,7 +32,7 @@
 		border-color: #ffffff;
 	}
 
-	#error {
+	.error {
 		h2 {
 			color: #cc0000;
 		}
@@ -44,23 +44,23 @@
 }
 
 .button {
-	text-decoration: none;
-	display: block;
-	float: left;
+	background-color: #ffbb00;
 	border: 1px solid grey;
 	border-radius: 4px;
-	padding: 5px 10px;
 	color: #000000;
+	display: block;
+	float: left;
 	font-size: 1.5em;
 	font-weight: bold;
 	margin-right: 25px;
-	background-color: #ffbb00;
+	padding: 5px 10px;
+	text-decoration: none;
 }
 
 .success {
-	color: #00BB00;
+	color: #00bb00;
 }
 
 .fail {
-	color: #DD0000;
+	color: #dd0000;
 }

@@ -1,33 +1,37 @@
 .noprint {
 	display: none;
 }
-a:link, a:visited {
-	text-decoration: none;
+
+a:link,
+a:visited {
 	color: black;
-}
-a:link:after, a:visited:after {
-	content: attr(href);
-	background: #ddd;
 	text-decoration: none;
-	padding: 0 0.3em;
+}
+
+a:link:after,
+a:visited:after {
+	background: #dddddd;
+	content: attr(href);
 	display: inline-block;
 	margin-left: 0.2em;
+	padding: 0px 0.3em;
+	text-decoration: none;
 }
 
-#main {
-	width: 95%;
-	min-width: 0;
+.main {
+	margin: 0px 0px 0px 5%;
 	max-width: 100%;
 	min-height: 100%;
-	position: relative;
-	margin: 0 0 0 5%;
+	min-width: 0px;
 	padding: 10px;
+	position: relative;
+	width: 95%;
 }
 
-#content {
+.content {
 	margin: 20px auto;
 }
 
-#footer {
-	background: #fff;
+.footer {
+	background: #ffffff;
 }

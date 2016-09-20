@@ -3,7 +3,7 @@
 <?php
 require 'head.php';
 ?>
-<body id="<?php echo $pageId ?>">
+<body class="<?php echo $pageId ?>">
 <?php echo $content ?>
 </body>
 </html>
