@@ -329,11 +329,14 @@ gulp.task('server', function() {
  * livereload server and task
  */
 watchFilesFor.livereload = [
+	path.join(testDir, 'responsive-check', 'views', '*.ejs'),
+	path.join(testDir, 'responsive-check', 'results', '**', '*.png'),
 	path.join(testDir, 'responsive-check', 'results', '**', '*.log')
 ];
 gulp.task('livereload', function() {
 	gulp.src(watchFilesFor.livereload)
-		.pipe(log({ message: 'livereload: <%= file.path %>', title: 'Gulp livereload' }))
+		.pipe(changed(path.dirname('<%= file.path %>')))
+//		.pipe(log({ message: 'livereload: <%= file.path %>', title: 'Gulp livereload' }))
 		.pipe(gulpLivereload( { quiet: true, reloadPage: '/results/default/' } ));
 });
 

@@ -12,6 +12,7 @@ var fs = require('fs'),
 	exec = require('child_process').exec;
 
 var configFile = 'config/default.js';
+var timeout = 20000;
 
 if (process.argv[2]) {
 	configFile = process.argv[2];
@@ -80,7 +81,7 @@ function loadPage(config, engine, viewport, callback) {
 	} else {
 		console.log('starting: ' + config.selector + ' ' + pageKey);
 	}
-	var loader = exec(cmd + ' ' + args.join(' '),
+	var loader = exec(cmd + ' ' + args.join(' '), { timeout: timeout },
 		function (error, stdout, stderr) {
 			logExecResult('loaded page ' + page.url, error, "", stderr);
 		}
@@ -102,7 +103,6 @@ var addResult = function(selector, engine, viewport) {
 	console.log('finished: ' + selector + ' ' + getPageKey(engine, viewport.name));
 	if (pagesExpected.length == pagesLoaded.length) {
 		console.log('finished all');
-		fs.writeFile(path.join(destDir, 'result.log'), JSON.stringify(pagesLoaded, undefined, 4), 0);
 		// TODO create result page and trigger livereload
 		//createHtmlPage(config, pagesLoaded);
 	}
