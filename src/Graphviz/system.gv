@@ -10,7 +10,7 @@ digraph Frontend {
 	];
 
 	"Projekt" [
-		label = "Projekt | <htdocs> /htdocs | <src> /src | <build> /build | <tests> /tests"
+		label = "Projekt | <htdocs> /htdocs | <src> /src | <build> /gulpfile.js | <tests> /tests"
 	];
 	"Sources" [
 		label = "<Sources> Sources | <Less> /less | <JavaScript> /js | <Graphviz> /graphviz"
