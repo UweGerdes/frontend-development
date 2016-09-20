@@ -171,6 +171,7 @@ casper.then(function() {
 	hasScrollbar = this.evaluate(_checkHorizontalScrollbar, selector); // evaluate in browser
 	if (hasScrollbar === true) {
 		this.echo('page has horizontal scrollbar', 'WARNING');
+		fs.writeFile(path.join(destDir, 'result.log'), 'page has horizontal scrollbar', -1);
 	}
 })
 .then(function() {

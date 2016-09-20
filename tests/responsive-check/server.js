@@ -18,12 +18,18 @@ var bodyParser = require('body-parser'),
 	fsTools = require('fs-tools'),
 	logger = require('morgan'),
 	os = require('os'),
-	path = require('path'),
-	interfaces = os.networkInterfaces(),
+	path = require('path');
+
+var interfaces = os.networkInterfaces(),
 	app = express();
 
 var httpPort = process.env.HTTP_PORT,
+	livereloadPort = process.env.LIVERELOAD_PORT,
 	baseDir = '/results';
+
+if (typeof livereloadPort != "undefined") {
+	console.log('livereloadPort: ' + livereloadPort);
+}
 
 var configDir = path.join(__dirname, 'config'),
 	resultsDir = path.join(__dirname, 'results');
@@ -55,6 +61,7 @@ app.get('/results/:config', function(req, res){
 			res.render('resultView.ejs', {
 				config: config,
 				httpPort: httpPort,
+				livereloadPort: livereloadPort,
 				baseDir: baseDir + '/' + req.params.config
 			});
 		} else {

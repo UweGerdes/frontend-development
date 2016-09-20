@@ -1,11 +1,12 @@
 {
   "name": "gulp-frontend",
-  "version": "1.0.6",
+  "version": "1.0.7",
   "description": "Gulp package for frontend development and testing",
   "keywords": [
     "gulp",
     "frontend",
     "development",
+    "livereload",
     "test"
   ],
   "license": "MIT",
@@ -32,6 +33,7 @@
     "gulp-less": "^2.0.1",
     "gulp-less-changed": "^1.2.0",
     "gulp-lesshint": "^2.0.0",
+    "gulp-livereload": "^3.8.1",
     "gulp-notify": "^2.1.0",
     "gulp-postmortem": "^1.0.5",
     "gulp-shell": "^0.5.2",

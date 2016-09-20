@@ -102,6 +102,7 @@ var addResult = function(selector, engine, viewport) {
 	console.log('finished: ' + selector + ' ' + getPageKey(engine, viewport.name));
 	if (pagesExpected.length == pagesLoaded.length) {
 		console.log('finished all');
+		fs.writeFile(path.join(destDir, 'result.log'), JSON.stringify(pagesLoaded, undefined, 4), 0);
 		// TODO create result page and trigger livereload
 		//createHtmlPage(config, pagesLoaded);
 	}

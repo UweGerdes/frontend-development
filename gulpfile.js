@@ -11,28 +11,30 @@
  */
 'use strict';
 
-var gulp = require('gulp'),
+var autoprefixer = require('gulp-autoprefixer'),
+	changed = require('gulp-changed'),
 	del = require('del'),
 	exec = require('child_process').exec,
-	runSequence = require('run-sequence'),
-	path = require('path'),
 	fs = require('fs'),
 	glob = require('glob'),
-	rename = require('rename'),
+	gulp = require('gulp'),
 	gutil = require('gulp-util'),
-//	gulpif = require('gulp-if'),
-	less = require('gulp-less'),
-	lesshint = require('gulp-lesshint'),
-	autoprefixer = require('gulp-autoprefixer'),
-	uglify = require('gulp-uglify'),
-	notify = require('gulp-notify'),
-	changed = require('gulp-changed'),
+	jshint = require('gulp-jshint'),
 	lessChanged = require('gulp-less-changed'),
+	lesshint = require('gulp-lesshint'),
+	less = require('gulp-less'),
+	gulpLivereload = require('gulp-livereload'),
+	notify = require('gulp-notify'),
+	path = require('path'),
 	postMortem = require('gulp-postmortem'),
+	rename = require('rename'),
+	runSequence = require('run-sequence'),
 	server = require('gulp-develop-server'),
 	shell = require('gulp-shell'),
-//	spawn = require('child_process').spawn,
-	jshint = require('gulp-jshint');
+	uglify = require('gulp-uglify')
+//	gulpif = require('gulp-if'),
+//	spawn = require('child_process').spawn
+	;
 
 var gulpDir = __dirname;
 var srcDir = path.join(__dirname, 'src');
@@ -44,6 +46,7 @@ var logMode = 0;
 var txtLog = [];
 var htmlLog = [];
 var watchFilesFor = {};
+var lifereloadPort = 35731;
 
 /*
  * log only to console, not GUI
@@ -220,7 +223,8 @@ watchFilesFor.responsiveCheckDefault = [
 ];
 gulp.task('responsiveCheckDefault', function(callback) {
 	del( [
-			path.join(testDir, 'responsive-check', 'results', 'default', '*')
+			path.join(testDir, 'responsive-check', 'results', 'default', '*.png'),
+			path.join(testDir, 'responsive-check', 'results', 'default', '*.css.json')
 		], { force: true } );
 	var loader = exec('node responsive-check.js',
 		{ cwd: path.join(testDir, 'responsive-check') },
@@ -297,14 +301,12 @@ gulp.task('logTestResults', function(callback) {
 
 // start responsive-check server
 gulp.task('server:start', function() {
-//	var lifereloadPort = 35731;
-    server.listen({
+	server.listen({
 			path: path.join(testDir, 'responsive-check', 'server.js'),
+			env: { LIVERELOAD_PORT: lifereloadPort},
 			cwd: path.join(testDir, 'responsive-check')
 		}
-//		, livereload.listen({ port: lifereloadPort })
 	);
-//	console.log('responsive-check livereload listening on ' + lifereloadPort);
 });
 gulp.task('server:stop', function() {
     server.kill();
@@ -319,9 +321,20 @@ gulp.task('server', function() {
 			console.log('tests/responsive-check/server.js restart error: ' + JSON.stringify(error, null, 4));
 		} else {
 			console.log('tests/responsive-check/server.js restarted');
-//			livereload.changed(file.path);
 		}
 	});
+});
+
+/*
+ * livereload server and task
+ */
+watchFilesFor.livereload = [
+	path.join(testDir, 'responsive-check', 'results', '**', '*.log')
+];
+gulp.task('livereload', function() {
+	gulp.src(watchFilesFor.livereload)
+		.pipe(log({ message: 'livereload: <%= file.path %>', title: 'Gulp livereload' }))
+		.pipe(gulpLivereload( { quiet: true, reloadPage: '/results/default/' } ));
 });
 
 /*
@@ -392,6 +405,8 @@ gulp.task('watch', function() {
 		});
 		gulp.watch( watchFilesFor[task], [ task ] );
 	});
+	gulpLivereload.listen( { port: lifereloadPort } );
+	console.log('livereload listening on ' + lifereloadPort);
 });
 
 /*
