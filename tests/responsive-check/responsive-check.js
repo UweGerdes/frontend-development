@@ -1,7 +1,7 @@
 /*
  * load html pages in different screen widths
  *
- * node responsive-check.js --cfg=config/<configname>.js
+ * node responsive-check.js config/<configname>.js
  *
  * (c) Uwe Gerdes, entwicklung@uwegerdes.de
  */
@@ -19,7 +19,7 @@ if (process.argv[2]) {
 }
 var config = require('./' + configFile);
 
-var verbose = process.argv.indexOf('-v') > -1;
+var verbose = false;
 
 var resultsDir = './results';
 var destDir = path.join(resultsDir, config.destDir);
