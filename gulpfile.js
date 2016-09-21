@@ -330,14 +330,14 @@ gulp.task('server', function() {
  */
 watchFilesFor.livereload = [
 	path.join(testDir, 'responsive-check', 'views', '*.ejs'),
-	path.join(testDir, 'responsive-check', 'results', '**', '*.png'),
+//	path.join(testDir, 'responsive-check', 'results', '**', '*.png'),
 	path.join(testDir, 'responsive-check', 'results', '**', '*.log')
 ];
 gulp.task('livereload', function() {
 	gulp.src(watchFilesFor.livereload)
 		.pipe(changed(path.dirname('<%= file.path %>')))
 //		.pipe(log({ message: 'livereload: <%= file.path %>', title: 'Gulp livereload' }))
-		.pipe(gulpLivereload( { quiet: true, reloadPage: '/results/default/' } ));
+		.pipe(gulpLivereload());
 });
 
 /*
@@ -408,7 +408,7 @@ gulp.task('watch', function() {
 		});
 		gulp.watch( watchFilesFor[task], [ task ] );
 	});
-	gulpLivereload.listen( { port: lifereloadPort } );
+	gulpLivereload.listen( { port: lifereloadPort, delay: 2000 } );
 	console.log('livereload listening on ' + lifereloadPort);
 });
 

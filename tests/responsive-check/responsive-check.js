@@ -50,6 +50,7 @@ fs.stat(destDir, function(err, stats) {
 });
 
 function load() {
+	fs.writeFileSync(destDir + '/result.log', config.baseUrl + ' ' + config.selector + ' starting\n');
 	config.engines.forEach(function(engine) {
 		config.viewports.forEach(function(viewport) {
 			pagesExpected.push(getPageKey(engine, viewport.name));
@@ -103,6 +104,7 @@ var addResult = function(selector, engine, viewport) {
 	console.log('finished: ' + selector + ' ' + getPageKey(engine, viewport.name));
 	if (pagesExpected.length == pagesLoaded.length) {
 		console.log('finished all');
+		fs.appendFileSync(destDir + '/result.log', config.baseUrl + ' ' + selector + ' pages completely loaded\n');
 		// TODO create result page and trigger livereload
 		//createHtmlPage(config, pagesLoaded);
 	}

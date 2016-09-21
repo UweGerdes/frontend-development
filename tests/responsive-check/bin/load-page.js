@@ -169,10 +169,6 @@ casper.then(function() {
 })
 .then(function() {
 	hasScrollbar = this.evaluate(_checkHorizontalScrollbar, selector); // evaluate in browser
-	if (hasScrollbar === true) {
-		this.echo('page has horizontal scrollbar', 'WARNING');
-		fs.write(destDir + '/result.log', 'page has horizontal scrollbar', -1);
-	}
 })
 .then(function() {
 	if (result && result.length > 0) {
@@ -200,6 +196,13 @@ casper.then(function() {
 		casper.echo('element not found: "' + selector + '"', 'ERROR');
 		fs.write(dest + '_page.html', casper.getHTML(), 0);
 		casper.echo(dest + '_page.html' + ' saved', 'INFO');
+	}
+	if (hasScrollbar === true) {
+		this.echo('page has horizontal scrollbar', 'WARNING');
+		fs.write(destDir + '/result.log', url + ' ' + selector + 'page has horizontal scrollbar\n', 'a');
+	} else {
+		this.echo('page loaded ok', 'WARNING');
+		fs.write(destDir + '/result.log', url + ' ' + selector + 'page loaded ok\n', 'a');
 	}
 });
 
