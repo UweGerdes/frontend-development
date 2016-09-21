@@ -11,11 +11,9 @@
 'use strict';
 
 var bodyParser = require('body-parser'),
-	_eval = require('eval'),
 	exec = require('child_process').exec,
 	express = require('express'),
 	fs = require('fs'),
-	fsTools = require('fs-tools'),
 	logger = require('morgan'),
 	os = require('os'),
 	path = require('path');
@@ -59,6 +57,8 @@ app.get('/results/:config', function(req, res){
 		if(fs.existsSync(configFilename)) {
 			config = require(configFilename);
 			res.render('resultView.ejs', {
+				configs: configs,
+				configName: req.params.config,
 				config: config,
 				httpPort: httpPort,
 				livereloadPort: livereloadPort,
@@ -73,25 +73,8 @@ app.get('/results/:config', function(req, res){
 });
 
 // Handle AJAX requests for run configs
-app.get('/start/:config/:verbose?', function(req, res){
-	if (req.params.config == 'all') {
-		configs.forEach(function(config) {
-			runConfigAsync(config, req.params.verbose, res);
-		});
-	} else {
-		runConfigAsync(getConfig(req.params.config), req.params.verbose, res);
-	}
-});
-
-// Handle AJAX requests for clear results
-app.get('/clear/:config', function(req, res){
-	if (req.params.config == 'all') {
-		configs.forEach(function(config) {
-			clearResult(config, res);
-		});
-	} else {
-		clearResult(getConfig(req.params.config), res);
-	}
+app.get('/start/:config', function(req, res){
+	runConfigAsync(req.params.config, res);
 });
 
 // Route for root dir
@@ -116,7 +99,7 @@ for (var k in interfaces) {
     }
 }
 // console.log("IP address of container  :  " + addresses);
-console.log('compare-layouts server listening on http://' + addresses[0] + ':' + httpPort);
+console.log('responsive-check server listening on http://' + addresses[0] + ':' + httpPort);
 
 // Model //
 // get configurations
@@ -124,27 +107,15 @@ function getConfigs() {
 	configs = [];
 	fs.readdirSync(configDir).forEach(function(fileName) {
 		var configName = fileName.replace(/\.js/, '');
-		configs[configName] = getConfig(configName);
+		configs.push(configName);
 	});
 	return configs;
 }
 
-// get data from config file
-function getConfig(configName) {
-	var configData = '';
-	var configFilename = path.join(configDir, configName + '.js');
-	try {
-		configData = _eval( fs.readFileSync( configFilename ).toString() );
-	} catch (err) {
-		console.log('config file error: ' + configFilename);
-	}
-	return configData;
-}
-
 // start compare-layouts with config file
-function runConfigAsync(config, verbose, res) {
-	var destDir = path.join(__dirname, 'results', config.data.destDir);
-	var logfilePath = path.join(destDir, 'console.log');
+function runConfigAsync(config, res) {
+	var destDir = path.join(__dirname, 'results', config);
+	var logfilePath = path.join(destDir, 'result.log');
 	var log = function (msg) {
 		console.log(msg);
 		fs.appendFileSync(logfilePath, msg + '\n');
@@ -153,40 +124,25 @@ function runConfigAsync(config, verbose, res) {
 	if (!fs.existsSync(destDir)) {
 		fs.mkdirSync(destDir);
 	}
-	log('server started ' + config.name);
-	running.push(config.name);
+	log('server starting node responsive-check.js ' + config);
+	running.push(config);
 	if (fs.existsSync(logfilePath)) {
 		fs.unlinkSync(logfilePath);
 	}
-	var configFilename = 'config/' + config.name + '.js';
-	var loader = exec('node compare-layouts.js ' + configFilename + (verbose ? ' -v' : ''));
+	var loader = exec('node responsive-check.js ' + 'config/' + config + '.js');
 	loader.stdout.on('data', function(data) { log(data.toString().trim()); });
 	loader.stderr.on('data', function(data) { log(data.toString().trim()); });
 	loader.on('error', function(err) { log(' error: ' + err.toString().trim()); });
 	loader.on('close', function(code) {
 		if (code > 0) {
-			log('load ' + config.name + ' error, exit-code: ' + code);
+			log('load ' + config + ' error, exit-code: ' + code);
 		}
-		log('server finished ' + config.name);
-		running.splice(running.indexOf(config.name), 1);
+		log('server finished ' + config);
+		running.splice(running.indexOf(config), 1);
 		if (running.length === 0) {
 			res.end();
 		}
 	});
-}
-
-// delete results directory
-function clearResult(config, res) {
-	var destDir = path.join(__dirname, 'results', config.data.destDir);
-	var log = function (msg) {
-		console.log(msg);
-		res.write(replaceAnsiColors(msg) + '\n');
-	};
-	if (fs.existsSync(destDir)) {
-		fsTools.removeSync(destDir);
-	}
-	log('Ergebnisse gelöscht für ' + config.name);
-	res.end();
 }
 
 function replaceAnsiColors(string) {

@@ -7,7 +7,12 @@
 </head>
 <body>
 	<div class="resultView">
-		<h1>Responsive Check</h1>
+		<h1>Responsive Check <a href="/start/<%= configName %>">restart</a></h1>
+		<p>
+		<% configs.forEach(function(config) { %>
+			<a href="/results/<%= config %>"><%= config %></a>
+		<% }) %>
+		</p>
 		<h2><%= config.url %> <%= config.selector %></h2>
 		<% config.engines.forEach(function(engine) { %>
 			<% config.viewports.forEach(function(viewport) { %>
