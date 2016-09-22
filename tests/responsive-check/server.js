@@ -124,12 +124,12 @@ function runConfigAsync(config, res) {
 	if (!fs.existsSync(destDir)) {
 		fs.mkdirSync(destDir);
 	}
-	log('server starting node responsive-check.js ' + config);
+	log('server starting node index.js ' + config);
 	running.push(config);
 	if (fs.existsSync(logfilePath)) {
 		fs.unlinkSync(logfilePath);
 	}
-	var loader = exec('node responsive-check.js ' + 'config/' + config + '.js');
+	var loader = exec('node index.js ' + 'config/' + config + '.js');
 	loader.stdout.on('data', function(data) { log(data.toString().trim()); });
 	loader.stderr.on('data', function(data) { log(data.toString().trim()); });
 	loader.on('error', function(err) { log(' error: ' + err.toString().trim()); });

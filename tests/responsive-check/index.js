@@ -1,7 +1,7 @@
 /*
  * load html pages in different screen widths
  *
- * node responsive-check.js config/<configname>.js
+ * node index.js config/<configname>.js
  *
  * (c) Uwe Gerdes, entwicklung@uwegerdes.de
  */

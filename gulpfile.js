@@ -218,7 +218,7 @@ gulp.task('test-forms-login', function(callback) {
 
 watchFilesFor.responsiveCheckDefault = [
 	path.join(testDir, 'responsive-check', 'config', 'default.js'),
-	path.join(testDir, 'responsive-check', 'responsive-check.js'),
+	path.join(testDir, 'responsive-check', 'index.js'),
 	path.join(testDir, 'responsive-check', 'bin', 'load-page.js')
 ];
 gulp.task('responsiveCheckDefault', function(callback) {
@@ -226,7 +226,7 @@ gulp.task('responsiveCheckDefault', function(callback) {
 			path.join(testDir, 'responsive-check', 'results', 'default', '*.png'),
 			path.join(testDir, 'responsive-check', 'results', 'default', '*.css.json')
 		], { force: true } );
-	var loader = exec('node responsive-check.js config/default.js',
+	var loader = exec('node index.js config/default.js',
 		{ cwd: path.join(testDir, 'responsive-check') },
 		function (err, stdout, stderr) {
 			logExecResults(err, stdout, stderr);

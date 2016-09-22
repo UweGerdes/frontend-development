@@ -199,10 +199,10 @@ casper.then(function() {
 	}
 	if (hasScrollbar === true) {
 		this.echo('page has horizontal scrollbar', 'WARNING');
-		fs.write(destDir + '/result.log', url + ' ' + selector + 'page has horizontal scrollbar\n', 'a');
+		fs.write(destDir + '/result.log', url + ' ' + selector + ' page has horizontal scrollbar\n', 'a');
 	} else {
 		this.echo('page loaded ok', 'WARNING');
-		fs.write(destDir + '/result.log', url + ' ' + selector + 'page loaded ok\n', 'a');
+		fs.write(destDir + '/result.log', url + ' ' + selector + ' page loaded ok\n', 'a');
 	}
 });
 
