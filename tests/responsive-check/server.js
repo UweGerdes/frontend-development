@@ -124,7 +124,7 @@ function runConfigAsync(config, res) {
 	if (!fs.existsSync(destDir)) {
 		fs.mkdirSync(destDir);
 	}
-	log('server starting node index.js ' + config);
+	log('server starting index.js ' + config);
 	running.push(config);
 	if (fs.existsSync(logfilePath)) {
 		fs.unlinkSync(logfilePath);

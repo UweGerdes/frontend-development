@@ -1,6 +1,6 @@
 {
   "name": "gulp-frontend",
-  "version": "1.0.7",
+  "version": "1.0.8",
   "description": "Gulp package for frontend development and testing",
   "keywords": [
     "gulp",
@@ -13,6 +13,9 @@
   "author": {
     "name": "Uwe Gerdes",
     "email": "entwicklung@uwegerdes.de"
+  },
+  "engines": {
+    "node": ">=4.5.0"
   },
   "devDependencies": {
     "body-parser": "^1.15.2",
@@ -48,7 +51,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/uwegerdes/frontend-development.git"
+    "url": "https://github.com/uwegerdes/frontend-development"
   },
   "scripts": {
     "start": "gulp"
