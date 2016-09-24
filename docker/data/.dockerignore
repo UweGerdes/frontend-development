@@ -1,0 +1,3 @@
+# files ignored in docker build environment - mount them later
+htdocs
+mysql
