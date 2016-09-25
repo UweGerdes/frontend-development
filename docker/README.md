@@ -33,25 +33,20 @@ With an image a container can be started, some parameters connect the container 
 
 ## Building the images
 
-During developement I've used cache docker to speed up the building of the docker image.
+During developement I've used apt-cacher-ng docker to speed up the building of the docker baseimage. The cache settings are included in the baseimage and reused for other builds based on that image.
 
-I'm using some firewall settings - make sure the localhost ports 3142 and 3143 are open for Docker (mine works in the subnet 172.17.0.0/24).
+I'm using some firewall settings - make sure the localhost port 3142 is open for docker server (mine works in the subnet 172.17.0.0/24).
 
 ### [apt-cacher-ng](https://hub.docker.com/r/sameersbn/apt-cacher-ng/)
 
-On my system had problems with more than 20(?) files - restart the `docker build` below 5 or 6 times, than the cache is filled. Perhaps other apt-cacher-ng dockers might work better.
+On my system had problems with more than 20(?) files - restart the building the baseimage with APT_PROXY below 5 or 6 times, than the cache is filled. Perhaps other apt-cacher-ng dockers might work better.
 
 ```bash
 $ sudo mkdir -p /srv/docker/apt-cacher-ng
 $ docker run --name apt-cacher-ng -d --restart=always -p 3142:3142 -v /srv/docker/apt-cacher-ng:/var/cache/apt-cacher-ng sameersbn/apt-cacher-ng
 ```
 
-### [npm-proxy-cache](https://hub.docker.com/r/kudoz/npm-proxy-cache/)
-
-```bash
-$ sudo mkdir -p /srv/docker/npm-proxy-cache
-$ docker run --name npm-proxy-cache -d --restart=always -p 3143:8080 -v /srv/docker/npm-proxy-cache:/cache kudoz/npm-proxy-cache
-```
+The APT_PROXY argument for the baseimage must be an ip number that is known in the docker server - it knows nothing of your hostfile so you can use a static ip or the ip of the running apt-cacher-ng container (this ip might change on your system if ).
 
 ## Build the images
 
@@ -59,7 +54,7 @@ The commands to build the docker images for the sample php application are:
 
 ```bash
 $ cd baseimage
-$ docker build -t uwegerdes/baseimage .
+$ docker build -t uwegerdes/baseimage --build-arg TZ='Europe/Berlin' .
 
 ### better
 $ docker build -t uwegerdes/baseimage --build-arg APT_PROXY='http://192.168.1.18:3142' --build-arg TZ='Europe/Berlin' .

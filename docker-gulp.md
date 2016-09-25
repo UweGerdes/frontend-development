@@ -146,21 +146,25 @@ Restart and attach to the container (just hit RETURN to get a prompt):
 $ docker start --attach -i gulp-frontend
 ```
 
-To install or update node modules use the following commands (`npm` replaces `package.json` so you probably want to copy it back to your project):
+To install or update node modules use the following commands:
 
 ```bash
 $ cd ${HOME} && \
-	npm ${NPM_LOGLEVEL} ${NPM_PROXY} --save-dev install [node_module] && \
-	cp package.json ../app/ && \
+	cp ${APP_DIR}/package.json . && \
+	npm ${NPM_LOGLEVEL} ${NPM_PROXY} --save-dev install node_module && \
+	cp package.json ${APP_DIR}/ && \
 	cd ${APP_DIR}
 
 $ cd ${HOME} && \
+	cp ${APP_DIR}/package.json . && \
 	npm ${NPM_LOGLEVEL} ${NPM_PROXY} update && \
 	cp package.json ../app/ && \
 	cd ${APP_DIR}
 ```
 
-You can also restart the container in another project which uses gulp.
+The cp commands make shure that `npm` uses the projects `package.json`. Because `npm` hard replaces `package.json` it cannot use a soft link inside the container.
+
+You can also restart this container in another project which uses gulp. All installed node modules will be available in all projects. Please be careful not to remove modules used in other projects. Removing them from the `package.json` should be enough.
 
 If you think of removing a container after installing some node modules and want to run it later and *must* call the update command above inside the new container to reinstall the modules. Or you can rebuild the image, the new packages are included too.
 
@@ -169,4 +173,4 @@ Correct your errors and run the container again (-rm flag).
 
 Perhaps one might consider to commit an elaborate base image from the container to be used in other projects.
 
-With `--add-host acteam4:192.168.1.18` you can add a local virtual host to the containers `/etc/hosts` file.
+With `--add-host virtual-host-name:192.168.1.18` you can add a local virtual host to the containers `/etc/hosts` file.
