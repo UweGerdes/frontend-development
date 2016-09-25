@@ -8,7 +8,7 @@ You may also try this installation in a virtual machine. It worked for me on an 
 
 Or build a Docker image using the supplied Dockerfile (and keep your project directory clean from node_modules).
 
-# Installation on you OS (no docker)
+# Installation on your OS (no docker)
 
 Some software is required on a blank Ubuntu system:
 
