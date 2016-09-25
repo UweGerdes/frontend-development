@@ -66,7 +66,7 @@ $ docker build -t uwegerdes/mysql ./mysql/
 
 $ docker build -t uwegerdes/php-fpm ./php-fpm/
 
-$ docker build -t uwegerdes/nginx ./nginx
+$ docker build -t uwegerdes/nginx ./nginx/
 ```
 
 I'm using my own baseimage, it contains a proxy setting for apt - if you build more often this will save some download time.
@@ -82,14 +82,14 @@ Now we need to start and connect the containers for our application. The command
 There is nothing much happening in the data container. $(pwd)/htdocs is used by nginx and php-fpm, /srv/docker/mysql by mysql. Make sure you have a htdocs directory in your current location or supply the complete path:
 
 ```bash
-$ cd data
 $ docker run \
-	-v $(pwd)/../../htdocs:/var/www/htdocs \
+	-v $(pwd)/../htdocs:/var/www/htdocs \
 	-v /srv/docker/mysql:/var/lib/mysql \
 	--name data \
 	uwegerdes/data
-$ cd ..
 ```
+
+The command will create a container and exit. That is ok because only the volumes from the container will be used.
 
 If you set `CMD [ "/bin/bash" ]` in the Dockerfile you can start the container with `-it` to open the shell. You may exit it with CRTL-D but perhaps `docker start --attach -i data` later to look at the data.
 
@@ -100,7 +100,6 @@ Create a directory `/srv/docker/mysql` to store the data outside the container a
 TODO create a initial database with a SQL script.
 
 ```bash
-$ cd mysql
 $ docker run -d \
 	-e 'DB_USER=demoUser' \
 	-e 'DB_PASS=demoPass' \
@@ -110,8 +109,9 @@ $ docker run -d \
 	--volumes-from data \
 	--name mysql \
 	uwegerdes/mysql
-$ cd ..
 ```
+
+Now your mysql server runs in background waiting for connections.
 
 You don't need all external params - but either create a database with a user or set a root account to create it later.
 
@@ -150,7 +150,7 @@ $ docker run -d \
 	-v $(pwd)/config/pool.d/www.conf:/etc/php5/fpm/pool.d/www.conf \
 	--volumes-from data \
 	--link mysql \
-	--name php \
+	--name php-fpm \
 	uwegerdes/php-fpm
 $ cd ..
 ```
@@ -168,7 +168,7 @@ $ docker run -d \
 	-v $(pwd)/config/nginx.conf:/etc/nginx/nginx.conf \
 	-v $(pwd)/config/sites-enabled/default-php-fpm:/etc/nginx/sites-enabled/default \
 	--volumes-from data \
-	--link php \
+	--link php-fpm \
 	--name www \
 	uwegerdes/nginx
 $ cd ..
