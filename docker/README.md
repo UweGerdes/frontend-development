@@ -175,8 +175,6 @@ To use different configuration add the following lines
 	-v $(pwd)/nginx/sites-enabled/default:/etc/nginx/sites-enabled/default \
 ```
 
-Start your browser and open [`http://localhost:3080/`](http://localhost:3080/).
-
 If you prefer to use socket connection you should add `--volumes-from php` and change the settings in `php-fpm/config/pool.d/www.conf`: `listen = /var/run/php5-fpm.sock` and `nginx/config/sites-enabled/default-php-fpm`: `fastcgi_pass unix:/var/run/php5-fpm.sock`.
 
 ## Open Page
