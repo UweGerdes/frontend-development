@@ -4,7 +4,7 @@ $pageId = 'editAccountBody';
 ?>
 <?php ob_start() ?>
 	<div class="container form-small">
-		<form action="<?php echo $htmlroot; ?>/index.php/editAccount" method="POST" accept-charset="utf-8" name="editAccount"
+		<form action="<?php echo $htmlroot; ?>/index.php?editAccount" method="POST" accept-charset="utf-8" name="editAccount"
 			id="editAccount" role="form" class="form-horizontal<?php if($_POST && !($inputNameOk && $inputEMailOk && $inputUsernameOk && $inputPasswordOk)) {echo ' inputError';} ?>">
 			<input type="hidden" name="updateAccount" value="true" />
 			<h2 id="headline">Benutzerdaten bearbeiten</h2>

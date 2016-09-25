@@ -67,6 +67,7 @@ $ docker build -t uwegerdes/mysql ./mysql/
 $ docker build -t uwegerdes/php-fpm ./php-fpm/
 
 $ docker build -t uwegerdes/nginx ./nginx/
+$ docker rmi uwegerdes/nginx
 ```
 
 I'm using my own baseimage, it contains a proxy setting for apt - if you build more often this will save some download time.
@@ -159,17 +160,22 @@ There is nothing much to say: php-fpm need the php files (the server only sends 
 To connect it with php-fpm use:
 
 ```bash
-$ cd nginx
 $ docker run -d \
 	-p 3080:80 \
-	-v $(pwd)/config/nginx.conf:/etc/nginx/nginx.conf \
-	-v $(pwd)/config/sites-enabled/default-php-fpm:/etc/nginx/sites-enabled/default \
 	--volumes-from data \
 	--link php-fpm \
-	--name www \
+	--name nginx \
 	uwegerdes/nginx
-$ cd ..
 ```
+
+To use different configuration add the following lines
+
+```bash
+	-v $(pwd)/nginx/nginx.conf:/etc/nginx/nginx.conf \
+	-v $(pwd)/nginx/sites-enabled/default:/etc/nginx/sites-enabled/default \
+```
+
+Start your browser and open [`http://localhost:3080/`](http://localhost:3080/).
 
 If you prefer to use socket connection you should add `--volumes-from php` and change the settings in `php-fpm/config/pool.d/www.conf`: `listen = /var/run/php5-fpm.sock` and `nginx/config/sites-enabled/default-php-fpm`: `fastcgi_pass unix:/var/run/php5-fpm.sock`.
 

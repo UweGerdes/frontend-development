@@ -22,8 +22,8 @@ function new_account_action() {
 	return $html;
 }
 
-function new_account_confirm_action() {
-	$result = confirm_new_user();
+function new_account_confirm_action($confirmString) {
+	$result = confirm_new_user($confirmString);
 	$html = render_template('templates/newAccountConfirmBody.php', $result);
 	return $html;
 }

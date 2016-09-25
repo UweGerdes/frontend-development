@@ -18,10 +18,10 @@ CREATE TABLE `Login` (
 ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
 
 --
--- Data for table `Login`
+-- Data for table `Login`, password is 123456
 --
 
 LOCK TABLES `Login` WRITE;
-INSERT INTO `Login` VALUES (1,'Uwe Gerdes','entwicklung@uwegerdes.de','uwe','f2c6dec13dae53118922925c77e8af29',NULL,'b6b5841cddd65192ef17821fbed41443','not logged in','2016-09-25 12:00:00','2016-09-25 12:00:00');
+INSERT INTO `Login` VALUES (1,'Uwe Gerdes','entwicklung@uwegerdes.de','uwe','f2c6dec13dae53118922925c77e8af29',NULL,'','logged in','2016-09-25 12:00:00','2016-09-25 12:00:00');
 UNLOCK TABLES;
 

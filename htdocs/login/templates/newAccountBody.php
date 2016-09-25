@@ -4,7 +4,7 @@ $pageId = 'newAccountBody';
 ?>
 <?php ob_start() ?>
 	<div class="form-small" class="container">
-		<form action="<?php echo $htmlroot; ?>/index.php/newAccount" method="POST" accept-charset="utf-8" name="newAccount"
+		<form action="<?php echo $htmlroot; ?>/index.php?newAccount" method="POST" accept-charset="utf-8" name="newAccount"
 			id="newAccount" role="form" class="form-horizontal<?php if($_POST && !($inputNameOk && $inputEMailOk && $inputUsernameOk && $inputPasswordOk)) {echo ' inputError';} ?>">
 			<h2 id="headline">Zugang beantragen</h2>
 			<?php

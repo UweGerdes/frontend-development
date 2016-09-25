@@ -11,8 +11,8 @@ $pageId = 'indexBody';
 		</div>
 		<div class="row">
 			<div class="span4">
-				<div><a href="<?php echo $htmlroot; ?>/index.php/editAccount" id="editAccountLink">Daten bearbeiten</a></div>
-				<div><a href="<?php echo $htmlroot; ?>/index.php/deleteAccount" id="deleteAccountLink">Meine Zugangsdaten löschen</a></div>
+				<div><a href="<?php echo $htmlroot; ?>/index.php?editAccount" id="editAccountLink">Daten bearbeiten</a></div>
+				<div><a href="<?php echo $htmlroot; ?>/index.php?deleteAccount" id="deleteAccountLink">Meine Zugangsdaten löschen</a></div>
 <?php
 if ($lastLoginText != "")
 	echo "				<div id=\"lastLogin\">".$lastLoginText."</div>\n";

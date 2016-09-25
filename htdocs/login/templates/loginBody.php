@@ -29,7 +29,7 @@ if ($messages) {
 				} ?> />Auf diesem Computer angemeldet bleiben
 			</label>
 			<button name="submit" class="btn btn-large btn-primary" type="submit">Anmelden</button>
-			<a href="<?php echo $htmlroot; ?>/index.php/newAccount" class="newAccountLink">Login beantragen</a>
+			<a href="<?php echo $htmlroot; ?>/index.php?newAccount" class="newAccountLink">Login beantragen</a>
 		</form>
 	</div>
 	<div id="pagecomplete" class="hidden pagecomplete login notLoggedIn">Seite geladen</div>

@@ -15,9 +15,8 @@ function check_login() {
 	$result['lastLoginText'] = "";
 	$result['sessionCookie'] = "";
 	$result['messages'] = array();
-
-	if ($_COOKIE && $_COOKIE["sessionId"] && $_GET && $_GET["logout"] == "true") {
-		$result['messages'] = log_out_user($result, $_COOKIE["sessionId"]);
+	if ($_COOKIE && $_COOKIE["sessionId"] && $_GET && array_key_exists("logout", $_GET) && $_GET["logout"] == "true") {
+		$result['messages'] = log_out_user($_COOKIE["sessionId"]);
 		$result['sessionCookie'] = "";
 		setcookie("sessionId", $result['sessionCookie'], time());
 	} else if ($_COOKIE && $_COOKIE["sessionId"]) {
@@ -251,7 +250,7 @@ function new_user() {
 			$emailText[] = "";
 			$emailText[] = "zur Aktivierung des Zugangs bitte folgenden Link öffnen:";
 			$emailText[] = "";
-			$emailText[] = "http://".$_SERVER['SERVER_NAME'].$htmlroot."/index.php/newAccountConfirm?confirm=".$result['confirmationCode'];
+			$emailText[] = "http://".$_SERVER['SERVER_NAME'].$htmlroot."/index.php?newAccountConfirm=".$result['confirmationCode'];
 			$emailText[] = "";
 			$emailText[] = "Viele Grüße\nDas Login-Team";
 			$emailText[] = "";
@@ -262,18 +261,17 @@ function new_user() {
 	return $result;
 }
 
-function confirm_new_user() {
+function confirm_new_user($confirmString) {
 	$result = array();
 	$result['messages'] = array();
 	$result['newAccountOk'] = false;
 	$result['loginData'] = array();
-	if ($_GET['confirm'] != "") {
+	if ($confirmString != "") {
 			$mysqli = open_database_connection();
 		if ($mysqli->connect_errno) {
 			$result['messages'][] = "Failed to connect to database: " . $mysqli->connect_error;
 		} else {
 			$stmt = $mysqli->stmt_init();
-			$confirmString = $_GET['confirm'];
 			$sql = "SELECT `Name`, `eMail`, `Username` FROM `Login` ".
 					"WHERE `HashData`=? AND `Status`=\"not confirmed\"";
 			if ($stmt = $mysqli->prepare($sql)) {
@@ -555,6 +553,8 @@ function set_user_status($mysqli, $sessionCookie, $status) {
 		$update->execute();
 		if ($update->errno != 0) {
 			$messages[] = "Daten konnten nicht gesetzt werden: ".$update->error;
+		} else {
+			$messages[] = "Abmeldung erfolgreich";
 		}
 		$update->close();
 	} else {

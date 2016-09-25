@@ -1,7 +1,7 @@
 <?php
 
 function open_database_connection() {
-	$dbhost="db";
+	$dbhost="mysql";
 	$dbname="demoDb";
 	$dbuser="demoUser";
 	$dbpass="demoPass";
