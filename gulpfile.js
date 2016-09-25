@@ -32,8 +32,6 @@ var autoprefixer = require('gulp-autoprefixer'),
 	server = require('gulp-develop-server'),
 	shell = require('gulp-shell'),
 	uglify = require('gulp-uglify')
-//	gulpif = require('gulp-if'),
-//	spawn = require('child_process').spawn
 	;
 
 var gulpDir = __dirname;
@@ -324,6 +322,14 @@ gulp.task('server', function() {
 		}
 	});
 });
+/*
+ * gulp postmortem task to stop server on termination of gulp
+ */
+gulp.task('postMortem', function() {
+	return gulp.src( watchFilesFor.server )
+		.pipe(postMortem({gulp: gulp, tasks: [ 'server:stop' ]}))
+		;
+});
 
 /*
  * livereload server and task
@@ -339,32 +345,6 @@ gulp.task('livereload', function() {
 //		.pipe(log({ message: 'livereload: <%= file.path %>', title: 'Gulp livereload' }))
 		.pipe(gulpLivereload());
 });
-
-/*
- * restart gulp if gulpfile.js changed
- *
- * not working after restart
- * all tasks are run by default task but neither server starts up nor do watches trigger.
- * Even the new processes remain orphan when gulp is stopped with CTRL-C
- *
-watchFilesFor.gulpfile = [
-	path.join(gulpDir, 'gulpfile.js')
-];
-gulp.task('gulpfile', function(callback) {
-	runSequence(
-		'lint',
-		'gulp:restart',
-		callback);
-});
-gulp.task('gulp:restart', ['server:stop'], function() {
-	spawn('gulp', ['default'], {stdio: 'inherit'});
-	process.exit();
-});
-gulp.task('gulp:stop', function() {
-//	process.exit();
-	process.kill(process.pid, 'SIGINT');
-});
-*/
 
 /*
  * run all build tasks
@@ -421,13 +401,4 @@ gulp.task('default', function(callback) {
 		'watch',
 		'postMortem',
 		callback);
-});
-
-/*
- * gulp postmortem task
- */
-gulp.task('postMortem', function() {
-	return gulp.src( watchFilesFor.server )
-		.pipe(postMortem({gulp: gulp, tasks: [ 'server:stop' ]}))
-		;
 });
