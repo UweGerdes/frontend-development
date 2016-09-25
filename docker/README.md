@@ -53,26 +53,21 @@ The APT_PROXY argument for the baseimage must be an ip number that is known in t
 The commands to build the docker images for the sample php application are:
 
 ```bash
-$ cd baseimage
-$ docker build -t uwegerdes/baseimage --build-arg TZ='Europe/Berlin' .
+$ docker build -t uwegerdes/baseimage --build-arg TZ='Europe/Berlin' ./baseimage/
 
-### better
-$ docker build -t uwegerdes/baseimage --build-arg APT_PROXY='http://192.168.1.18:3142' --build-arg TZ='Europe/Berlin' .
+### with apt-cacher-ng
+$ docker build -t uwegerdes/baseimage --build-arg APT_PROXY='http://192.168.1.18:3142' --build-arg TZ='Europe/Berlin' ./baseimage/
+
 $ docker rmi uwegerdes/baseimage
 
-$ cd ..
-$ cd data
-$ docker build -t uwegerdes/data .
-$ cd ..
-$ cd mysql
-$ docker build -t uwegerdes/mysql .
-$ cd ..
-$ cd php-fpm
-$ docker build -t uwegerdes/php-fpm .
-$ cd ..
-$ cd nginx
-$ docker build -t uwegerdes/nginx .
-$ cd ..
+$ docker build -t uwegerdes/data ./data/
+
+$ docker build -t uwegerdes/mysql ./mysql
+$ docker rmi uwegerdes/mysql
+
+$ docker build -t uwegerdes/php-fpm ./php-fpm
+
+$ docker build -t uwegerdes/nginx ./nginx
 ```
 
 I'm using my own baseimage, it contains a proxy setting for apt - if you build more often this will save some download time.
@@ -131,7 +126,7 @@ To work with the database go to the docker directory and use:
 
 ```bash
 $ docker exec -it docker_db_1 mysql -u demoUser -pdemoPass demoDb
-$ docker exec -i docker_db_1 mysql -u demoUser -pdemoPass demoDb < ./data/mysql/reset_tables.sql
+$ docker exec -i docker_db_1 mysql -u demoUser -pdemoPass demoDb < ./init_database.sql
 $ docker exec -i docker_db_1 mysqldump -u demoUser -pdemoPass demoDb > demoDbDump.sql
 ```
 
