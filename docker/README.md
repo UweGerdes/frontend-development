@@ -62,10 +62,9 @@ $ docker rmi uwegerdes/baseimage
 
 $ docker build -t uwegerdes/data ./data/
 
-$ docker build -t uwegerdes/mysql ./mysql
-$ docker rmi uwegerdes/mysql
+$ docker build -t uwegerdes/mysql ./mysql/
 
-$ docker build -t uwegerdes/php-fpm ./php-fpm
+$ docker build -t uwegerdes/php-fpm ./php-fpm/
 
 $ docker build -t uwegerdes/nginx ./nginx
 ```
