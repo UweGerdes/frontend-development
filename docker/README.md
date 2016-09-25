@@ -124,9 +124,9 @@ To keep the database on your host you could set `-v /srv/docker/mysql:/var/lib/m
 To work with the database go to the docker directory and use:
 
 ```bash
-$ docker exec -it docker_db_1 mysql -u demoUser -pdemoPass demoDb
-$ docker exec -i docker_db_1 mysql -u demoUser -pdemoPass demoDb < ./init_database.sql
-$ docker exec -i docker_db_1 mysqldump -u demoUser -pdemoPass demoDb > demoDbDump.sql
+$ docker exec -it mysql mysql -u demoUser -pdemoPass demoDb
+$ docker exec -i mysql mysql -u demoUser -pdemoPass demoDb < ./mysql/init_database.sql
+$ docker exec -i mysql mysqldump -u demoUser -pdemoPass demoDb > demoDbDump.sql
 ```
 
 Or have a script `docker-mysql.sh` to decide if there is a pipe or not:
@@ -145,14 +145,11 @@ fi
 Now let's run a php-fpm container with volumes from the data container and network link to the mysql container:
 
 ```bash
-$ cd php-fpm
 $ docker run -d \
-	-v $(pwd)/config/pool.d/www.conf:/etc/php5/fpm/pool.d/www.conf \
 	--volumes-from data \
 	--link mysql \
 	--name php-fpm \
 	uwegerdes/php-fpm
-$ cd ..
 ```
 
 There is nothing much to say: php-fpm need the php files (the server only sends the http request) and the application want's to use the database.
