@@ -2,7 +2,7 @@
 
 You could run the sample php application on you pc: install a web server, MySQL-Database, Gulp and configure them.
 
-Or install Docker and use the scripts here to generate the docker images and containers. Less effort - more diskspace and downloading time. And new ideas for your development environment.
+Or install Docker and use the scripts here to generate the docker images and containers. Less effort - more diskspace and downloading time. And new inspiration for your development workflow.
 
 ## Quick start
 
@@ -60,6 +60,11 @@ The commands to build the docker images for the sample php application are:
 ```bash
 $ cd baseimage
 $ docker build -t uwegerdes/baseimage .
+
+### better
+$ docker build -t uwegerdes/baseimage --build-arg APT_PROXY='http://192.168.1.18:3142' --build-arg TZ='Europe/Berlin' .
+$ docker rmi uwegerdes/baseimage
+
 $ cd ..
 $ cd data
 $ docker build -t uwegerdes/data .
@@ -97,7 +102,7 @@ $ docker run \
 $ cd ..
 ```
 
-If you set `CMD [ "/bin/bash" ]` in the Dockerfile you can start the container with `-it` to open the shell. You may exit it with CRTL-D but perhaps `docker start data` and `docker attach data` later to look at the data.
+If you set `CMD [ "/bin/bash" ]` in the Dockerfile you can start the container with `-it` to open the shell. You may exit it with CRTL-D but perhaps `docker start --attach -i data` later to look at the data.
 
 ### mysql
 
