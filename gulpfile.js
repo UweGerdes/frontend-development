@@ -36,6 +36,7 @@ var autoprefixer = require('gulp-autoprefixer'),
 
 var gulpDir = __dirname;
 var srcDir = path.join(__dirname, 'src');
+var bowerDir = path.join(__dirname, 'bower_components');
 var destDir = path.join(__dirname, 'htdocs');
 var testDir = path.join(__dirname, 'tests');
 var testLogfile = path.join(testDir, 'tests.log');
@@ -94,9 +95,9 @@ gulp.task('less', function () {
 		.on('error', log.onError({ message:  'Error: <%= error.message %>' , title: 'LESS Error'}))
 		.pipe(autoprefixer('last 3 version', 'safari 5', 'ie 8', 'ie 9', 'ios 6', 'android 4'))
 		.pipe(gutil.env.type === 'production' ? uglify() : gutil.noop())
-		.pipe(gulp.dest(function(file) { return dest(file.path); }))
 //		.pipe(gulpif(options.env === 'production', uglify()))
-		.pipe(log({ message: 'written: <%= file.path %>', title: 'Gulp LESS' }))
+		.pipe(gulp.dest(function(file) { return dest(file.path); }))
+		.pipe(log({ message: 'written: <%= file.path %>', title: 'Gulp less' }))
 		;
 });
 
@@ -120,8 +121,21 @@ gulp.task('lessResponsiveCheck', function () {
 		.pipe(autoprefixer('last 3 version', 'safari 5', 'ie 8', 'ie 9', 'ios 6', 'android 4'))
 		.pipe(gutil.env.type === 'production' ? uglify() : gutil.noop())
 		.pipe(gulp.dest(function(file) { return dest(file.path); }))
-//		.pipe(gulpif(options.env === 'production', uglify()))
-		.pipe(log({ message: 'written: <%= file.path %>', title: 'Gulp LESS' }))
+		.pipe(log({ message: 'written: <%= file.path %>', title: 'Gulp lessResponsiveCheck' }))
+		;
+});
+
+watchFilesFor.lessBootstrap = [
+	path.join(bowerDir, 'bootstrap', 'less', '**', '*.less')
+];
+gulp.task('lessBootstrap', function () {
+	return gulp.src( [ path.join(bowerDir, 'bootstrap', 'less', 'bootstrap.less') ] )
+		.pipe(less())
+		.on('error', log.onError({ message:  'Error: <%= error.message %>' , title: 'LESS Error'}))
+		.pipe(autoprefixer('last 3 version', 'safari 5', 'ie 8', 'ie 9', 'ios 6', 'android 4'))
+		.pipe(gutil.env.type === 'production' ? uglify() : gutil.noop())
+		.pipe(gulp.dest(path.join(destDir, 'login', 'css')))
+		.pipe(log({ message: 'written: <%= file.path %>', title: 'Gulp lessBootstrap' }))
 		;
 });
 
@@ -359,6 +373,7 @@ gulp.task('build', function(callback) {
 	runSequence('lessLintStylish',
 		'less',
 		'lessResponsiveCheck',
+		'lessBootstrap',
 		'graphviz',
 		'lint',
 		callback);
