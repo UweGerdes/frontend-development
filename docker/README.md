@@ -162,6 +162,8 @@ To connect it with php-fpm use:
 ```bash
 $ docker run -d \
 	-p 3080:80 \
+	-v $(pwd)/nginx/nginx.conf:/etc/nginx/nginx.conf \
+	-v $(pwd)/nginx/sites-enabled/default:/etc/nginx/sites-enabled/default \
 	--volumes-from data \
 	--link php-fpm \
 	--name nginx \

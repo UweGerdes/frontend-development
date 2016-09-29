@@ -134,6 +134,12 @@ watchFilesFor.graphviz = [
 gulp.task('graphviz', function () {
 	var dest = path.join(destDir, 'img', 'gv');
 	var destFormat = 'png';
+	if (!fs.existsSync(path.join(destDir, 'img'))) {
+		fs.mkdirSync(path.join(destDir, 'img'));
+	}
+	if (!fs.existsSync(path.join(destDir, 'img', 'gv'))) {
+		fs.mkdirSync(path.join(destDir, 'img', 'gv'));
+	}
 	return gulp.src(watchFilesFor.graphviz, {read: false})
 		.pipe(changed(dest, {extension: '.' + destFormat}))
 		.pipe(shell('dot -T' + destFormat + ' "<%= file.path %>" -o "<%= rename(file.path) %>"', {

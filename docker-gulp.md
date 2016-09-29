@@ -67,6 +67,8 @@ $ xvfb-run -a [-e /dev/stdout] casperjs test --engine=slimerjs test-forms.js --c
 
 # Docker uwegerdes/gulp-frontend
 
+Install [Docker](https://www.docker.com/).
+
 During development I've used cache docker to speed up the building of the docker image.
 
 I'm using some firewall settings - make sure the localhost ports 3142 and 3143 are open for Docker (mine works in the subnet 172.17.0.0/24).
