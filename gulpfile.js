@@ -134,7 +134,7 @@ gulp.task('lessBootstrap', function () {
 		.on('error', log.onError({ message:  'Error: <%= error.message %>' , title: 'LESS Error'}))
 		.pipe(autoprefixer('last 3 version', 'safari 5', 'ie 8', 'ie 9', 'ios 6', 'android 4'))
 		.pipe(gutil.env.type === 'production' ? uglify() : gutil.noop())
-		.pipe(gulp.dest(path.join(destDir, 'login', 'css')))
+		.pipe(gulp.dest(path.join(destDir, 'css')))
 		.pipe(log({ message: 'written: <%= file.path %>', title: 'Gulp lessBootstrap' }))
 		;
 });

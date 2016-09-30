@@ -1,6 +1,6 @@
 {
-  "name": "gulp-frontend",
-  "description": "Gulp package for frontend development and testing",
+  "name": "frontend-development",
+  "description": "packages for frontend development and testing",
   "main": [
     "src/less/layout.less"
   ],
