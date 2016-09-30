@@ -388,6 +388,7 @@ gulp.task('build', function(callback) {
 		'less',
 		'lessResponsiveCheck',
 		'lessBootstrap',
+		'jsBootstrap',
 		'graphviz',
 		'lint',
 		callback);

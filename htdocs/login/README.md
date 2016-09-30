@@ -19,7 +19,7 @@ Dependencies are loaded with Bower.
 ## Workflow
 
 - open /login/index.php
-- click on "new account"
+- click on "sign up"
 - fill in form, submit, see confirmation, wait for mail
 - open confirmation link
 - login

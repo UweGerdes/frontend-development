@@ -98,8 +98,6 @@ If you set `CMD [ "/bin/bash" ]` in the Dockerfile you can start the container w
 
 Create a directory `/srv/docker/mysql` to store the data outside the container and the image - if you recreate them the data is still there.
 
-TODO create a initial database with a SQL script.
-
 ```bash
 $ docker run -d \
 	-e 'DB_USER=demoUser' \
@@ -122,12 +120,12 @@ Otherwise you could add `-p 3086:3306` - you see a port number mapping, it shoul
 
 To keep the database on your host you could set `-v /srv/docker/mysql:/var/lib/mysql` instead of `--volumes-from data`.
 
-To work with the database go to the docker directory and use:
+To work with the database go to the `docker` directory and use:
 
 ```bash
-$ docker exec -it mysql mysql -u demoUser -pdemoPass demoDb
 $ docker exec -i mysql mysql -u demoUser -pdemoPass demoDb < ./mysql/init_database.sql
 $ docker exec -i mysql mysqldump -u demoUser -pdemoPass demoDb > demoDbDump.sql
+$ docker exec -it mysql mysql -u demoUser -pdemoPass demoDb
 ```
 
 Or have a script `docker-mysql.sh` to decide if there is a pipe or not:
@@ -188,18 +186,18 @@ Now start to examine the container (hit CTRL-C to exit `docker exec -it` and `do
 
 ```bash
 $ docker inspect --format='{{range .NetworkSettings.Networks}}{{.IPAddress}} {{end}}' test-nginx
-$ docker exec -it test-nginx bash
-$ docker logs -f test-nginx
-$ docker stop test-nginx
-$ docker start test-nginx
-$ docker restart test-nginx
+$ docker exec -it nginx bash
+$ docker logs -f nginx
+$ docker stop nginx
+$ docker start nginx
+$ docker restart nginx
 ```
 
 To get rid of it you need to:
 
 ```bash
-$ docker stop test-nginx
-$ docker rm test-nginx
+$ docker stop nginx
+$ docker rm nginx
 $ docker rmi uwegerdes/nginx
 ```
 

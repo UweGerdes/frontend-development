@@ -4,7 +4,10 @@
 require 'head.php';
 ?>
 <body class="<?php echo $pageId ?>">
-	<div class="container">
+	<div class="container" role="main">
+		<div class="jumbotron">
+			<h1>Login <?php echo $title; ?></h1>
+		</div>
 <?php echo $content ?>
 	</div>
 	<script src="/js/vendor/jquery.min.js"></script>
