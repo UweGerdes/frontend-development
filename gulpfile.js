@@ -139,6 +139,20 @@ gulp.task('lessBootstrap', function () {
 		;
 });
 
+/**
+ * Copy the basic js files to js/vendor
+ */
+watchFilesFor.jsBootstrap = [
+	path.join(bowerDir, 'jquery', 'dist', 'jquery.min.js'),
+	path.join(bowerDir, 'bootstrap', 'dist', 'js', 'bootstrap.min.js')
+];
+gulp.task('jsBootstrap', function () {
+	return gulp.src( watchFilesFor.jsBootstrap )
+		.pipe(gulp.dest(path.join(destDir, 'js', 'vendor')))
+		.pipe(log({ message: 'written: <%= file.path %>', title: 'Gulp jsBootstrap' }))
+		;
+});
+
 /*
  * graphviz image generation
  */
