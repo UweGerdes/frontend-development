@@ -24,13 +24,12 @@ body {
 
 	h1,
 	h2,
-	h3,
-	p {
+	h3 {
 		margin-bottom: 20px;
 		text-align: center;
 	}
 
-	.loginform {
+	.form-horizontal {
 		background-color: #ffffff;
 		border: 1px solid #e5e5e5;
 		border-radius: 5px;
@@ -39,7 +38,7 @@ body {
 		line-height: @lineHeightLarge;
 		margin: 0px auto 20px;
 		padding: 19px 29px 29px;
-		width: 500px;
+		width: 600px;
 
 		[type='text'],
 		[type='password'] {
@@ -62,23 +61,15 @@ body {
 			line-height: @lineHeightLarge;
 		}
 
-		.control-label {
-			padding-top: 6px;
-		}
-
-		.control-group .withPadding {
-			padding-top: 5px;
-		}
-
 		.onlyText {
-			.control-label {
+			.col-sm-3 control-label {
 				padding-top: 0px;
 			}
 		}
 	}
 
-	div.loginform {
-		.control-group .control-label {
+	div.form-horizontal {
+		.form-group .col-sm-3 control-label {
 			padding-top: 0px;
 		}
 	}
@@ -102,12 +93,12 @@ form {
 .loginBody,
 .loginBody .form-small {
 	form {
-		max-width: 300px;
+		max-width: 500px;
 
 		[type='text'],
 		[type='email'],
 		[type='password'] {
-			width: 300px;
+			width: 250px;
 		}
 
 		.checkbox {
@@ -126,12 +117,12 @@ form {
 }
 
 .newAccountAccept {
-	.control-label,
-	.controls {
+	.col-sm-3 control-label,
+	.col-sm-9 {
 		padding-top: 0px;
 	}
 
-	.control-group {
+	.form-group {
 		margin-bottom: 10px;
 	}
 }

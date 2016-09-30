@@ -4,11 +4,11 @@ $pageId = 'newAccountBodyOk';
 ?>
 <?php ob_start() ?>
 	<div class="form-small" class="container">
-		<div id="newAccountAccept" class="loginform">
+		<div id="newAccountAccept" class="form-horizontal">
 			<h3 id="headline">Vielen Dank für die Anmeldung</h3>
 			<?php
 				if ($messages) {
-					echo "<p class=\"newAccountMessage messages\">".join("<br />", $messages)."</p>\n";
+					echo "<p class=\"col-sm-offset-3 newAccountMessage messages\">".join("<br />", $messages)."</p>\n";
 				}
 				if ($sendSuccess) {
 					echo "<p>Eine E-Mail mit einem Aktivierungslink wurde verschickt</p>\n";
@@ -16,21 +16,21 @@ $pageId = 'newAccountBodyOk';
 					echo "<p>Eine E-Mail mit einem Aktivierungslink konnte nicht verschickt werden</p>\n";
 				}
 			?>
-			<div id="NameContainer" class="control-group">
-				<label for="Name" class="control-label">Name</label>
-				<div class="controls"><?php echo $_POST['Name']; ?></div>
+			<div id="NameContainer" class="form-group">
+				<label for="Name" class="col-sm-3 control-label">Name</label>
+				<div class="col-sm-9"><p class="form-control-static"><?php echo $_POST['Name']; ?></p></div>
 			</div>
-			<div id="eMailContainer" class="control-group">
-				<label for="eMail" class="control-label">E-Mail</label>
-				<div class="controls"><?php echo $_POST['eMail']; ?></div>
+			<div id="eMailContainer" class="form-group">
+				<label for="eMail" class="col-sm-3 control-label">E-Mail</label>
+				<div class="col-sm-9"><p class="form-control-static"><?php echo $_POST['eMail']; ?></p></div>
 			</div>
-			<div id="UsernameContainer" class="control-group">
-				<label for="Username" class="control-label">Anmeldename</label>
-				<div class="controls"><?php echo $_POST['Username']; ?></div>
+			<div id="UsernameContainer" class="form-group">
+				<label for="Username" class="col-sm-3 control-label">Anmeldename</label>
+				<div class="col-sm-9"><p class="form-control-static"><?php echo $_POST['Username']; ?></p></div>
 			</div>
-			<div id="PasswordContainer" class="control-group">
-				<label for="Password" class="control-label">Passwort</label>
-				<div class="controls">*****</div>
+			<div id="PasswordContainer" class="form-group">
+				<label for="Password" class="col-sm-3 control-label">Passwort</label>
+				<div class="col-sm-9">*****</p></div>
 			</div>
 		</div>
 	</div>

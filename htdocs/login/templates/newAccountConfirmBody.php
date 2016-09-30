@@ -7,11 +7,11 @@ $pageId = 'newAccountConfirmBody';
 if (!$newAccountOk) {
 $title = 'Login Zugang nicht bestätigt';
 ?>
-		<div id="newAccountFail" class="loginform">
+		<div id="newAccountFail" class="form-horizontal">
 			<h3 id="headline" confirm="<?php echo $_GET['confirm']; ?>">Keine gültige Bestätigung</h3>
 <?php
 if ($messages) {
-	echo "			<p id=\"newAccountConfirmError\" class=\"error messages\">" . join("<br />\n", $messages) . "</p>\n";
+	echo "			<p id=\"newAccountConfirmError\" class=\"col-sm-offset-3 error messages\">" . join("<br />\n", $messages) . "</p>\n";
 }
 ?>
 			<div class="text-center">
@@ -22,32 +22,32 @@ if ($messages) {
 } else { # newAccountOK
 $title = 'Login Zugang bestätigt';
 ?>
-		<div id="newAccountConfirm" class="loginform">
+		<div id="newAccountConfirm" class="form-horizontal">
 			<h3 id="headline">Bestätigung der Freischaltung</h3>
 <?php
 if ($messages) {
-	echo "			<p class=\"messages\">" . join("<br />\n", $messages) . "</p>";
+	echo "			<p class=\"col-sm-offset-3 messages\">" . join("<br />\n", $messages) . "</p>";
 }
 ?>
 			<p>Zur Kontrolle hier noch einmal die eingegebenen Daten:</p>
-			<div id="NameContainer" class="control-group">
-				<label for="Name" class="control-label">Name</label>
-				<div class="controls"><?php echo $loginData['Name']; ?></div>
+			<div id="NameContainer" class="form-group">
+				<label for="Name" class="col-sm-3 control-label">Name</label>
+				<div class="col-sm-9"><?php echo $loginData['Name']; ?></div>
 			</div>
-			<div id="eMailContainer" class="control-group">
-				<label for="eMail" class="control-label">E-Mail</label>
-				<div class="controls"><?php echo $loginData['eMail']; ?></div>
+			<div id="eMailContainer" class="form-group">
+				<label for="eMail" class="col-sm-3 control-label">E-Mail</label>
+				<div class="col-sm-9"><?php echo $loginData['eMail']; ?></div>
 			</div>
-			<div id="UsernameContainer" class="control-group">
-				<label for="Username" class="control-label">Anmeldename</label>
-				<div class="controls"><?php echo $loginData['Username']; ?></div>
+			<div id="UsernameContainer" class="form-group">
+				<label for="Username" class="col-sm-3 control-label">Anmeldename</label>
+				<div class="col-sm-9"><?php echo $loginData['Username']; ?></div>
 			</div>
-			<div id="PasswordContainer" class="control-group">
-				<label for="Password" class="control-label">Passwort</label>
-				<div class="controls">*****</div>
+			<div id="PasswordContainer" class="form-group">
+				<label for="Password" class="col-sm-3 control-label">Passwort</label>
+				<div class="col-sm-9">*****</div>
 			</div>
-			<div id="submitContainer" class="control-group">
-				<div class="controls">
+			<div id="submitContainer" class="form-group">
+				<div class="col-sm-offset-3 col-sm-9">
 					<a href="<?php echo $htmlroot; ?>/index.php" class="homeLink btn btn-success inputWidth">zur Anmeldeseite</a>
 				</div>
 			</div>
