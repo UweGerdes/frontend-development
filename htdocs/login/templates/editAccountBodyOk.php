@@ -4,7 +4,7 @@ $pageId = 'editAccountBodyOk';
 ?>
 <?php ob_start() ?>
 	<div class="container form-small">
-		<div id="editAccountAccept" class="form-horizontal">
+		<div id="editAccountAccept" class="loginform">
 			<h2 id="headline">Daten gespeichert:</h2>
 			<?php
 				if ($messages) {

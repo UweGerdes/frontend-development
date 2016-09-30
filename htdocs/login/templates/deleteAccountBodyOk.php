@@ -4,7 +4,7 @@ $pageId = 'deleteAccountBodyOk';
 ?>
 <?php ob_start() ?>
 	<div class="form-small container">
-		<div id="deleteAccountSuccess" class="form-horizontal">
+		<div id="deleteAccountSuccess" class="loginform">
 			<h2 id="headline">Daten gelöscht.</h2>
 			<?php
 				if ($messages) {

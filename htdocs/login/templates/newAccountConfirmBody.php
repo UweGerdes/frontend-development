@@ -7,7 +7,7 @@ $pageId = 'newAccountConfirmBody';
 if (!$newAccountOk) {
 $title = 'Login Zugang nicht bestätigt';
 ?>
-		<div id="newAccountFail" class="form-horizontal">
+		<div id="newAccountFail" class="loginform">
 			<h3 id="headline" confirm="<?php echo $_GET['confirm']; ?>">Keine gültige Bestätigung</h3>
 <?php
 if ($messages) {
@@ -22,7 +22,7 @@ if ($messages) {
 } else { # newAccountOK
 $title = 'Login Zugang bestätigt';
 ?>
-		<div id="newAccountConfirm" class="form-horizontal">
+		<div id="newAccountConfirm" class="loginform">
 			<h3 id="headline">Bestätigung der Freischaltung</h3>
 <?php
 if ($messages) {

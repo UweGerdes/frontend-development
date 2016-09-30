@@ -5,7 +5,7 @@ $pageId = 'deleteAccountBody';
 <?php ob_start() ?>
 	<div class="form-small container">
 		<form action="<?php echo $htmlroot; ?>/index.php?deleteAccount" method="POST" accept-charset="utf-8" name="deleteAccount"
-			id="deleteAccount" role="form" class="form-horizontal<?php if($_POST && ! $deleteAccountOk) {echo ' inputError';} ?>">
+			id="deleteAccount" role="form" class="loginform<?php if($_POST && ! $deleteAccountOk) {echo ' inputError';} ?>">
 			<h2 id="headline">Wirklich löschen?</h2>
 			<?php
 				if ($messages) {

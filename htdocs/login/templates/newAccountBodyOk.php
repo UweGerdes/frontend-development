@@ -4,7 +4,7 @@ $pageId = 'newAccountBodyOk';
 ?>
 <?php ob_start() ?>
 	<div class="form-small" class="container">
-		<div id="newAccountAccept" class="form-horizontal">
+		<div id="newAccountAccept" class="loginform">
 			<h3 id="headline">Vielen Dank für die Anmeldung</h3>
 			<?php
 				if ($messages) {

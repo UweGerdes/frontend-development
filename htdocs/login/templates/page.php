@@ -12,5 +12,6 @@ require 'head.php';
 	</div>
 	<script src="/js/vendor/jquery.min.js"></script>
 	<script src="/js/vendor/bootstrap.min.js"></script>
+	<div id="pagecomplete" class="hidden pagecomplete<?php if ($login['loginOk']) { echo " loginOk";}; if ($_POST) { echo " submitted";} ?>">Seite geladen</div>
 </body>
 </html>
