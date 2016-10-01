@@ -45,7 +45,7 @@ var logMode = 0;
 var txtLog = [];
 var htmlLog = [];
 var watchFilesFor = {};
-var lifereloadPort = 35731;
+var lifereloadPort = process.env.GULP_LIVERELOAD || 5081;
 
 /*
  * log only to console, not GUI
@@ -337,7 +337,7 @@ gulp.task('logTestResults', function(callback) {
 gulp.task('server:start', function() {
 	server.listen({
 			path: path.join(testDir, 'responsive-check', 'server.js'),
-			env: { LIVERELOAD_PORT: lifereloadPort},
+			env: { LIVERELOAD_PORT: lifereloadPort, VERBOSE: false },
 			cwd: path.join(testDir, 'responsive-check')
 		}
 	);
@@ -379,7 +379,7 @@ gulp.task('livereload', function() {
 	gulp.src(watchFilesFor.livereload)
 		.pipe(changed(path.dirname('<%= file.path %>')))
 //		.pipe(log({ message: 'livereload: <%= file.path %>', title: 'Gulp livereload' }))
-		.pipe(gulpLivereload());
+		.pipe(gulpLivereload( { quiet: true } ));
 });
 
 /*
@@ -427,7 +427,7 @@ gulp.task('watch', function() {
 		gulp.watch( watchFilesFor[task], [ task ] );
 	});
 	gulpLivereload.listen( { port: lifereloadPort, delay: 2000 } );
-	console.log('livereload listening on ' + lifereloadPort);
+	console.log('gulp livereload listening on ' + lifereloadPort);
 });
 
 /*

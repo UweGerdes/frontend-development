@@ -71,7 +71,7 @@ Install [Docker](https://www.docker.com/).
 
 During development I've used cache docker to speed up the building of the docker image.
 
-I'm using some firewall settings - make sure the localhost ports 3142 and 3143 are open for Docker (mine works in the subnet 172.17.0.0/24).
+I'm using some firewall settings on my local system. Make sure the localhost port 3142 and 3143 are open for docker server (mine works in the subnet 172.17.0.0/24), in the commands you find $(hostname -i) which should echo your local ip address.
 
 ### [apt-cacher-ng](https://hub.docker.com/r/sameersbn/apt-cacher-ng/)
 
@@ -96,13 +96,16 @@ Here are the commands to build the docker image - mind the '.' at the end of the
 ```bash
 $ docker build -t uwegerdes/gulp-frontend .
 $ docker build -t uwegerdes/gulp-frontend \
-	--build-arg APT_PROXY='http://192.168.1.18:3142' \
-	--build-arg NPM_PROXY='--proxy http://192.168.1.18:3143 --https-proxy http://192.168.1.18:3143 --strict-ssl false' \
-	--build-arg NPM_LOGLEVEL='--loglevel warn' \
-	--build-arg TZ='Europe/Berlin' \
-	--build-arg HTTP_PORT='5382' \
+	--build-arg APT_PROXY="http://$(hostname -i):3142" \
+	--build-arg NPM_PROXY="--proxy http://$(hostname -i):3143 --https-proxy http://$(hostname -i):3143 --strict-ssl false" \
+	--build-arg NPM_LOGLEVEL="--loglevel warn" \
+	--build-arg TZ="Europe/Berlin" \
+	--build-arg GULP_LIVERELOAD="5381" \
+	--build-arg RESPONSIVE_CHECK_HTTP="5382" \
 	.
 ```
+
+Some 20 Minutes and 1.5 GB later...
 
 Run a container from the image just created and connect to your environment:
 
@@ -110,7 +113,9 @@ Run a container from the image just created and connect to your environment:
 $ docker run -it \
 	--name gulp-frontend \
 	-v $(pwd):/usr/src/app \
-	--add-host frontend.local:192.168.1.18 \
+	--add-host dockerhost:$(hostname -i) \
+	-p 5381:5381 \
+	-p 5382:5382 \
 	uwegerdes/gulp-frontend \
 	bash
 ```
@@ -175,4 +180,4 @@ Correct your errors and run the container again (-rm flag).
 
 Perhaps one might consider to commit an elaborate base image from the container to be used in other projects.
 
-With `--add-host virtual-host-name:192.168.1.18` you can add a local virtual host to the containers `/etc/hosts` file.
+With `--add-host virtual-host-name:$(hostname -i)` you can add a local virtual host to the containers `/etc/hosts` file.

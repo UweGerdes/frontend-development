@@ -35,7 +35,7 @@ With an image a container can be started, some parameters connect the container 
 
 During developement I've used apt-cacher-ng docker to speed up the building of the docker baseimage. The cache settings are included in the baseimage and reused for other builds based on that image.
 
-I'm using some firewall settings - make sure the localhost port 3142 is open for docker server (mine works in the subnet 172.17.0.0/24).
+I'm using some firewall settings on my local system. Make sure the localhost port 3142 is open for docker server (mine works in the subnet 172.17.0.0/24), in the commands you find $(hostname -i) which should echo your local ip address.
 
 ### [apt-cacher-ng](https://hub.docker.com/r/sameersbn/apt-cacher-ng/)
 
@@ -53,10 +53,10 @@ The APT_PROXY argument for the baseimage must be an ip number that is known in t
 The commands to build the docker images for the sample php application are:
 
 ```bash
-$ docker build -t uwegerdes/baseimage --build-arg TZ='Europe/Berlin' ./baseimage/
+$ docker build -t uwegerdes/baseimage --build-arg TZ="Europe/Berlin" ./baseimage/
 
 ### with apt-cacher-ng
-$ docker build -t uwegerdes/baseimage --build-arg APT_PROXY='http://192.168.1.18:3142' --build-arg TZ='Europe/Berlin' ./baseimage/
+$ docker build -t uwegerdes/baseimage --build-arg APT_PROXY="http://$(hostname -i):3142" --build-arg TZ="Europe/Berlin" ./baseimage/
 
 $ docker rmi uwegerdes/baseimage
 

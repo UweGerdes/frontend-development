@@ -7,7 +7,8 @@ ARG NPM_LOGLEVEL
 ARG TZ='Europe/Berlin'
 ARG UID='1000'
 ARG GID='1000'
-ARG HTTP_PORT='5382'
+ARG GULP_LIVERELOAD='5381'
+ARG RESPONSIVE_CHECK_HTTP='5382'
 
 ENV DEBIAN_FRONTEND noninteractive
 ENV NPM_HOME /usr/src/npm
@@ -16,7 +17,8 @@ ENV APP_DIR /usr/src/app
 ENV NPM_PROXY ${NPM_PROXY}
 ENV NPM_LOGLEVEL ${NPM_LOGLEVEL}
 ENV TZ ${TZ}
-ENV HTTP_PORT ${HTTP_PORT}
+ENV GULP_LIVERELOAD ${GULP_LIVERELOAD}
+ENV RESPONSIVE_CHECK_HTTP ${RESPONSIVE_CHECK_HTTP}
 
 RUN if [ -n "${APT_PROXY}" ]; then echo "Acquire::http { Proxy \"${APT_PROXY}\"; };" >> /etc/apt/apt.conf.d/01proxy; fi
 
@@ -57,6 +59,6 @@ RUN cd ${NPM_HOME} && \
 	ln -s ${NODE_PATH}/phantomjs-prebuilt/bin/phantomjs /usr/local/bin/phantomjs && \
 	ln -s ${NODE_PATH}/slimerjs/bin/slimerjs /usr/local/bin/slimerjs
 
-EXPOSE ${HTTP_PORT}
+EXPOSE ${GULP_LIVERELOAD} ${RESPONSIVE_CHECK_HTTP}
 
 CMD [ "bash" ]

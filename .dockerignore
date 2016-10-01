@@ -1,6 +1,7 @@
 # dockerignore for gulp-frontend
 Arbeit/
 bower_components/
+docker/
 htdocs/
 src/
 tests/

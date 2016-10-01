@@ -5,7 +5,7 @@
 var slimerjs = 'slimerjs';
 var phantomjs = 'phantomjs';
 
-var baseUrl = 'http://frontend.local/login/index.php/newAccount';
+var baseUrl = 'http://dockerhost:3080/login/index.php?newAccount';
 var selector = 'form[name="newAccount"]';
 var engines = [ phantomjs, slimerjs ];
 var viewports = [
