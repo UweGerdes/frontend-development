@@ -130,6 +130,7 @@ watchFilesFor.lessBootstrap = [
 ];
 gulp.task('lessBootstrap', function () {
 	return gulp.src( [ path.join(bowerDir, 'bootstrap', 'less', 'bootstrap.less') ] )
+		.pipe(changed(path.join(destDir, 'css'), {extension: '.css'}))
 		.pipe(less())
 		.on('error', log.onError({ message:  'Error: <%= error.message %>' , title: 'LESS Error'}))
 		.pipe(autoprefixer('last 3 version', 'safari 5', 'ie 8', 'ie 9', 'ios 6', 'android 4'))
@@ -148,6 +149,7 @@ watchFilesFor.jsBootstrap = [
 ];
 gulp.task('jsBootstrap', function () {
 	return gulp.src( watchFilesFor.jsBootstrap )
+		.pipe(changed(path.join(destDir, 'js', 'vendor')))
 		.pipe(gulp.dest(path.join(destDir, 'js', 'vendor')))
 		.pipe(log({ message: 'written: <%= file.path %>', title: 'Gulp jsBootstrap' }))
 		;
