@@ -78,7 +78,23 @@ module.exports = {
 			}
 		},
 		{
-			name: 'Error404Page',
+			name: 'Error404ServerScriptUnknown',
+			uri: baseUrl + '/unknown.php',
+			title1: '404 Not Found',
+			elements: {
+				'//h1' : '404 Not Found'
+			},
+			elementsNotExist: [
+				'//*[@id="headline"]',
+				'//*[@id="loginError"]',
+				'//*[contains(@class,"inputError")]',
+				'//*[contains(@class,"loggedIn")]',
+				'//form',
+				'//input'
+			]
+		},
+		{
+			name: 'Error404LoginPageUnknown',
 			uri: baseUrl + '/index.php?unkownPage',
 			title1: '404 not found: unkownPage',
 			elements: {
