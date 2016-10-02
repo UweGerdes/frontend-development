@@ -16,8 +16,8 @@ if (!$login['loginOk']) {
 		$html = login_action($login);
 	} elseif ('newAccount' === $query) {
 		$html = new_account_action();
-	} elseif (preg_match("/^newAccountConfirm=/", $query)) {
-		$html = new_account_confirm_action(preg_replace('/newAccountConfirm=/', '', $query));
+	} elseif (preg_match("/^newAccountConfirm&confirm=/", $query)) {
+		$html = new_account_confirm_action(preg_replace('/newAccountConfirm&confirm=/', '', $query));
 	} else {
 		$html = "<html><head><title>404 not found: $query</title></head><body><h1>Error 404: $query</h1><p class=\"notLoggedIn\">".join("<br>", $login['messages'])."</p></body></html>";
 		header($_SERVER["SERVER_PROTOCOL"]." 404 Not Found", true, 404);

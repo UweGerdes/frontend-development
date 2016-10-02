@@ -13,25 +13,25 @@ $pageId = 'editAccountBodyOk';
 			?>
 			<div id="NameContainer" class="form-group">
 				<label for="Name" class="col-sm-3 control-label">Name:</label>
-				<div id="submittedName" class="col-sm-9"><?php echo $_POST['Name']; ?></div>
+				<div id="submittedName" class="col-sm-9"><p class="form-control-static"><?php echo $_POST['Name']; ?></p></div>
 			</div>
 			<div id="eMailContainer" class="form-group">
 				<label for="eMail" class="col-sm-3 control-label">E-Mail:</label>
-				<div id="submittedEMail" class="col-sm-9"><?php echo $_POST['eMail']; ?></div>
+				<div id="submittedEMail" class="col-sm-9"><p class="form-control-static"><?php echo $_POST['eMail']; ?></p></div>
 			</div>
 			<div id="UsernameContainer" class="form-group">
 				<label for="Username" class="col-sm-3 control-label">Anmeldename:</label>
-				<div id="submittedUsername" class="col-sm-9"><?php echo $_POST['Username']; ?></div>
+				<div id="submittedUsername" class="col-sm-9"><p class="form-control-static"><?php echo $_POST['Username']; ?></p></div>
 			</div>
 			<div id="PasswordContainer" class="form-group">
 				<label for="Password" class="col-sm-3 control-label">Passwort:</label>
-				<div class="col-sm-9"><?php
+				<div class="col-sm-9"><p class="form-control-static"><?php
 					if ($_POST['Password'] == "" && $_POST['Password2'] == "") {
 						echo "nicht geändert";
 					} else {
 						echo "*****";
 					}
-				?></div>
+				?></p></div>
 			</div>
 			<div id="submitContainer" class="form-group">
 				<div class="col-sm-offset-3 col-sm-9">

@@ -114,7 +114,7 @@ if (testData) {
 
 			casper.thenOpen(testCase.uri, function() {
 				browserAlerts = [];
-				this.echo('Test: ' + testData.name + ', Testcase: ' + testCase.name, 'INFO');
+				this.echo('Test: ' + testData.name + ', Testcase: ' + testCase.name + ': ' + testCase.uri, 'INFO');
 				fs.write(testData.dumpDir + testCase.name + '1.html', casper.getHTML(), 0);
 				if (testCase.input) {
 					test.assertExists(testCase.input[0], logLabel + testCase.input[0] + ' element found');

@@ -32,19 +32,19 @@ if ($messages) {
 			<p>Zur Kontrolle hier noch einmal die eingegebenen Daten:</p>
 			<div id="NameContainer" class="form-group">
 				<label for="Name" class="col-sm-3 control-label">Name</label>
-				<div class="col-sm-9"><?php echo $loginData['Name']; ?></div>
+				<div class="col-sm-9"><p class="form-control-static"><?php echo $loginData['Name']; ?></p></div>
 			</div>
 			<div id="eMailContainer" class="form-group">
 				<label for="eMail" class="col-sm-3 control-label">E-Mail</label>
-				<div class="col-sm-9"><?php echo $loginData['eMail']; ?></div>
+				<div class="col-sm-9"><p class="form-control-static"><?php echo $loginData['eMail']; ?></p></div>
 			</div>
 			<div id="UsernameContainer" class="form-group">
 				<label for="Username" class="col-sm-3 control-label">Anmeldename</label>
-				<div class="col-sm-9"><?php echo $loginData['Username']; ?></div>
+				<div class="col-sm-9"><p class="form-control-static"><?php echo $loginData['Username']; ?></p></div>
 			</div>
 			<div id="PasswordContainer" class="form-group">
 				<label for="Password" class="col-sm-3 control-label">Passwort</label>
-				<div class="col-sm-9">*****</div>
+				<div class="col-sm-9"><p class="form-control-static">*****</p></div>
 			</div>
 			<div id="submitContainer" class="form-group">
 				<div class="col-sm-offset-3 col-sm-9">

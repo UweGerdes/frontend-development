@@ -30,7 +30,7 @@ $pageId = 'newAccountBodyOk';
 			</div>
 			<div id="PasswordContainer" class="form-group">
 				<label for="Password" class="col-sm-3 control-label">Passwort</label>
-				<div class="col-sm-9">*****</p></div>
+				<div class="col-sm-9"><p class="form-control-static">*****</p></div>
 			</div>
 		</div>
 	</div>
