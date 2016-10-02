@@ -11,6 +11,22 @@ var testCases = [];
 
 testCases.push(
 	{
+		name: 'ResetTestUser',
+		uri: baseUrl + scriptName +'?deleteAccount&username=testuser',
+		title1: 'Login Zugang gelöscht',
+		elements: {
+			'//body[@class="deleteAccountBodyOk"]': '',
+			'//*[@id="headline"]': 'Daten gelöscht.',
+			'//a[@href="/login/index.php"]': 'zurück zur Anmeldeseite'
+		},
+		elementsNotExist: [
+			'//*[contains(@class,"inputError")]'
+		]
+	}
+);
+
+testCases.push(
+	{
 		name: 'LoginPage',
 		uri: baseUrl + scriptName,
 		title1: 'Bitte anmelden',
@@ -1007,7 +1023,7 @@ testCases.push(
 testCases.push(
 	{
 		name: 'Error404ServerScriptUnknown',
-		uri: baseUrl + '/unknown.php',
+		uri: baseUrl + 'unknown.php',
 		title1: '404 Not Found',
 		elements: {
 			'//h1' : '404 Not Found'

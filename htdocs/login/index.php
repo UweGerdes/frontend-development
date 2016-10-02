@@ -18,6 +18,8 @@ if (!$login['loginOk']) {
 		$html = new_account_action();
 	} elseif (preg_match("/^newAccountConfirm&confirm=/", $query)) {
 		$html = new_account_confirm_action(preg_replace('/newAccountConfirm&confirm=/', '', $query));
+	} elseif (preg_match("/^deleteAccount&username=testuser$/", $query)) {
+		$html = delete_test_user_action();
 	} else {
 		$html = "<html><head><title>404 not found: $query</title></head><body><h1>Error 404: $query</h1><p class=\"notLoggedIn\">".join("<br>", $login['messages'])."</p></body></html>";
 		header($_SERVER["SERVER_PROTOCOL"]." 404 Not Found", true, 404);
@@ -31,6 +33,8 @@ if (!$login['loginOk']) {
 		$html = edit_account_action($login['loginOk'], $login['loginData'], $login['messages']);
 	} elseif ('deleteAccount' === $query) {
 		$html = delete_account_action($login['loginOk'], $login['loginData'], $login['messages']);
+	} elseif (preg_match("/^deleteAccount&username=testuser$/", $query)) {
+		$html = delete_test_user_action();
 	} else {
 		$html = "<html><head><title>404 not found: $query</title></head><body><h1>Error 404: $query</h1><p class=\"loggedIn\">".join("<br>", $login['messages'])."</p></body></html>";
 		header($_SERVER["SERVER_PROTOCOL"]." 404 Not Found", true, 404);

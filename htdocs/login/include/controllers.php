@@ -48,6 +48,12 @@ function delete_account_action($loginOk, $loginData, $messages) {
 	return $html;
 }
 
+function delete_test_user_action() {
+	$result = delete_test_user();
+	$html = render_template('templates/deleteAccountBodyOk.php', $result);
+	return $html;
+}
+
 // helper function to render templates
 function render_template($path, array $args) {
 	global $htmlroot;

@@ -516,6 +516,33 @@ function delete_user($loginData) {
 	return $result;
 }
 
+function delete_test_user() {
+	$result = array();
+	$result['messages'] = array();
+	$result['deleteAccountOk'] = false;
+	$mysqli = open_database_connection();
+	if ($mysqli->connect_errno) {
+		$result['messages'][] = "Failed to connect to database: " . $mysqli->connect_error;
+	} else {
+		$sql = "DELETE FROM `Login` WHERE `Username`='testuser'";
+		if ($delete = $mysqli->prepare($sql)) {
+			$delete->execute();
+			if ($delete->errno != 0) {
+				$result['messages'][] = "Daten konnten nicht gelöscht werden: ".$delete->error;
+				$result['deleteAccountOk'] = false;
+			} else {
+				$result['messages'][] = "Daten wurden gelöscht.";
+				$result['deleteAccountOk'] = true;
+			}
+			$delete->close();
+		} else {
+			$result['messages'][] = "Daten nicht gelöscht: ".$mysqli->error;
+			$result['deleteAccountOk'] = false;
+		}
+	}
+	return $result;
+}
+
 function log_out_user($sessionCookie) {
 	$messages = array();
 	$mysqli = open_database_connection();
