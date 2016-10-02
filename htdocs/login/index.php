@@ -20,7 +20,7 @@ if (!$login['loginOk']) {
 	} elseif (preg_match("/^newAccountConfirm=/", $query)) {
 		$html = new_account_confirm_action(preg_replace('/newAccountConfirm=/', '', $query));
 	} else {
-		$html = "<html><head><title>404 not found: $uri</title></head><body><h1>Error 404: $uri</h1><p class=\"notLoggedIn\">".join("<br>", $login['messages'])."</p></body></html>";
+		$html = "<html><head><title>404 not found: $query</title></head><body><h1>Error 404: $query</h1><p class=\"notLoggedIn\">".join("<br>", $login['messages'])."</p></body></html>";
 		$httpStatusCode = "404";
 	}
 } else {
@@ -33,7 +33,7 @@ if (!$login['loginOk']) {
 	} elseif ('deleteAccount' === $query) {
 		$html = delete_account_action($login['loginOk'], $login['loginData'], $login['messages']);
 	} else {
-		$html = "<html><head><title>404 not found: $uri</title></head><body><h1>Error 404: $uri</h1><p class=\"loggedIn\">".join("<br>", $login['messages'])."</p></body></html>";
+		$html = "<html><head><title>404 not found: $query</title></head><body><h1>Error 404: $query</h1><p class=\"loggedIn\">".join("<br>", $login['messages'])."</p></body></html>";
 		$httpStatusCode = "404";
 	}
 }

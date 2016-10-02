@@ -2,9 +2,7 @@
 //
 // (c) Uwe Gerdes, entwicklung@uwegerdes.de
 
-var domain = 'http://frontend.local';
-var baseDir = '/login/';
-var baseUrl = domain + baseDir;
+var baseUrl = 'http://dockerhost:3080/login';
 
 module.exports = {
 	name: 'default',
@@ -13,18 +11,18 @@ module.exports = {
 	testCases: [
 		{
 			name: 'LoginPage',
-			uri: baseUrl,
+			uri: baseUrl + '/index.php',
 			title1: 'Bitte anmelden',
 			elements: {
-				'//body[@id="loginBody"]': '',
-				'//link[@rel="stylesheet"][@href="/login/css/application.css"]' : '',
+				'//body[@class="loginBody"]': '',
+				'//link[@rel="stylesheet"][@href="/login/css/login.css"]' : '',
 				'//*[@id="headline"]': 'Anmelden',
 				'//form[@name="login"]': '',
 				'//input[@type="text"][@name="Username"][@value=""]': '',
 				'//input[@type="password"][@name="Password"]': '',
 				'//input[@type="checkbox"][@name="rememberMe"][@value="ja"]': '',
 				'//*[@type="submit"][@name="submit"]': 'Anmelden',
-				'//a[@href="/login/index.php/newAccount"]': 'Login beantragen',
+				'//a[@href="/login/index.php?newAccount"]': 'Login beantragen',
 				'//div[@id="pagecomplete"][contains(@class,"hidden")]': ''
 			},
 			elementsNotExist: [
@@ -33,7 +31,7 @@ module.exports = {
 		},
 		{
 			name: 'LoginFail',
-			uri: baseUrl,
+			uri: baseUrl + '/index.php',
 			title1: 'Bitte anmelden',
 			input: [
 				'form[name="login"]',
@@ -48,7 +46,7 @@ module.exports = {
 			elements: {
 				'//*[@id="headline"]': 'Anmelden',
 				'//*[@id="loginError"]': 'Anmeldung fehlgeschlagen!',
-				'//*[@class="messages"]': 'Benutzername / Passwort nicht gültig',
+				'//*[contains(@class, "messages")]': 'Benutzername / Passwort nicht gültig',
 				'//form[@name="login"][contains(@class,"inputError")]': '',
 				'//input[@type="text"][@name="Username"][@value="usernamefailed"]': '',
 				'//input[@type="password"][@name="Password"]': '',
@@ -57,7 +55,7 @@ module.exports = {
 		},
 		{
 			name: 'LoginFailPasswordShort',
-			uri: baseUrl,
+			uri: baseUrl + '/index.php',
 			title1: 'Bitte anmelden',
 			input: [
 				'form[name="login"]',
@@ -72,7 +70,7 @@ module.exports = {
 			elements: {
 				'//*[@id="headline"]': 'Anmelden',
 				'//*[@id="loginError"]': 'Anmeldung fehlgeschlagen!',
-				'//*[@class="messages"]': 'Benutzername / Passwort nicht gültig',
+				'//*[contains(@class, "messages")]': 'Benutzername / Passwort nicht gültig',
 				'//form[@name="login"][contains(@class,"inputError")]': '',
 				'//input[@type="text"][@name="Username"][@value="failed"]': '',
 				'//input[@type="password"][@name="Password"]': '',
@@ -81,10 +79,10 @@ module.exports = {
 		},
 		{
 			name: 'Error404Page',
-			uri: baseUrl + 'index.php/unkownPage',
-			title1: '404 not found: /unkownPage',
+			uri: baseUrl + '/index.php?unkownPage',
+			title1: '404 not found: unkownPage',
 			elements: {
-				'//h1' : 'Error 404: /unkownPage',
+				'//h1' : 'Error 404: unkownPage',
 				'//*[contains(@class,"notLoggedIn")]': ''
 			},
 			elementsNotExist: [

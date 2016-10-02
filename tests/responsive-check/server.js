@@ -99,10 +99,6 @@ for (var k in interfaces) {
 }
 // console.log("IP address of container  :  " + addresses);
 console.log('responsive-check server listening on http://' + addresses[0] + ':' + httpPort);
-if (typeof livereloadPort != "undefined") {
-	console.log('responsive-check livereload listening on http://' + addresses[0] + ':' + livereloadPort);
-}
-
 
 // Model //
 // get configurations
