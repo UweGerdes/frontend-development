@@ -250,6 +250,23 @@ gulp.task('test-forms-login', function(callback) {
 	loader.stdout.on('data', function(data) { if(!data.match(/PASS/)) { console.log(data.trim()); } });
 });
 
+watchFilesFor['test-forms-login-slimer'] = [
+	path.join(testDir, 'test-forms', 'config', 'login.js')
+];
+gulp.task('test-forms-login-slimer', function(callback) {
+	del( [
+			path.join(testDir, 'test-forms', 'results', 'login', '*')
+		], { force: true } );
+	var loader = exec('xvfb-run -a casperjs --engine=slimerjs test test-forms.js --cfg=config/login.js',
+		{ cwd: path.join(testDir, 'test-forms') },
+		function (err, stdout, stderr) {
+			logExecResults(err, stdout, stderr);
+			callback();
+		}
+	);
+	loader.stdout.on('data', function(data) { if(!data.match(/PASS/)) { console.log(data.trim()); } });
+});
+
 watchFilesFor.responsiveCheckDefault = [
 	path.join(testDir, 'responsive-check', 'config', 'default.js'),
 	path.join(testDir, 'responsive-check', 'index.js'),

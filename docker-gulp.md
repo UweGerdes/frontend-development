@@ -120,7 +120,7 @@ $ docker run -it \
 	bash
 ```
 
-Inside the running docker container start `bower install` to load more dependencies, they will be in your project directory (you might want to look inside for using the components) and set your git settings - you can `git commit` et.al. inside the container:
+Inside the running docker container start `bower install` to load more dependencies, they will be in your project directory (you might want to look inside for using the components) and set your git settings - you can `git commit` etc. inside the container:
 
 ```bash
 $ bower install
@@ -139,6 +139,7 @@ $ gulp tests
 $ gulp test-forms-default
 $ gulp test-forms-default-slimer
 $ gulp test-forms-login
+$ gulp test-forms-login-slimer
 
 $ gulp watch
 
@@ -173,11 +174,4 @@ The cp commands make shure that `npm` uses the projects `package.json`. Because 
 
 You can also restart this container in another project which uses gulp. All installed node modules will be available in all projects. Please be careful not to remove modules used in other projects. Removing them from the `package.json` should be enough.
 
-If you think of removing a container after installing some node modules and want to run it later and *must* call the update command above inside the new container to reinstall the modules. Or you can rebuild the image, the new packages are included too.
-
-Perhaps you want to add a watch target for gulpfile.js and package.json which restarts the gulp process using a bash script inside the container. But be careful when the gulpfile.js has errors: it will exit and you can't access it with exec.
-Correct your errors and run the container again (-rm flag).
-
-Perhaps one might consider to commit an elaborate base image from the container to be used in other projects.
-
-With `--add-host virtual-host-name:$(hostname -i)` you can add a local virtual host to the containers `/etc/hosts` file.
+If you think of removing a container after installing some node modules and want to run it later and *must* call the update command above inside the new container to reinstall the modules. Or you can `docker build` the image with the full featured `package.json`.

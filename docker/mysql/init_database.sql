@@ -18,7 +18,7 @@ CREATE TABLE `Login` (
 ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
 
 --
--- Data for table `Login`, password is 123456
+-- Data for table `Login`, username uwe, password is 123456
 --
 
 LOCK TABLES `Login` WRITE;
