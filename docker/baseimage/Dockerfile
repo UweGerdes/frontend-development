@@ -1,4 +1,4 @@
-FROM ubuntu:trusty
+FROM ubuntu:latest
 MAINTAINER entwicklung@uwegerdes.de
 
 ARG APT_PROXY

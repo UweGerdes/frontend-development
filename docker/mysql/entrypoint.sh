@@ -1,163 +1,133 @@
 #!/bin/bash
+set -eo pipefail
+shopt -s nullglob
 
-# from https://github.com/sameersbn/docker-mysql
-
-set -e
-
-DB_NAME=${DB_NAME:-}
-DB_USER=${DB_USER:-}
-DB_PASS=${DB_PASS:-}
-
-DB_REMOTE_ROOT_NAME=${DB_REMOTE_ROOT_NAME:-}
-DB_REMOTE_ROOT_PASS=${DB_REMOTE_ROOT_PASS:-}
-DB_REMOTE_ROOT_HOST=${DB_REMOTE_ROOT_HOST:-"172.17.0.1"}
-
-MYSQL_CHARSET=${MYSQL_CHARSET:-"utf8"}
-MYSQL_COLLATION=${MYSQL_COLLATION:-"utf8_unicode_ci"}
-
-create_data_dir() {
-  mkdir -p ${MYSQL_DATA_DIR}
-  chmod -R 0700 ${MYSQL_DATA_DIR}
-  chown -R ${MYSQL_USER}:${MYSQL_USER} ${MYSQL_DATA_DIR}
-}
-
-create_run_dir() {
-  mkdir -p ${MYSQL_RUN_DIR}
-  chmod -R 0755 ${MYSQL_RUN_DIR}
-  chown -R ${MYSQL_USER}:root ${MYSQL_RUN_DIR}
-}
-
-create_log_dir() {
-  mkdir -p ${MYSQL_LOG_DIR}
-  chmod -R 0755 ${MYSQL_LOG_DIR}
-  chown -R ${MYSQL_USER}:${MYSQL_USER} ${MYSQL_LOG_DIR}
-}
-
-apply_configuration_fixes() {
-  # disable error log
-  sed 's/^log_error/# log_error/' -i /etc/mysql/my.cnf
-
-  # Fixing StartUp Porblems with some DNS Situations and Speeds up the stuff
-  # http://www.percona.com/blog/2008/05/31/dns-achilles-heel-mysql-installation/
-  cat > /etc/mysql/conf.d/mysql-skip-name-resolv.cnf <<EOF
-[mysqld]
-skip_name_resolve
-EOF
-}
-
-remove_debian_systen_maint_password() {
-  #
-  # the default password for the debian-sys-maint user is randomly generated
-  # during the installation of the mysql-server package.
-  #
-  # Due to the nature of docker we blank out the password such that the maintenance
-  # user can login without a password.
-  #
-  sed 's/password = .*/password = /g' -i /etc/mysql/debian.cnf
-}
-
-initialize_mysql_database() {
-  # initialize MySQL data directory
-  if [ ! -d ${MYSQL_DATA_DIR}/mysql ]; then
-    echo "Installing database..."
-    mysql_install_db --user=mysql >/dev/null 2>&1
-
-    # start mysql server
-    echo "Starting MySQL server..."
-    /usr/bin/mysqld_safe >/dev/null 2>&1 &
-
-    # wait for mysql server to start (max 30 seconds)
-    timeout=30
-    echo -n "Waiting for database server to accept connections"
-    while ! /usr/bin/mysqladmin -u root status >/dev/null 2>&1
-    do
-      timeout=$(($timeout - 1))
-      if [ $timeout -eq 0 ]; then
-        echo -e "\nCould not connect to database server. Aborting..."
-        exit 1
-      fi
-      echo -n "."
-      sleep 1
-    done
-    echo
-
-    ## create a localhost only, debian-sys-maint user
-    ## the debian-sys-maint is used while creating users and database
-    ## as well as to shut down or starting up the mysql server via mysqladmin
-    echo "Creating debian-sys-maint user..."
-    mysql -uroot -e "GRANT ALL PRIVILEGES on *.* TO 'debian-sys-maint'@'localhost' IDENTIFIED BY '' WITH GRANT OPTION;"
-
-    if [ -n "${DB_REMOTE_ROOT_NAME}" -a -n "${DB_REMOTE_ROOT_HOST}" ]; then
-      echo "Creating remote user \"${DB_REMOTE_ROOT_NAME}\" with root privileges..."
-      mysql -uroot \
-      -e "GRANT ALL PRIVILEGES ON *.* TO '${DB_REMOTE_ROOT_NAME}'@'${DB_REMOTE_ROOT_HOST}' IDENTIFIED BY '${DB_REMOTE_ROOT_PASS}' WITH GRANT OPTION; FLUSH PRIVILEGES;"
-    fi
-
-    /usr/bin/mysqladmin --defaults-file=/etc/mysql/debian.cnf shutdown
-  fi
-}
-
-create_users_and_databases() {
-  # create new user / database
-  if [ -n "${DB_USER}" -o -n "${DB_NAME}" ]; then
-    /usr/bin/mysqld_safe >/dev/null 2>&1 &
-
-    # wait for mysql server to start (max 30 seconds)
-    timeout=30
-    while ! /usr/bin/mysqladmin -u root status >/dev/null 2>&1
-    do
-      timeout=$(($timeout - 1))
-      if [ $timeout -eq 0 ]; then
-        echo "Could not connect to mysql server. Aborting..."
-        exit 1
-      fi
-      sleep 1
-    done
-
-    if [ -n "${DB_NAME}" ]; then
-      for db in $(awk -F',' '{for (i = 1 ; i <= NF ; i++) print $i}' <<< "${DB_NAME}"); do
-        echo "Creating database \"$db\"..."
-        mysql --defaults-file=/etc/mysql/debian.cnf \
-          -e "CREATE DATABASE IF NOT EXISTS \`$db\` DEFAULT CHARACTER SET \`$MYSQL_CHARSET\` COLLATE \`$MYSQL_COLLATION\`;"
-          if [ -n "${DB_USER}" ]; then
-            echo "Granting access to database \"$db\" for user \"${DB_USER}\"..."
-            mysql --defaults-file=/etc/mysql/debian.cnf \
-            -e "GRANT ALL PRIVILEGES ON \`$db\`.* TO '${DB_USER}' IDENTIFIED BY '${DB_PASS}';"
-          fi
-        done
-    fi
-    /usr/bin/mysqladmin --defaults-file=/etc/mysql/debian.cnf shutdown
-  fi
-}
-
-listen_on_all_interfaces() {
-  cat > /etc/mysql/conf.d/mysql-listen.cnf <<EOF
-[mysqld]
-bind = 0.0.0.0
-EOF
-}
-
-create_data_dir
-create_run_dir
-create_log_dir
-
-# allow arguments to be passed to mysqld_safe
-if [[ ${1:0:1} = '-' ]]; then
-  EXTRA_ARGS="$@"
-  set --
-elif [[ ${1} == mysqld_safe || ${1} == $(which mysqld_safe) ]]; then
-  EXTRA_ARGS="${@:2}"
-  set --
+# if command starts with an option, prepend mysqld
+if [ "${1:0:1}" = '-' ]; then
+	set -- mysqld "$@"
 fi
 
-# default behaviour is to launch mysqld_safe
-if [[ -z ${1} ]]; then
-  apply_configuration_fixes
-  remove_debian_systen_maint_password
-  initialize_mysql_database
-  create_users_and_databases
-  listen_on_all_interfaces
-  exec $(which mysqld_safe) $EXTRA_ARGS
-else
-  exec "$@"
+# skip setup if they want an option that stops mysqld
+wantHelp=
+for arg; do
+	case "$arg" in
+		-'?'|--help|--print-defaults|-V|--version)
+			wantHelp=1
+			break
+			;;
+	esac
+done
+
+_datadir() {
+	"$@" --verbose --help 2>/dev/null | awk '$1 == "datadir" { print $2; exit }'
+}
+
+# allow the container to be started with `--user`
+if [ "$1" = 'mysqld' -a -z "$wantHelp" -a "$(id -u)" = '0' ]; then
+	DATADIR="$(_datadir "$@")"
+	mkdir -p "$DATADIR"
+	chown -R mysql:mysql "$DATADIR"
+	exec gosu mysql "$BASH_SOURCE" "$@"
 fi
+
+if [ "$1" = 'mysqld' -a -z "$wantHelp" ]; then
+	# Get config
+	DATADIR="$(_datadir "$@")"
+
+	if [ ! -d "$DATADIR/mysql" ]; then
+		if [ -z "$MYSQL_ROOT_PASSWORD" -a -z "$MYSQL_ALLOW_EMPTY_PASSWORD" -a -z "$MYSQL_RANDOM_ROOT_PASSWORD" ]; then
+			echo >&2 'error: database is uninitialized and password option is not specified '
+			echo >&2 '  You need to specify one of MYSQL_ROOT_PASSWORD, MYSQL_ALLOW_EMPTY_PASSWORD and MYSQL_RANDOM_ROOT_PASSWORD'
+			exit 1
+		fi
+
+		mkdir -p "$DATADIR"
+
+		echo 'Initializing database'
+		"$@" --initialize-insecure
+		echo 'Database initialized'
+
+		"$@" --skip-networking &
+		pid="$!"
+
+		mysql=( mysql --protocol=socket -uroot )
+
+		for i in {30..0}; do
+			if echo 'SELECT 1' | "${mysql[@]}" &> /dev/null; then
+				break
+			fi
+			echo 'MySQL init process in progress...'
+			sleep 1
+		done
+		if [ "$i" = 0 ]; then
+			echo >&2 'MySQL init process failed.'
+			exit 1
+		fi
+
+		if [ -z "$MYSQL_INITDB_SKIP_TZINFO" ]; then
+			# sed is for https://bugs.mysql.com/bug.php?id=20545
+			mysql_tzinfo_to_sql /usr/share/zoneinfo | sed 's/Local time zone must be set--see zic manual page/FCTY/' | "${mysql[@]}" mysql
+		fi
+
+		if [ ! -z "$MYSQL_RANDOM_ROOT_PASSWORD" ]; then
+			MYSQL_ROOT_PASSWORD="$(pwgen -1 32)"
+			echo "GENERATED ROOT PASSWORD: $MYSQL_ROOT_PASSWORD"
+		fi
+		"${mysql[@]}" <<-EOSQL
+			-- What's done in this file shouldn't be replicated
+			--  or products like mysql-fabric won't work
+			SET @@SESSION.SQL_LOG_BIN=0;
+			DELETE FROM mysql.user ;
+			CREATE USER 'root'@'%' IDENTIFIED BY '${MYSQL_ROOT_PASSWORD}' ;
+			GRANT ALL ON *.* TO 'root'@'%' WITH GRANT OPTION ;
+			DROP DATABASE IF EXISTS test ;
+			FLUSH PRIVILEGES ;
+		EOSQL
+
+		if [ ! -z "$MYSQL_ROOT_PASSWORD" ]; then
+			mysql+=( -p"${MYSQL_ROOT_PASSWORD}" )
+		fi
+
+		if [ "$MYSQL_DATABASE" ]; then
+			echo "CREATE DATABASE IF NOT EXISTS \`$MYSQL_DATABASE\` ;" | "${mysql[@]}"
+			mysql+=( "$MYSQL_DATABASE" )
+		fi
+
+		if [ "$MYSQL_USER" -a "$MYSQL_PASSWORD" ]; then
+			echo "CREATE USER '$MYSQL_USER'@'%' IDENTIFIED BY '$MYSQL_PASSWORD' ;" | "${mysql[@]}"
+
+			if [ "$MYSQL_DATABASE" ]; then
+				echo "GRANT ALL ON \`$MYSQL_DATABASE\`.* TO '$MYSQL_USER'@'%' ;" | "${mysql[@]}"
+			fi
+
+			echo 'FLUSH PRIVILEGES ;' | "${mysql[@]}"
+		fi
+
+		echo
+		for f in /docker-entrypoint-initdb.d/*; do
+			case "$f" in
+				*.sh)     echo "$0: running $f"; . "$f" ;;
+				*.sql)    echo "$0: running $f"; "${mysql[@]}" < "$f"; echo ;;
+				*.sql.gz) echo "$0: running $f"; gunzip -c "$f" | "${mysql[@]}"; echo ;;
+				*)        echo "$0: ignoring $f" ;;
+			esac
+			echo
+		done
+
+		if [ ! -z "$MYSQL_ONETIME_PASSWORD" ]; then
+			"${mysql[@]}" <<-EOSQL
+				ALTER USER 'root'@'%' PASSWORD EXPIRE;
+			EOSQL
+		fi
+		if ! kill -s TERM "$pid" || ! wait "$pid"; then
+			echo >&2 'MySQL init process failed.'
+			exit 1
+		fi
+
+		echo
+		echo 'MySQL init process done. Ready for start up.'
+		echo
+	fi
+fi
+
+exec "$@"

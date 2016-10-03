@@ -56,9 +56,7 @@ The commands to build the docker images for the sample php application are:
 $ docker build -t uwegerdes/baseimage --build-arg TZ="Europe/Berlin" ./baseimage/
 
 ### with apt-cacher-ng
-$ docker build -t uwegerdes/baseimage --build-arg APT_PROXY="http://$(hostname -i):3142" --build-arg TZ="Europe/Berlin" ./baseimage/
-
-$ docker rmi uwegerdes/baseimage
+$ docker build -t uwegerdes/baseimage --build-arg APT_PROXY="http://$(hostname -i):3142" --build-arg TZ="Europe/Berlin" ./baseimage/ && date
 
 $ docker build -t uwegerdes/data ./data/
 
@@ -66,8 +64,9 @@ $ docker build -t uwegerdes/mysql ./mysql/
 
 $ docker build -t uwegerdes/php-fpm ./php-fpm/
 
+$ docker build -t uwegerdes/mail ./mail/
+
 $ docker build -t uwegerdes/nginx ./nginx/
-$ docker rmi uwegerdes/nginx
 ```
 
 I'm using my own baseimage, it contains a proxy setting for apt - if you build more often this will save some download time.
@@ -80,15 +79,16 @@ Now we need to start and connect the containers for our application. The command
 
 ### data
 
-There is nothing much happening in the data container. $(pwd)/htdocs is used by nginx and php-fpm, /srv/docker/mysql by mysql. Make sure you have a htdocs directory in your current location or supply the complete path:
+There is nothing much happening in the data container. $(pwd)/../htdocs is used by nginx and php-fpm. Make sure you have a htdocs directory in your parent folder (`$(pwd)/../htdocs`) or supply the complete path of your desired web root:
 
 ```bash
 $ docker run \
 	-v $(pwd)/../htdocs:/var/www/htdocs \
-	-v /srv/docker/mysql:/var/lib/mysql \
 	--name data \
 	uwegerdes/data
 ```
+
+If you want to keep the database even if the data container is deleted add `-v /srv/docker/mysql:/var/lib/mysql` to the run command and your database is on your system in `/srv/docker/mysql`.
 
 The command will create a container and exit. That is ok because only the volumes from the container will be used.
 
@@ -99,15 +99,23 @@ If you set `CMD [ "/bin/bash" ]` in the Dockerfile you can start the container w
 Create a directory `/srv/docker/mysql` to store the data outside the container and the image - if you recreate them the data is still there.
 
 ```bash
+$ docker rm mysql && docker rmi uwegerdes/mysql && docker build -t uwegerdes/mysql ./mysql/ && date
+
 $ docker run -d \
-	-e 'DB_USER=demoUser' \
-	-e 'DB_PASS=demoPass' \
-	-e 'DB_NAME=demoDb' \
-	-e 'DB_REMOTE_ROOT_NAME=root' \
-	-e 'DB_REMOTE_ROOT_PASS=123456' \
-	--volumes-from data \
+	-e 'MYSQL_USER=demoUser' \
+	-e 'MYSQL_PASSWORD=demoPass' \
+	-e 'MYSQL_DATABASE=demoDb' \
+	-e 'MYSQL_ROOT_PASSWORD=123456' \
 	--name mysql \
 	uwegerdes/mysql
+
+$ docker run -it \
+	-e 'MYSQL_USER=demoUser' \
+	-e 'MYSQL_PASSWORD=demoPass' \
+	-e 'MYSQL_DATABASE=demoDb' \
+	-e 'MYSQL_ROOT_PASSWORD=123456' \
+	--name mysql-bash \
+	uwegerdes/mysql bash
 ```
 
 Now your mysql server runs in background waiting for connections.
@@ -125,7 +133,7 @@ To work with the database go to the `docker` directory and use:
 ```bash
 $ docker exec -i mysql mysql -u demoUser -pdemoPass demoDb < ./mysql/init_database.sql
 $ docker exec -i mysql mysqldump -u demoUser -pdemoPass demoDb > demoDbDump.sql
-$ docker exec -it mysql mysql -u demoUser -pdemoPass demoDb
+$ docker exec -it mysql bash
 ```
 
 Or have a script `docker-mysql.sh` to decide if there is a pipe or not:
@@ -149,6 +157,27 @@ $ docker run -d \
 	--link mysql \
 	--name php-fpm \
 	uwegerdes/php-fpm
+```
+
+There is nothing much to say: php-fpm need the php files (the server only sends the http request) and the application want's to use the database.
+
+### mail
+
+For the login application we need a mail server which receives and :
+
+```bash
+$ docker rm mail && docker rmi uwegerdes/mail && docker build -t uwegerdes/mail ./mail/ && date
+
+$ docker run -d \
+	--volumes-from data \
+	--name mail \
+	uwegerdes/mail
+
+	docker run -it \
+	--volumes-from data \
+	--name mail \
+	uwegerdes/mail \
+	bash
 ```
 
 There is nothing much to say: php-fpm need the php files (the server only sends the http request) and the application want's to use the database.
