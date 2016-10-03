@@ -250,9 +250,6 @@ gulp.task('test-forms-login', function(callback) {
 	loader.stdout.on('data', function(data) { if(!data.match(/PASS/)) { console.log(data.trim()); } });
 });
 
-watchFilesFor['test-forms-login-slimer'] = [
-	path.join(testDir, 'test-forms', 'config', 'login.js')
-];
 gulp.task('test-forms-login-slimer', function(callback) {
 	del( [
 			path.join(testDir, 'test-forms', 'results', 'login', '*')

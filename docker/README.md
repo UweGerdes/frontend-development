@@ -69,7 +69,7 @@ $ docker build -t uwegerdes/nginx ./nginx/
 $ docker build -t uwegerdes/mail ./mail/
 ```
 
-To stop, remove, build and run everything copy the following:
+To stop, remove, build and run everything copy the following in a shell window (don't ask me what to do on Windows systems):
 
 ```bash
 $ docker stop nginx php-fpm mysql && \
@@ -102,8 +102,7 @@ docker run -d \
 	--volumes-from php-fpm \
 	--link php-fpm \
 	--name nginx \
-	uwegerdes/nginx && \
-	date
+	uwegerdes/nginx
 ```
 
 I'm using my own baseimage, it contains a proxy setting for apt - if you build more often this will save some download time.
