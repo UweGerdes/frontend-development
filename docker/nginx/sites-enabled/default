@@ -15,15 +15,11 @@ server {
         try_files $uri $uri/ =404;
     }
 
-    location ~ index\.php$ {
-        fastcgi_pass php-fpm:9000;
-        #fastcgi_pass unix:/var/run/php5-fpm.sock;
+    location ~ [^/]\.php(/|$) {
+        include snippets/fastcgi-php.conf;
 
-        fastcgi_index index.php;
-
-        include fastcgi_params;
-
-        fastcgi_param HTTPS off;
+        #fastcgi_pass php-fpm:9000;
+        fastcgi_pass unix:/run/php/php7.0-fpm.sock;
     }
 }
 

@@ -64,14 +64,49 @@ $ docker build -t uwegerdes/mysql ./mysql/
 
 $ docker build -t uwegerdes/php-fpm ./php-fpm/
 
-$ docker build -t uwegerdes/mail ./mail/
-
 $ docker build -t uwegerdes/nginx ./nginx/
+
+$ docker build -t uwegerdes/mail ./mail/
+```
+
+To stop, remove, build and run everything copy the following:
+
+```bash
+$ docker stop nginx php-fpm mysql && \
+	docker rm nginx php-fpm mysql data && \
+	docker rmi uwegerdes/nginx uwegerdes/php-fpm uwegerdes/mysql uwegerdes/data uwegerdes/baseimage && \
+	docker build -t uwegerdes/baseimage --build-arg APT_PROXY="http://$(hostname -i):3142" --build-arg TZ="Europe/Berlin" ./baseimage/ && \
+	docker build -t uwegerdes/data ./data/ && \
+	docker build -t uwegerdes/mysql ./mysql/ && \
+	docker build -t uwegerdes/php-fpm ./php-fpm/ && \
+	docker build -t uwegerdes/nginx ./nginx/ && \
+docker run \
+	-v $(pwd)/../htdocs:/var/www/htdocs \
+	--name data \
+	uwegerdes/data && \
+docker run -d \
+	-e 'MYSQL_USER=demoUser' \
+	-e 'MYSQL_PASSWORD=demoPass' \
+	-e 'MYSQL_DATABASE=demoDb' \
+	-e 'MYSQL_ROOT_PASSWORD=123456' \
+	--name mysql \
+	uwegerdes/mysql && \
+docker run -d \
+	--volumes-from data \
+	--link mysql \
+	--name php-fpm \
+	uwegerdes/php-fpm && \
+docker run -d \
+	-p 3080:80 \
+	--volumes-from data \
+	--volumes-from php-fpm \
+	--link php-fpm \
+	--name nginx \
+	uwegerdes/nginx && \
+	date
 ```
 
 I'm using my own baseimage, it contains a proxy setting for apt - if you build more often this will save some download time.
-
-Mysql setup only works on on ubuntu:trusty, not on ubuntu:latest. I should investigate that.
 
 ## Starting the containers
 
@@ -118,7 +153,7 @@ $ docker run -it \
 	uwegerdes/mysql bash
 ```
 
-Now your mysql server runs in background waiting for connections.
+Now your mysql server starts up ( in background waiting for connections.
 
 You don't need all external params - but either create a database with a user or set a root account to create it later.
 
@@ -126,7 +161,7 @@ The mysql container exposes port 3306 but we don't expose it on the host system.
 
 Otherwise you could add `-p 3086:3306` - you see a port number mapping, it should not collide with the server on my host system.
 
-To keep the database on your host you could set `-v /srv/docker/mysql:/var/lib/mysql` instead of `--volumes-from data`.
+To keep the database on your host you could set `-v /srv/docker/mysql:/var/lib/mysql`.
 
 To work with the database go to the `docker` directory and use:
 
@@ -157,6 +192,12 @@ $ docker run -d \
 	--link mysql \
 	--name php-fpm \
 	uwegerdes/php-fpm
+
+$ docker run -it \
+	--volumes-from data \
+	--link mysql \
+	--name php-fpm-bash \
+	uwegerdes/php-fpm bash
 ```
 
 There is nothing much to say: php-fpm need the php files (the server only sends the http request) and the application want's to use the database.
@@ -190,9 +231,16 @@ To connect it with php-fpm use:
 $ docker run -d \
 	-p 3080:80 \
 	--volumes-from data \
-	--link php-fpm \
+	--volumes-from php-fpm \
 	--name nginx \
 	uwegerdes/nginx
+
+$ docker run -it \
+	-p 3080:80 \
+	--volumes-from data \
+	--volumes-from php-fpm \
+	--name nginx-bash \
+	uwegerdes/nginx bash
 ```
 
 To use different configuration add the following lines

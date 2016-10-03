@@ -21,25 +21,19 @@ RUN { \
 	rm -rf /var/lib/mysql && \
 	mkdir -p /var/lib/mysql /var/run/mysqld && \
 	chown -R mysql:mysql /var/lib/mysql /var/run/mysqld && \
-	chmod 777 /var/run/mysqld
-
-# && \
-#	ln -sf /dev/stderr ${MYSQL_LOG_DIR}/error.log
-
-# comment out a few problematic configuration values
-# don't reverse lookup hostnames, they are usually another container
-RUN sed -Ei 's/^(bind-address|log)/#&/' /etc/mysql/mysql.conf.d/mysqld.cnf \
-	&& echo 'skip-host-cache\nskip-name-resolve' | awk '{ print } $1 == "[mysqld]" && c == 0 { c = 1; system("cat") }' /etc/mysql/mysql.conf.d/mysqld.cnf > /tmp/mysqld.cnf \
-	&& mv /tmp/mysqld.cnf /etc/mysql/mysql.conf.d/mysqld.cnf
+	chmod 777 /var/run/mysqld && \
+	sed -Ei 's/^(bind-address|log)/#&/' /etc/mysql/mysql.conf.d/mysqld.cnf && \
+	echo 'skip-host-cache\nskip-name-resolve' | awk '{ print } $1 == "[mysqld]" && c == 0 { c = 1; system("cat") }' /etc/mysql/mysql.conf.d/mysqld.cnf > /tmp/mysqld.cnf && \
+	mv /tmp/mysqld.cnf /etc/mysql/mysql.conf.d/mysqld.cnf
 
 COPY entrypoint.sh /usr/local/bin/
 RUN chmod 755 /usr/local/bin/entrypoint.sh
-RUN ln -s /usr/local/bin/entrypoint.sh /entrypoint.sh
-ENTRYPOINT ["/entrypoint.sh"]
+ENTRYPOINT ["/usr/local/bin/entrypoint.sh"]
+
+COPY init_database.sql /entrypoint-initdb.d/
 
 EXPOSE 3306
 
 VOLUME [ "${MYSQL_DATA_DIR}", "${MYSQL_RUN_DIR}" ]
-
 
 CMD ["mysqld"]
