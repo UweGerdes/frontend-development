@@ -1,11 +1,12 @@
-//
-// default configuration for responsive-check
-//
+/*
+ * default configuration for responsive-check
+ */
 
 var slimerjs = 'slimerjs';
 var phantomjs = 'phantomjs';
 
-var baseUrl = 'http://dockerhost:3080/login/index.php?newAccount';
+var server = process.env.WEBSERVER || 'dockerhost';
+var baseUrl = 'http://' + server + '/login/index.php?newAccount';
 var selector = 'form[name="newAccount"]';
 var engines = [ phantomjs, slimerjs ];
 var viewports = [

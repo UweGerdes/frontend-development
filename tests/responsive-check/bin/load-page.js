@@ -67,9 +67,9 @@ casper.options.onResourceRequested = function(C, requestData, request) {
 	}
 };
 
-// evaluated in browser
-// local declaration to keep jshint quiet
-var document, XPathResult;
+// evaluated in browser, keep jshint quiet
+/* globals document, XPathResult */
+
 function _getStyles(selector, hover) {
 	var getStyles = function(element, pseudo) {
 		var styles = {};

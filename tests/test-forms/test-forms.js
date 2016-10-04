@@ -52,8 +52,7 @@ module.exports = {
  */
 'use strict';
 
-/* jshint node:true */
-/* global casper */
+/* globals casper */
 
 var colorizer = require('colorizer').create('Colorizer'),
 	fs = require('fs'),
