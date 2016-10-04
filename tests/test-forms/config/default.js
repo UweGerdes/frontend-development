@@ -2,7 +2,11 @@
 //
 // (c) Uwe Gerdes, entwicklung@uwegerdes.de
 
-var baseUrl = 'http://dockerhost:3080/login';
+/* jshint node:true */
+/* global casper */
+
+var server = casper.cli.options.WEBSERVER || 'dockerhost';
+var baseUrl = 'http://' + server + '/login';
 
 module.exports = {
 	name: 'default',

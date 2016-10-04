@@ -103,6 +103,8 @@ docker run -d \
 	--link php-fpm \
 	--name nginx \
 	uwegerdes/nginx
+
+$ docker start nginx php-fpm mysql
 ```
 
 I'm using my own baseimage, it contains a proxy setting for apt - if you build more often this will save some download time.

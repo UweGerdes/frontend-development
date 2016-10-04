@@ -2,7 +2,11 @@
 //
 // (c) Uwe Gerdes, entwicklung@uwegerdes.de
 
-var domain = 'http://dockerhost:3080/';
+/* jshint node:true */
+/* global casper */
+
+var server = casper.cli.options.WEBSERVER || 'dockerhost';
+var domain = 'http://' + server + '/';
 var baseDir = 'login/';
 var scriptName = 'index.php';
 var baseUrl = domain + baseDir;

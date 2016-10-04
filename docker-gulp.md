@@ -51,7 +51,7 @@ Start the tests with:
 
 ```bash
 $ cd frontend-development
-$ gulp [target]
+$ gulp [task]
 ```
 
 Test results are saved in the `results` subdirectory.
@@ -91,10 +91,9 @@ $ docker run --name npm-proxy-cache -d --restart=always -p 3143:8080 -v /srv/doc
 
 ## Create docker image
 
-Here are the commands to build the docker image - mind the '.' at the end of the commands (meaning use current directory containing `Dockerfile` and other files needed for build). The build-args might be ommitted.
+Here are the commands to build the docker image - mind the '.' at the end of the commands (meaning use current directory containing `Dockerfile` and other files needed for build). The build-args might be ommitted, the proxy settings assume that your computer `$(hostname -i)` has the proxy servers.
 
 ```bash
-$ docker build -t uwegerdes/gulp-frontend .
 $ docker build -t uwegerdes/gulp-frontend \
 	--build-arg APT_PROXY="http://$(hostname -i):3142" \
 	--build-arg NPM_PROXY="--proxy http://$(hostname -i):3143 --https-proxy http://$(hostname -i):3143 --strict-ssl false" \
@@ -107,15 +106,15 @@ $ docker build -t uwegerdes/gulp-frontend \
 
 Some 20 Minutes and 1.5 GB later...
 
-Run a container from the image just created and connect to your environment:
+Run a container from the image just created and connect to your environment (with the ports of gulp livereload on 5381, responsive-check on 5382 and a running nginx docker container):
 
 ```bash
 $ docker run -it \
 	--name gulp-frontend \
 	-v $(pwd):/usr/src/app \
-	--add-host dockerhost:$(hostname -i) \
 	-p 5381:5381 \
 	-p 5382:5382 \
+	--add-host dockerhost:$(docker inspect --format='{{range .NetworkSettings.Networks}}{{.IPAddress}} {{end}}' nginx) \
 	uwegerdes/gulp-frontend \
 	bash
 ```
@@ -128,7 +127,7 @@ $ git config --global user.name "Your Name"
 $ git config --global user.email "you@example.com"
 ```
 
-Inside the running docker container start `gulp` with an optional target. If no target is given the default task runs `build` and `watch`:
+Next start `gulp` with an optional task. If no task is given the default task runs `[ 'build', 'watch' ]`:
 
 ```bash
 $ gulp build

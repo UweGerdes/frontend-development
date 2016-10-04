@@ -52,14 +52,13 @@ module.exports = {
  */
 'use strict';
 
+/* jshint node:true */
+/* global casper */
+
 var colorizer = require('colorizer').create('Colorizer'),
 	fs = require('fs'),
 	x = require('casper').selectXPath;
 
-if (typeof casper === 'undefined') {
-	var casper = require('casper');
-	console.log('this should satisfy jslint');
-}
 
 var testData = null;
 if (casper.cli.options.cfg) {
