@@ -27,6 +27,7 @@ var autoprefixer = require('gulp-autoprefixer'),
 	notify = require('gulp-notify'),
 	path = require('path'),
 	postMortem = require('gulp-postmortem'),
+	os = require('os'),
 	rename = require('rename'),
 	runSequence = require('run-sequence'),
 	server = require('gulp-develop-server'),
@@ -441,7 +442,7 @@ gulp.task('watch', function() {
 		gulp.watch( watchFilesFor[task], [ task ] );
 	});
 	gulpLivereload.listen( { port: lifereloadPort, delay: 2000 } );
-	console.log('gulp livereload listening on ' + lifereloadPort);
+	console.log('gulp livereload listening on http://' + ipv4adresses()[0] + ':' + lifereloadPort);
 });
 
 /*
@@ -454,3 +455,17 @@ gulp.task('default', function(callback) {
 		'postMortem',
 		callback);
 });
+
+function ipv4adresses() {
+	var addresses = [];
+	var interfaces = os.networkInterfaces();
+	for (var k in interfaces) {
+		for (var k2 in interfaces[k]) {
+			var address = interfaces[k][k2];
+			if (address.family === 'IPv4' && !address.internal) {
+				addresses.push(address.address);
+			}
+		}
+	}
+	return addresses;
+}
