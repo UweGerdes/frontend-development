@@ -29,8 +29,10 @@ var url = casper.cli.options.url || 'http://frontend.local/',
 	hover = '';
 
 var verbose = false;
+var saveStyleTree = false;
+var selectorFound = false;
 
-var result = {};
+var result = [];
 var hasScrollbar;
 
 if (verbose) {
@@ -136,7 +138,7 @@ function _getStyles(selector, hover) {
 	var elements = [];
 	var children = [];
 	if (selector.indexOf('/') === 0) {
-		children = document.evaluate(selector, document, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null).singleNodeValue;
+		children = document.evaluate(selector, document, null, XPathResult.ALL, null).singleNodeValue;
 	} else {
 		children = document.querySelectorAll(selector);
 	}
@@ -164,21 +166,28 @@ casper.viewport(width, 700);
 casper.open(url, function() {
 	this.echo('searching for "' + selector + '"', 'INFO');
 	casper.evaluate(_setTestClass);
-});
-casper.then(function() {
+})
+.then(function() {
 	if (hover !== '') {
 		this.echo('hover to "' + hover + '"', 'INFO');
 		casper.mouse.move(hover);
 	}
 })
 .then(function() {
-	result = this.evaluate(_getStyles, selector, hover); // evaluate in browser
+	if (saveStyleTree) {
+		result = this.evaluate(_getStyles, selector, hover); // evaluate in browser
+	}
 })
 .then(function() {
 	hasScrollbar = this.evaluate(_checkHorizontalScrollbar, selector); // evaluate in browser
 })
 .then(function() {
-	if (result && result.length > 0) {
+	if (selector.indexOf('/') === 0) {
+		selectorFound = this.exists(x(selector));
+	} else {
+		selectorFound = this.exists(selector);
+	}
+	if (selectorFound) {
 		var html;
 		if (selector.indexOf('/') === 0) {
 			html = casper.getHTML(x(selector), true);
@@ -187,7 +196,9 @@ casper.then(function() {
 		}
 		//fs.write(dest + '.html', html);
 		//casper.echo(dest + '.html' + ' saved', 'INFO');
-		fs.write(dest + '.css.json', JSON.stringify(result, undefined, 4), 0);
+		if (saveStyleTree) {
+			fs.write(dest + '.css.json', JSON.stringify(result, undefined, 4), 0);
+		}
 		if (verbose) {
 			casper.echo(dest + '.css.json' + ' saved', 'INFO');
 		}
