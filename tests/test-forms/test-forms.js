@@ -52,12 +52,16 @@ module.exports = {
  */
 'use strict';
 
-/* globals casper */
+/* globals casper, phantom */
 
 var colorizer = require('colorizer').create('Colorizer'),
 	fs = require('fs'),
 	x = require('casper').selectXPath;
 
+if (!phantom) {
+    console.error('CasperJS needs to be executed in a PhantomJS environment http://phantomjs.org/');
+    phantom.exit(1);
+}
 
 var testData = null;
 if (casper.cli.options.cfg) {

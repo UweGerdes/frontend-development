@@ -11,9 +11,16 @@
  */
 'use strict';
 
+/* globals phantom */
+
 var casper = require('casper').create(),
 	x = require('casper').selectXPath,
 	fs = require('fs');
+
+if (!phantom) {
+    console.error('CasperJS needs to be executed in a PhantomJS environment http://phantomjs.org/');
+    phantom.exit(1);
+}
 
 var url = casper.cli.options.url || 'http://frontend.local/',
 	selector = casper.cli.options.selector || 'form',
