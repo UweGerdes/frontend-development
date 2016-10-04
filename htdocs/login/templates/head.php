@@ -6,7 +6,7 @@
 	<meta name="description" content="Login Application" />
 	<meta name="author" content="Uwe Gerdes, entwicklung@uwegerdes.de" />
 	<!-- Bootstrap core CSS -->
-	<link rel="stylesheet"   href="/css/bootstrap.css" />
+	<link rel="stylesheet" href="/css/bootstrap.css" />
 	<!-- Custom styles -->
-	<link rel="stylesheet"   href="<?php echo $htmlroot; ?>/css/login.css" />
+	<link rel="stylesheet" href="<?php echo $htmlroot; ?>/css/login.css" />
 </head>
