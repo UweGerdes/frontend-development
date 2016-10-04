@@ -18,8 +18,8 @@ RUN echo 'APT::Install-Recommends 0;' >> /etc/apt/apt.conf.d/01norecommends && \
 	apt-get install -y \
 					ca-certificates \
 					curl \
+					gosu \
 					net-tools \
-					sudo \
 					unzip \
 					vim \
 					wget && \
