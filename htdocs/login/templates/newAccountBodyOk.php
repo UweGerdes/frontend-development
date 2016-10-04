@@ -34,6 +34,5 @@ $pageId = 'newAccountBodyOk';
 			</div>
 		</div>
 	</div>
-	<div id="pagecomplete" class="hidden pagecomplete<?php if ($_POST) { echo " submitted";} ?> newAccountAccept">Seite geladen</div>
 <?php $content = ob_get_clean() ?>
 <?php include 'page.php' ?>

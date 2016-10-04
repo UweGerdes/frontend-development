@@ -56,6 +56,5 @@ $pageId = 'newAccountBody';
 			</div>
 		</form>
 	</div>
-	<div id="pagecomplete" class="hidden pagecomplete<?php if ($_POST) { echo " submitted";} ?> newAccount">Seite geladen</div>
 <?php $content = ob_get_clean() ?>
 <?php include 'page.php' ?>

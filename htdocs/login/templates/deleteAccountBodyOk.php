@@ -14,6 +14,5 @@ $pageId = 'deleteAccountBodyOk';
 			<p><a href="<?php echo $htmlroot; ?>/index.php" class="homeLink btn">zurück zur Anmeldeseite</a></p>
 		</div>
 	</div>
-	<div id="pagecomplete" class="hidden pagecomplete<?php if ($_POST) { echo " submitted";} ?> deleteAccountConfirm">Seite geladen</div>
 <?php $content = ob_get_clean() ?>
 <?php include 'page.php' ?>

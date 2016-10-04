@@ -40,6 +40,5 @@ if ($messages) {
 			</div>
 		</form>
 	</div>
-	<div id="pagecomplete" class="hidden pagecomplete login notLoggedIn">Seite geladen</div>
 <?php $content = ob_get_clean() ?>
 <?php include 'page.php' ?>
