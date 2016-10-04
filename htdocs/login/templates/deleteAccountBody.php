@@ -5,11 +5,11 @@ $pageId = 'deleteAccountBody';
 <?php ob_start() ?>
 	<div class="form-small container">
 		<form action="<?php echo $htmlroot; ?>/index.php?deleteAccount" method="POST" accept-charset="utf-8" name="deleteAccount"
-			id="deleteAccount" role="form" class="form-horizontal<?php if($_POST && ! $deleteAccountOk) {echo ' inputError';} ?>">
+			id="deleteAccount" role="form" class="form-horizontal">
 			<h2 id="headline">Wirklich löschen?</h2>
 			<?php
 				if ($messages) {
-					echo "<p id=\"deleteAccountError\" class=\"col-sm-offset-3 error messages\">".join("<br />", $messages)."</p>\n";
+					echo "<p id=\"deleteAccountError\" class=\"col-sm-offset-3 messages has-error\">".join("<br />", $messages)."</p>\n";
 				}
 			?>
 			<p>Zur Kontrolle hier noch einmal die gespeicherten Daten:</p>
@@ -25,13 +25,13 @@ $pageId = 'deleteAccountBody';
 				<label for="Username" class="col-sm-3 control-label">Anmeldename</label>
 				<div class="col-sm-9"><p class="form-control-static"><?php echo $loginData["Username"]; ?></p></div>
 			</div>
-			<div id="PasswordContainer" class="form-group<?php if($_POST) {echo ' inputError';} ?>">
+			<div id="PasswordContainer" class="form-group<?php if($_POST) {echo ' has-error';} ?>">
 				<label for="Password" class="col-sm-3 control-label">Passwort</label>
 				<div class="col-sm-9">
-					<input type="password" name="Password" id="Password" class="Password" placeholder="Passwort">
+					<input type="password" name="Password" id="Password" class="Password<?php if($_POST) {echo ' has-error';} ?>" placeholder="Passwort">
 				</div>
 			</div>
-			<div id="deleteConfirmContainer" class="form-group<?php if($_POST && (!array_key_exists('deleteConfirm', $_POST) || $_POST['deleteConfirm'] != 'true')) {echo ' inputError';} ?>">
+			<div id="deleteConfirmContainer" class="form-group<?php if($_POST && (!array_key_exists('deleteConfirm', $_POST) || $_POST['deleteConfirm'] != 'true')) {echo ' has-error';} ?>">
 				<div class="col-sm-offset-3 col-sm-9">
 					<label for="deleteConfirm" class="checkbox">
 						<input type="checkbox" name="deleteConfirm" id="deleteConfirm" value="true" />

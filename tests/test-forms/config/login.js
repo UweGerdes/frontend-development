@@ -23,7 +23,7 @@ testCases.push(
 			'//a[@href="/login/index.php"]': 'zurück zur Anmeldeseite'
 		},
 		elementsNotExist: [
-			'//*[contains(@class,"inputError")]'
+			'//*[contains(@class,"has-error")]'
 		]
 	}
 );
@@ -46,7 +46,7 @@ testCases.push(
 			'//div[@id="pagecomplete"][contains(@class,"hidden")]': ''
 		},
 		elementsNotExist: [
-			'//*[contains(@class,"inputError")]'
+			'//*[contains(@class,"has-error")]'
 		]
 	}
 );
@@ -70,9 +70,8 @@ testCases.push(
 			'//*[@id="headline"]': 'Anmelden',
 			'//*[@id="loginError"]': 'Anmeldung fehlgeschlagen!',
 			'//*[contains(@class, "messages")]': 'Benutzername / Passwort nicht gültig',
-			'//form[@name="login"][contains(@class,"inputError")]': '',
-			'//input[@type="text"][@name="Username"][@value="usernamefailed"]': '',
-			'//input[@type="password"][@name="Password"]': '',
+			'//div[contains(@class,"has-error")]/input[@type="text"][@name="Username"][@value="usernamefailed"]': '',
+			'//div[contains(@class,"has-error")]/input[@type="password"][@name="Password"]': '',
 			'//*[@type="submit"][@name="submit"]': 'Anmelden'
 		}
 	}
@@ -97,9 +96,8 @@ testCases.push(
 			'//*[@id="headline"]': 'Anmelden',
 			'//*[@id="loginError"]': 'Anmeldung fehlgeschlagen!',
 			'//*[contains(@class, "messages")]': 'Benutzername / Passwort nicht gültig',
-			'//form[@name="login"][contains(@class,"inputError")]': '',
 			'//input[@type="text"][@name="Username"][@value="failed"]': '',
-			'//input[@type="password"][@name="Password"]': '',
+			'//div[contains(@class,"has-error")]/input[@type="password"][@name="Password"]': '',
 			'//*[@type="submit"][@name="submit"]': 'Anmelden'
 		}
 	}
@@ -122,7 +120,7 @@ testCases.push(
 			'//*[@type="submit"][@name="submit"]': 'Anmelden'
 		},
 		elementsNotExist: [
-			'//*[contains(@class,"inputError")]'
+			'//*[contains(@class,"has-error")]'
 		]
 	}
 );
@@ -143,13 +141,13 @@ testCases.push(
 		elements: {
 			'//body[@class="newAccountBody"]': '',
 			'//*[@id="headline"]': 'Zugang beantragen',
-			'//form[@name="newAccount"][contains(@class,"inputError")]': '',
+			'//form[@name="newAccount"]': '',
 			'//*[@id="newAccountError"]': 'Anwendername fehlt.Mail-Adresse fehlt.Anmeldename fehlt.Passwort fehlt oder die Passworte stimmen nicht überein.',
-			'//div[contains(@class,"inputError")]//input[@type="text"][@name="Name"][@value=""]': '',
-			'//div[contains(@class,"inputError")]//input[@type="text"][@name="eMail"][@value=""]': '',
-			'//div[contains(@class,"inputError")]//input[@type="text"][@name="Username"][@value=""]': '',
-			'//div[contains(@class,"inputError")]//input[@type="password"][@name="Password"]': '',
-			'//div[contains(@class,"inputError")]//input[@type="password"][@name="Password2"]': '',
+			'//div[contains(@class,"has-error")]//input[@type="text"][@name="Name"][@value=""][contains(@class,"has-error")]': '',
+			'//div[contains(@class,"has-error")]//input[@type="text"][@name="eMail"][@value=""][contains(@class,"has-error")]': '',
+			'//div[contains(@class,"has-error")]//input[@type="text"][@name="Username"][@value=""][contains(@class,"has-error")]': '',
+			'//div[contains(@class,"has-error")]//input[@type="password"][@name="Password"][contains(@class,"has-error")]': '',
+			'//div[contains(@class,"has-error")]//input[@type="password"][@name="Password2"][contains(@class,"has-error")]': '',
 			'//*[@type="submit"][@name="submit"]': 'Anmelden'
 		}
 	}
@@ -176,10 +174,10 @@ testCases.push(
 		elements: {
 			'//body[@class="newAccountBody"]': '',
 			'//*[@id="headline"]': 'Zugang beantragen',
-			'//form[@name="newAccount"][contains(@class,"inputError")]': '',
+			'//form[@name="newAccount"]': '',
 			'//*[@id="newAccountError"]': 'Mail-Adresse falsch.',
 			'//input[@type="text"][@name="Name"][@value="Testuser 1"]': '',
-			'//div[contains(@class,"inputError")]//input[@type="text"][@name="eMail"][@value="failed_uwegerdes.de"]': '',
+			'//div[contains(@class,"has-error")]//input[@type="text"][@name="eMail"][@value="failed_uwegerdes.de"][contains(@class,"has-error")]': '',
 			'//input[@type="text"][@name="Username"][@value="testuser1"]': '',
 			'//input[@type="password"][@name="Password"]': '',
 			'//input[@type="password"][@name="Password2"]': '',
@@ -209,17 +207,17 @@ testCases.push(
 		elements: {
 			'//body[@class="newAccountBody"]': '',
 			'//*[@id="headline"]': 'Zugang beantragen',
-			'//form[@name="newAccount"][contains(@class,"inputError")]': '',
+			'//form[@name="newAccount"]': '',
 			'//*[@id="newAccountError"]': 'Anwendername \'uwe\' bereits vorhanden.',
 			'//input[@type="text"][@name="Name"][@value="Uwe"]': '',
 			'//input[@type="text"][@name="eMail"][@value="testbox@frontend.local"]': '',
-			'//div[contains(@class,"inputError")]//input[@type="text"][@name="Username"][@value="uwe"]': '',
+			'//div[contains(@class,"has-error")]//input[@type="text"][@name="Username"][@value="uwe"][contains(@class,"has-error")]': '',
 			'//input[@type="password"][@name="Password"]': '',
 			'//input[@type="password"][@name="Password2"]': '',
 			'//*[@type="submit"][@name="submit"]': 'Anmelden'
 		},
 		elementsNotExist: [
-			'//div[contains(@class,"inputError")]//input[@type="text"][@name="Name"][@value="Uwe"]'
+			'//div[contains(@class,"has-error")]//input[@type="text"][@name="Name"][@value="Uwe"]'
 		]
 	}
 );
@@ -245,13 +243,13 @@ testCases.push(
 		elements: {
 			'//body[@class="newAccountBody"]': '',
 			'//*[@id="headline"]': 'Zugang beantragen',
-			'//form[@name="newAccount"][contains(@class,"inputError")]': '',
+			'//form[@name="newAccount"]': '',
 			'//*[@id="newAccountError"]': 'Passwort fehlt oder die Passworte stimmen nicht überein.',
 			'//input[@type="text"][@name="Name"][@value="Testuser 1"]': '',
 			'//input[@type="text"][@name="eMail"][@value="testbox@frontend.local"]': '',
 			'//input[@type="text"][@name="Username"][@value="testuser1"]': '',
-			'//div[contains(@class,"inputError")]//input[@type="password"][@name="Password"]': '',
-			'//div[contains(@class,"inputError")]//input[@type="password"][@name="Password2"]': '',
+			'//div[contains(@class,"has-error")]//input[@type="password"][@name="Password"][contains(@class,"has-error")]': '',
+			'//div[contains(@class,"has-error")]//input[@type="password"][@name="Password2"][contains(@class,"has-error")]': '',
 			'//*[@type="submit"][@name="submit"]': 'Anmelden'
 		}
 	}
@@ -284,7 +282,7 @@ testCases.push(
 			'//*[@id="PasswordContainer"]//*[@class="form-control-static"]': '*****'
 		},
 		elementsNotExist: [
-			'//*[contains(@class,"inputError")]'
+			'//*[contains(@class,"has-error")]'
 		]
 	}
 );
@@ -307,16 +305,14 @@ testCases.push(
 		elements: {
 			'//body[@class="loginBody"]': '',
 			'//*[@id="headline"]': 'Anmelden',
+			'//*[@id="loginError"][contains(@class,"has-error")]': 'Anmeldung fehlgeschlagen!',
 			'//*[@id="notConfirmedError"]': 'Zugang noch nicht aktiviert, bitte E-Mail-Eingang prüfen.',
 			'//input[@type="text"][@name="Username"][@value="testuser"]': '',
 			'//input[@type="password"][@name="Password"]': '',
 			'//input[@type="checkbox"][@name="rememberMe"][@value="ja"]': '',
 			'//*[@type="submit"][@name="submit"]': 'Anmelden',
 			'//a[@href="/login/index.php?newAccount"]': 'Login beantragen'
-		},
-		elementsNotExist: [
-			'//*[contains(@class,"inputError")]'
-		]
+		}
 	}
 );
 
@@ -351,7 +347,7 @@ testCases.push(
 			'//a[@href="/login/index.php"]': 'zur Anmeldeseite'
 		},
 		elementsNotExist: [
-			'//*[contains(@class,"inputError")]'
+			'//*[contains(@class,"has-error")]'
 		]
 	}
 );
@@ -380,7 +376,7 @@ testCases.push(
 			'//*[@id="logoutLink"][@href="/login/index.php?logout=true"]': 'abmelden'
 		},
 		elementsNotExist: [
-			'//*[contains(@class,"inputError")]'
+			'//*[contains(@class,"has-error")]'
 		]
 	}
 );
@@ -406,7 +402,7 @@ testCases.push(
 			'//a[@href="/login/index.php"]': 'zurück zum Start'
 		},
 		elementsNotExist: [
-			'//*[contains(@class,"inputError")]'
+			'//*[contains(@class,"has-error")]'
 		]
 	}
 );
@@ -432,11 +428,11 @@ testCases.push(
 		elements: {
 			'//body[@class="editAccountBody"]': '',
 			'//*[@id="headline"]': 'Benutzerdaten bearbeiten',
-			'//form[@name="editAccount"][contains(@class,"inputError")]': '',
+			'//form[@name="editAccount"]': '',
 			'//*[@id="editAccountError"]': 'Anwendername fehlt.Mail-Adresse fehlt.Anmeldename fehlt.',
-			'//div[contains(@class,"inputError")]//input[@type="text"][@name="Name"][@value="Testuser 1"]': '',
-			'//div[contains(@class,"inputError")]//input[@type="text"][@name="eMail"][@value="testbox@frontend.local"]': '',
-			'//div[contains(@class,"inputError")]//input[@type="text"][@name="Username"][@value="testuser"]': '',
+			'//div[contains(@class,"has-error")]//input[@type="text"][@name="Name"][@value="Testuser 1"][contains(@class,"has-error")]': '',
+			'//div[contains(@class,"has-error")]//input[@type="text"][@name="eMail"][@value="testbox@frontend.local"][contains(@class,"has-error")]': '',
+			'//div[contains(@class,"has-error")]//input[@type="text"][@name="Username"][@value="testuser"][contains(@class,"has-error")]': '',
 			'//input[@type="password"][@name="Password"]': '',
 			'//input[@type="password"][@name="Password2"]': '',
 			'//*[@type="submit"][@name="submit"]': 'Speichern',
@@ -462,10 +458,10 @@ testCases.push(
 		elements: {
 			'//body[@class="editAccountBody"]': '',
 			'//*[@id="headline"]': 'Benutzerdaten bearbeiten',
-			'//form[@name="editAccount"][contains(@class,"inputError")]': '',
+			'//form[@name="editAccount"]': '',
 			'//*[@id="editAccountError"]': 'Mail-Adresse falsch.',
 			'//input[@type="text"][@name="Name"][@value="Testuser 1"]': '',
-			'//div[contains(@class,"inputError")]//input[@type="text"][@name="eMail"][@value="testbox@frontend.local"]': '',
+			'//div[contains(@class,"has-error")]//input[@type="text"][@name="eMail"][@value="testbox@frontend.local"][contains(@class,"has-error")]': '',
 			'//input[@type="text"][@name="Username"][@value="testuser"]': '',
 			'//input[@type="password"][@name="Password"]': '',
 			'//input[@type="password"][@name="Password2"]': '',
@@ -492,11 +488,11 @@ testCases.push(
 		elements: {
 			'//body[@class="editAccountBody"]': '',
 			'//*[@id="headline"]': 'Benutzerdaten bearbeiten',
-			'//form[@name="editAccount"][contains(@class,"inputError")]': '',
+			'//form[@name="editAccount"]': '',
 			'//*[@id="editAccountError"]': 'Anwendername \'uwe\' bereits vorhanden.',
 			'//input[@type="text"][@name="Name"][@value="Testuser 1"]': '',
 			'//input[@type="text"][@name="eMail"][@value="testbox@frontend.local"]': '',
-			'//div[contains(@class,"inputError")]//input[@type="text"][@name="Username"][@value="testuser"]': '',
+			'//div[contains(@class,"has-error")]//input[@type="text"][@name="Username"][@value="testuser"][contains(@class,"has-error")]': '',
 			'//input[@type="password"][@name="Password"]': '',
 			'//input[@type="password"][@name="Password2"]': '',
 			'//*[@type="submit"][@name="submit"]': 'Speichern',
@@ -523,13 +519,13 @@ testCases.push(
 		elements: {
 			'//body[@class="editAccountBody"]': '',
 			'//*[@id="headline"]': 'Benutzerdaten bearbeiten',
-			'//form[@name="editAccount"][contains(@class,"inputError")]': '',
+			'//form[@name="editAccount"]': '',
 			'//*[@id="editAccountError"]': 'Passworte stimmen nicht überein.',
 			'//input[@type="text"][@name="Name"][@value="Testuser 1"]': '',
 			'//input[@type="text"][@name="eMail"][@value="testbox@frontend.local"]': '',
 			'//input[@type="text"][@name="Username"][@value="testuser"]': '',
-			'//div[contains(@class,"inputError")]//input[@type="password"][@name="Password"]': '',
-			'//div[contains(@class,"inputError")]//input[@type="password"][@name="Password2"]': '',
+			'//div[contains(@class,"has-error")]//input[@type="password"][@name="Password"][contains(@class,"has-error")]': '',
+			'//div[contains(@class,"has-error")]//input[@type="password"][@name="Password2"][contains(@class,"has-error")]': '',
 			'//*[@type="submit"][@name="submit"]': 'Speichern',
 			'//a[@href="/login/index.php"]': 'zurück zum Start'
 		}
@@ -554,13 +550,13 @@ testCases.push(
 		elements: {
 			'//body[@class="editAccountBody"]': '',
 			'//*[@id="headline"]': 'Benutzerdaten bearbeiten',
-			'//form[@name="editAccount"][contains(@class,"inputError")]': '',
+			'//form[@name="editAccount"]': '',
 			'//*[@id="editAccountError"]': 'Passwort zu kurz.',
 			'//input[@type="text"][@name="Name"][@value="Testuser 1"]': '',
 			'//input[@type="text"][@name="eMail"][@value="testbox@frontend.local"]': '',
 			'//input[@type="text"][@name="Username"][@value="testuser"]': '',
-			'//div[contains(@class,"inputError")]//input[@type="password"][@name="Password"]': '',
-			'//div[contains(@class,"inputError")]//input[@type="password"][@name="Password2"]': '',
+			'//div[contains(@class,"has-error")]//input[@type="password"][@name="Password"][contains(@class,"has-error")]': '',
+			'//div[contains(@class,"has-error")]//input[@type="password"][@name="Password2"][contains(@class,"has-error")]': '',
 			'//*[@type="submit"][@name="submit"]': 'Speichern',
 			'//a[@href="/login/index.php"]': 'zurück zum Start'
 		}
@@ -591,7 +587,7 @@ testCases.push(
 			'//a[@href="/login/index.php"]': 'zurück zum Start'
 		},
 		elementsNotExist: [
-			'//*[contains(@class,"inputError")]'
+			'//*[contains(@class,"has-error")]'
 		]
 	}
 );
@@ -620,7 +616,7 @@ testCases.push(
 			'//a[@href="/login/index.php"]': 'zurück zum Start'
 		},
 		elementsNotExist: [
-			'//*[contains(@class,"inputError")]'
+			'//*[contains(@class,"has-error")]'
 		]
 	},
 	// TODO: new feature: eMail changed confirmation
@@ -647,7 +643,7 @@ testCases.push(
 			'//a[@href="/login/index.php"]': 'zurück zum Start'
 		},
 		elementsNotExist: [
-			'//*[contains(@class,"inputError")]'
+			'//*[contains(@class,"has-error")]'
 		]
 	}
 );
@@ -676,7 +672,7 @@ testCases.push(
 			'//*[@id="logoutLink"][@href="/login/index.php?logout=true"]': 'abmelden'
 		},
 		elementsNotExist: [
-			'//*[contains(@class,"inputError")]'
+			'//*[contains(@class,"has-error")]'
 		]
 	}
 );
@@ -705,7 +701,7 @@ testCases.push(
 			'//a[@href="/login/index.php"]': 'zurück zum Start'
 		},
 		elementsNotExist: [
-			'//*[contains(@class,"inputError")]'
+			'//*[contains(@class,"has-error")]'
 		]
 	}
 );
@@ -734,7 +730,7 @@ testCases.push(
 			'//*[@id="logoutLink"][@href="/login/index.php?logout=true"]': 'abmelden'
 		},
 		elementsNotExist: [
-			'//*[contains(@class,"inputError")]'
+			'//*[contains(@class,"has-error")]'
 		]
 	}
 );
@@ -764,7 +760,7 @@ testCases.push(
 			'//a[@href="/login/index.php"]': 'zurück zum Start'
 		},
 		elementsNotExist: [
-			'//*[contains(@class,"inputError")]'
+			'//*[contains(@class,"has-error")]'
 		]
 	},
 	// TODO: new feature: password forgotten
@@ -791,7 +787,7 @@ testCases.push(
 			'//*[@id="logoutLink"][@href="/login/index.php?logout=true"]': 'abmelden'
 		},
 		elementsNotExist: [
-			'//*[contains(@class,"inputError")]'
+			'//*[contains(@class,"has-error")]'
 		]
 	}
 );
@@ -821,7 +817,7 @@ testCases.push(
 			'//a[@href="/login/index.php"]': 'zurück zum Start'
 		},
 		elementsNotExist: [
-			'//*[contains(@class,"inputError")]'
+			'//*[contains(@class,"has-error")]'
 		]
 	}
 );
@@ -850,7 +846,7 @@ testCases.push(
 			'//*[@id="logoutLink"][@href="/login/index.php?logout=true"]': 'abmelden'
 		},
 		elementsNotExist: [
-			'//*[contains(@class,"inputError")]'
+			'//*[contains(@class,"has-error")]'
 		]
 	}
 );
@@ -870,7 +866,7 @@ testCases.push(
 			'//a[@href="/login/index.php"]': 'nein - zurück zum Start'
 		},
 		elementsNotExist: [
-			'//*[contains(@class,"inputError")]'
+			'//*[contains(@class,"has-error")]'
 		]
 	}
 );
@@ -893,9 +889,9 @@ testCases.push(
 		elements: {
 			'//body[@class="deleteAccountBody"]': '',
 			'//*[@id="headline"]': 'Wirklich löschen?',
-			'//form[@name="deleteAccount"][contains(@class,"inputError")]': '',
+			'//form[@name="deleteAccount"]': '',
 			'//*[@id="deleteAccountError"]': 'Passwort stimmt nicht.',
-			'//div[contains(@class,"inputError")]//input[@type="password"][@name="Password"]': '',
+			'//div[contains(@class,"has-error")]//input[@type="password"][@name="Password"][contains(@class,"has-error")]': '',
 			'//input[@type="checkbox"][@name="deleteConfirm"]': '',
 			'//*[@type="submit"][@name="submit"]': 'Löschen',
 			'//a[@href="/login/index.php"]': 'nein - zurück zum Start'
@@ -920,10 +916,10 @@ testCases.push(
 		elements: {
 			'//body[@class="deleteAccountBody"]': '',
 			'//*[@id="headline"]': 'Wirklich löschen?',
-			'//form[@name="deleteAccount"][contains(@class,"inputError")]': '',
+			'//form[@name="deleteAccount"]': '',
 			'//*[@id="deleteAccountError"]': 'Bitte Passwort eingeben und Bestätigung anklicken.',
-			'//div[contains(@class,"inputError")]//input[@type="password"][@name="Password"]': '',
-			'//div[contains(@class,"inputError")]//input[@type="checkbox"][@name="deleteConfirm"]': '',
+			'//div[contains(@class,"has-error")]//input[@type="password"][@name="Password"][contains(@class,"has-error")]': '',
+			'//div[contains(@class,"has-error")]//input[@type="checkbox"][@name="deleteConfirm"]': '',
 			'//*[@type="submit"][@name="submit"]': 'Löschen',
 			'//a[@href="/login/index.php"]': 'nein - zurück zum Start'
 		}
@@ -942,7 +938,7 @@ testCases.push(
 		elementsNotExist: [
 			'//*[@id="headline"]',
 			'//*[@id="loginError"]',
-			'//*[contains(@class,"inputError")]',
+			'//*[contains(@class,"has-error")]',
 			'//*[contains(@class,"notLoggedIn")]',
 			'//form',
 			'//input'
@@ -971,7 +967,7 @@ testCases.push(
 			'//a[@href="/login/index.php"]': 'zurück zur Anmeldeseite'
 		},
 		elementsNotExist: [
-			'//*[contains(@class,"inputError")]'
+			'//*[contains(@class,"has-error")]'
 		]
 	}
 );
@@ -994,10 +990,10 @@ testCases.push(
 		elements: {
 			'//body[@class="loginBody"]': '',
 			'//*[@id="headline"]': 'Anmelden',
-			'//form[@name="login"][contains(@class,"inputError")]': '',
+			'//form[@name="login"]': '',
 			'//*[@id="loginError"]': 'Anmeldung fehlgeschlagen!',
-			'//input[@type="text"][@name="Username"][@value="testuser"]': '',
-			'//input[@type="password"][@name="Password"]': '',
+			'//div[contains(@class,"has-error")]/input[@type="text"][@name="Username"][@value="testuser"]': '',
+			'//div[contains(@class,"has-error")]/input[@type="password"][@name="Password"]': '',
 			'//*[@type="submit"][@name="submit"]': 'Anmelden'
 		}
 	}
@@ -1015,7 +1011,7 @@ testCases.push(
 		elementsNotExist: [
 			'//*[@id="headline"]',
 			'//*[@id="loginError"]',
-			'//*[contains(@class,"inputError")]',
+			'//*[contains(@class,"has-error")]',
 			'//*[contains(@class,"loggedIn")]',
 			'//form',
 			'//input'
@@ -1034,7 +1030,7 @@ testCases.push(
 		elementsNotExist: [
 			'//*[@id="headline"]',
 			'//*[@id="loginError"]',
-			'//*[contains(@class,"inputError")]',
+			'//*[contains(@class,"has-error")]',
 			'//*[contains(@class,"loggedIn")]',
 			'//form',
 			'//input'

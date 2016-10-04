@@ -5,25 +5,25 @@ $pageId = 'loginBody';
 <?php ob_start() ?>
 	<div class="form-small">
 		<form action="<?php echo $_SERVER['SCRIPT_NAME']; ?>" method="POST" accept-charset="utf-8" name="login"
-			id="login" role="form" class="form-horizontal<?php if($_POST && $messages) {echo ' inputError';} ?>">
+			id="login" role="form" class="form-horizontal">
 			<h2 id="headline">Anmelden</h2>
 <?php
 if ($_POST && $_POST['Username'] != "") {
 	if ($notConfirmed) {
-		echo "			<p id=\"loginError\" class=\"col-sm-offset-3 error\">Anmeldung fehlgeschlagen!</p>\n";
+		echo "			<p id=\"loginError\" class=\"col-sm-offset-3 has-error\">Anmeldung fehlgeschlagen!</p>\n";
 		echo "			<p id=\"notConfirmedError\">Zugang noch nicht aktiviert, bitte E-Mail-Eingang prüfen.</p>\n";
 	} else {
-		echo "			<p id=\"loginError\" class=\"col-sm-offset-3 error\">Anmeldung fehlgeschlagen!</p>\n";
+		echo "			<p id=\"loginError\" class=\"col-sm-offset-3 has-error\">Anmeldung fehlgeschlagen!</p>\n";
 	}
 }
 if ($messages) {
 	echo "			<p class=\"col-sm-offset-3 messages\">" . join("<br />", $messages) . "</p>\n";
 }
 ?>
-			<div class="col-sm-offset-3">
+			<div class="col-sm-offset-3<?php if($_POST && $messages) {echo ' has-error';} ?>">
 				<input type="text" name="Username" class="form-control Username" placeholder="Benutzername" value="<?php if ($_POST && $_POST['Username'] && $_POST['Username'] != "") { echo $_POST['Username']; } ?>" />
 			</div>
-			<div class="col-sm-offset-3">
+			<div class="col-sm-offset-3<?php if($_POST && $messages) {echo ' has-error';} ?>">
 				<input type="password" name="Password" class="form-control Password" placeholder="Passwort" submittedValue="<?php if ($_POST && $_POST['Password'] && $_POST['Password'] != "") { echo $_POST['Password']; } ?>" />
 			</div>
 			<div class="col-sm-offset-3">
