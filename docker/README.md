@@ -210,13 +210,13 @@ For the login application we need a mail server which receives and :
 ```bash
 $ docker rm mail && docker rmi uwegerdes/mail && docker build -t uwegerdes/mail ./mail/ && date
 
+docker build -t uwegerdes/mail ./mail/
+
 $ docker run -d \
-	--volumes-from data \
 	--name mail \
 	uwegerdes/mail
 
 	docker run -it \
-	--volumes-from data \
 	--name mail \
 	uwegerdes/mail \
 	bash
