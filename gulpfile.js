@@ -265,12 +265,12 @@ gulp.task('test-forms-login-slimer', function(callback) {
 	loader.stdout.on('data', function(data) { if(!data.match(/PASS/)) { console.log(data.trim()); } });
 });
 
-watchFilesFor.responsiveCheckDefault = [
+watchFilesFor['responsive-check-default'] = [
 	path.join(testDir, 'responsive-check', 'config', 'default.js'),
 	path.join(testDir, 'responsive-check', 'index.js'),
 	path.join(testDir, 'responsive-check', 'bin', 'load-page.js')
 ];
-gulp.task('responsiveCheckDefault', function(callback) {
+gulp.task('responsive-check-default', function(callback) {
 	del( [
 			path.join(testDir, 'responsive-check', 'results', 'default', '*.png'),
 			path.join(testDir, 'responsive-check', 'results', 'default', '*.css.json')

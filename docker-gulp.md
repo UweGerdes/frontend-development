@@ -139,6 +139,7 @@ $ gulp test-forms-default
 $ gulp test-forms-default-slimer
 $ gulp test-forms-login
 $ gulp test-forms-login-slimer
+$ gulp responsive-check-default
 
 $ gulp watch
 
