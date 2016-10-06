@@ -1,69 +1,5 @@
 # Dockerfile for frontend development and testing environment with GulpJS, PhantomJS, CasperJS, SlimerJS
 
-## Installation
-
-My system is Ubuntu 16.04 - perhaps there are some other steps to be taken on Windows systems (TODO).
-
-You may also try this installation in a virtual machine. It worked for me on an Ubuntu 16.04 (I hope all dependencies are included here).
-
-Or build a Docker image using the supplied Dockerfile (and keep your project directory clean from node_modules).
-
-# Installation on your OS (no docker)
-
-Some software is required on a blank Ubuntu system:
-
-```bash
-$ sudo apt-get install g++ git imagemagick python
-```
-
-Perhaps some other packages might be useful: ```bzip2 curl make openssh-client subversion wget```
-
-Install [Node.js](https://nodejs.org/en/) (my version is 4.4.7, don't use the version from Ubuntu repositories if it is still below 4.x) and use `npm` to install [PhantomJS](http://phantomjs.org), [CasperJS](http://phantomjs.org) and [SlimerJS](https://slimerjs.org):
-
-```bash
-$ sudo npm install -g casperjs phantomjs-prebuilt slimerjs
-```
-
-Now you should clone this repository in a project directory:
-
-```bash
-$ git clone https://bitbucket.org/uwegerdes/frontend-development.git
-```
-
-Some node modules have to be installed:
-
-```bash
-$ cd frontend-development
-$ npm install
-```
-
-If you pull from this repository and get a new version of `package.json` you should run:
-
-```bash
-$ npm update
-```
-
-## Usage
-
-Use the default config file or edit your own.
-
-Start the tests with:
-
-```bash
-$ cd frontend-development
-$ gulp [task]
-```
-
-Test results are saved in the `results` subdirectory.
-
-## Headless Slimerjs
-
-If you are on a Linux system (Mac might work too) you can switch the execution of SlimerJS to run headles with Xvfb.
-
-```bash
-$ sudo apt-get install xvfb
-$ xvfb-run -a [-e /dev/stdout] casperjs test --engine=slimerjs test-forms.js --cfg=config/default.js
-```
 
 # Docker uwegerdes/gulp-frontend
 
@@ -105,6 +41,8 @@ $ docker build -t uwegerdes/gulp-frontend \
 ```
 
 Some 20 Minutes and 1.5 GB later...
+
+Build the dockers in the `docker` subdirectory and run them - nginx is needed for tests.
 
 Run a container from the image just created and connect to your environment (with the ports of gulp livereload on 5381, responsive-check on 5382 and a running nginx docker container):
 

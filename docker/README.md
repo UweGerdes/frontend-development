@@ -108,8 +108,7 @@ docker run -d \
 	--volumes-from php-fpm \
 	--link php-fpm \
 	--name nginx \
-	uwegerdes/nginx && \
-	date
+	uwegerdes/nginx
 
 $ docker start nginx php-fpm mysql
 ```

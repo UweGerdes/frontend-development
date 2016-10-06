@@ -13,6 +13,73 @@ To run the application you have to install and configure:
 - GulpJS
 - and some more
 
-There is another way: install [Docker](https://www.docker.com/) and use the preconfigurations included in the project directory and the `docker` subdirectory. A `docker-compose.yml` is included and can be used in every project you have on your system to start and stop the environment and keep them separated.
+There is another way: install [Docker](https://www.docker.com/) (please read the installation guide carefully, on Linux don't forget to add yourself to the docker group) and use the `Dockerfile`s included in the project directory and the `docker` subdirectory. A `docker-compose.yml` will be included and can be used in every project you have on your system to start and stop the environment and keep them separated. Please read `docker/README.md`.
 
 There is also a `gulpfile.js` for different tasks like compile less and graphviz, check js files, execute tests with CasperJS and more. A `Dockerfile` for that is included. Please read `docker-gulp.md`.
+
+## Installation without Docker
+
+The documentation here is not complete - consider using the dockered application environment.
+
+My system is Ubuntu 16.04 - perhaps there are some other steps to be taken on Windows systems (TODO).
+
+You may also try this installation in a virtual machine. It worked for me on an Ubuntu 16.04 (I hope all dependencies are included here).
+
+Or build a Docker image using the supplied Dockerfile (and keep your project directory clean from node_modules).
+
+# Installation on your OS (no docker)
+
+Some software is required on a blank Ubuntu system:
+
+```bash
+$ sudo apt-get install g++ git imagemagick python
+```
+
+Perhaps some other packages might be useful: ```bzip2 curl make openssh-client subversion wget```
+
+Install [Node.js](https://nodejs.org/en/) (my version is 4.4.7, don't use the version from Ubuntu repositories if it is still below 4.x) and use `npm` to install [PhantomJS](http://phantomjs.org), [CasperJS](http://phantomjs.org) and [SlimerJS](https://slimerjs.org):
+
+```bash
+$ sudo npm install -g casperjs phantomjs-prebuilt slimerjs
+```
+
+Now you should clone this repository in a project directory:
+
+```bash
+$ git clone https://bitbucket.org/uwegerdes/frontend-development.git
+```
+
+Some node modules have to be installed:
+
+```bash
+$ cd frontend-development
+$ npm install
+```
+
+If you pull from this repository and get a new version of `package.json` you should run:
+
+```bash
+$ npm update
+```
+
+## Usage
+
+Use the default config file or edit your own.
+
+Start the tests with:
+
+```bash
+$ cd frontend-development
+$ gulp [task]
+```
+
+Test results are saved in the `results` subdirectory.
+
+## Headless Slimerjs
+
+If you are on a Linux system (Mac might work too) you can switch the execution of SlimerJS to run headles with Xvfb.
+
+```bash
+$ sudo apt-get install xvfb
+$ xvfb-run -a [-e /dev/stdout] casperjs test --engine=slimerjs test-forms.js --cfg=config/default.js
+```
