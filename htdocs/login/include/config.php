@@ -1,6 +1,6 @@
 <?php
 
 $htmlroot = "/login";
-$emailFrom = "login@frontend.local";
+$emailFrom = "login@mail.local";
 
 ?>

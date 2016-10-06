@@ -2,8 +2,11 @@
 
 ## latest
 
+1.4.3
+Login confirmation mail sending from php-fpm to mail container.
+
 1.4.2
-updated docs, tests - runs in fresh docker installation.
+Updated docs, tests - runs in fresh docker installation.
 
 1.4.1
 Integrated mail container to servers, clients can connect.

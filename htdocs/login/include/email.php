@@ -8,6 +8,7 @@
 # Zu Testzwecken kann die Ausgabe auch auf einer HTML-Seite ausgegeben werden.
 #
 ##
+require_once "Mail.php";
 
 class Email {
 	var $sendTo = "";
@@ -32,7 +33,7 @@ class Email {
 	function sentTo($address) {
 		$this->sendTo = $address;
 	}
-	
+
 	function subject($subject) {
 		$this->subject = $subject;
 	}
@@ -47,7 +48,7 @@ class Email {
 
 	/**
 	 * add attachment to the mail
-	 * 
+	 *
 	 * @param String $name filename
 	 * @param raw $content
 	 * @param String $mime_type
@@ -61,79 +62,77 @@ class Email {
 
 	/**
 	 * create the basic headers
-	 * 
+	 *
 	 * return array<string> header elements
 	 */
 	function getBasicHeader() {
 		$extraString = "". time() . rand(0,1000);
-		$header[] = "Message-ID: <".$extraString. "@uwegerdes.de>";
-		$header[] = "X-Mailer: Uwe Gerdes PHP Mailer";
-		$header[] = "Date: ".date("D, d M y H:i:s O (T)");
-		$header[] = "MIME-Version: 1.0";
+		$header["Message-ID"] = "<".$extraString. "@uwegerdes.de>";
+		$header["X-Mailer"] = "Uwe Gerdes PHP Mailer";
+		$header["Date"] = "".date("D, d M y H:i:s O (T)");
+		$header["MIME-Version"] = "1.0";
 		return array_merge($this->header, $header);
 	}
 
 	/**
 	 * get the headers for text content
-	 * 
+	 *
 	 * @param bool $encodeqp use quoted printable encoding
 	 * return array<string> header elements
 	 */
 	function getTextHeader($encodeqp) {
-		$header[] = "Content-Type: text/plain; charset=" . $this->charset;
+		$header["Content-Type"] = "text/plain; charset=" . $this->charset;
 		if ($encodeqp) {
-			$header[] = "Content-Transfer-Encoding: quoted-printable";
+			$header["Content-Transfer-Encoding"] = "quoted-printable";
 		} else {
-			$header[] = "Content-Transfer-Encoding: 8-bit";
+			$header["Content-Transfer-Encoding"] = "8-bit";
 		}
 		return $header;
 	}
 
 	/**
 	 * get the headers for html content
-	 * 
+	 *
 	 * @param bool $encodeqp use quoted printable encoding
 	 * return array<string> header elements
 	 */
 	function getHtmlHeader($encodeqp) {
-		$header[] = "Content-Type: text/html; charset=" . $this->charset;
+		$header["Content-Type"] = "text/html; charset=" . $this->charset;
 		if ($encodeqp) {
-			$header[] = "Content-Transfer-Encoding: quoted-printable";
+			$header["Content-Transfer-Encoding"] = "quoted-printable";
 		} else {
-			$header[] = "Content-Transfer-Encoding: 8-bit";
+			$header["Content-Transfer-Encoding"] = "8-bit";
 		}
 		return $header;
 	}
 
 	/**
 	 * get the headers for alternative content
-	 * 
+	 *
 	 * return array<string> header elements
 	 */
 	function getAlternativeHeader() {
 		$extraString = "". time() . rand(0,1000);
 		$this->alternativeSeparator = "-- alternative".$extraString." --";
-		$header[] = "Content-Type: multipart/alternative;";
-		$header[] = "   boundary=\"".$this->alternativeSeparator."\"";
+		$header["Content-Type"] = "multipart/alternative;   boundary=\"".$this->alternativeSeparator."\"";
 		return $header;
 	}
 
 	/**
 	 * get the headers for mixed content
-	 * 
+	 *
 	 * return array<string> header elements
 	 */
 	function getMixedHeader() {
 		$extraString = "". time() . rand(0,1000);
 		$this->contentSeparator = "-- mixed".$extraString." --";
-		$header[] = "Content-Type: multipart/mixed;";
-		$header[] = "   boundary=\"".$this->contentSeparator."\"";
+		$header["Content-Type"] = "multipart/mixed;   boundary=\"".$this->contentSeparator."\"";
 		return $header;
 	}
 
 	/**
 	 * get the text content and encode it with encodedqp or not
-	 * 
+	 *
 	 * @param bool $encodeqp use quoted printable encoding
 	 * @return string text content
 	 */
@@ -147,7 +146,7 @@ class Email {
 
 	/**
 	 * get the html content and encode it with encodedqp or htmlentities
-	 * 
+	 *
 	 * @param bool $encodeqp use quoted printable encoding
 	 * @return string html content
 	 */
@@ -161,7 +160,7 @@ class Email {
 
 	/**
 	 * get alternative content with text and html
-	 * 
+	 *
 	 * @param bool $encodeqp use quoted printable encoding
 	 * @return array<string> alternative content elements
 	 */
@@ -182,8 +181,8 @@ class Email {
 	}
 
 	/**
-	 * 
-	 * 
+	 *
+	 *
 	 * Content-Type: application/pdf; name="14-UG-Feb.pdf"
 Content-Disposition: attachment; filename="14-UG-Feb.pdf"
 Content-Transfer-Encoding: base64
@@ -192,13 +191,13 @@ Content-Transfer-Encoding: base64
 	 * @return unknown
 	 */
 	function getMixedContent($encodeqp) {
-		
-		
+
+
 		return $mixedContent;
 	}
 	/**
 	 * compose headers depending on parts
-	 * 
+	 *
 	 * @param bool $encodeqp use quoted printable encoding
 	 * @return array<string> header elements
 	 */
@@ -220,7 +219,7 @@ Content-Transfer-Encoding: base64
 
 	/**
 	 * compose the content depending on parts
-	 * 
+	 *
 	 * @param bool $encodeqp use quoted printable encoding
 	 * @return array<String> content elements
 	 */
@@ -247,18 +246,27 @@ Content-Transfer-Encoding: base64
 
 	/**
 	 * create header, content and send email
-	 * 
+	 *
+	 * $success = sendEmail('smtp', array ('host' => $host, 'port' => $port, 'auth' => true, 'username' => $username, 'password' => $password));
+	 *
 	 * @return bool send email success
 	 */
-	function sendEmail() {
+	function sendEmail($backend, $params) {
 		$success = false;
 		if ($this->sendTo && $this->subject && $this->from) {
-			$mailHeader = join("\r\n", $this->getCompleteHeader(true));
+			$headers = array_merge($this->getCompleteHeader(true),
+						array ('From' => $this->from,
+								 'To' => $this->sendTo,
+							'Subject' => $this->subject)
+							);
 			$mailContent = join("\r\n", $this->getCompleteContent(true));
-			$success = @mail($this->sendTo, $this->subject, $mailContent, $mailHeader, "-f" . $this->from);
-			if(!$success) {
-				$header = "Reply-to: " . $this->from . "\r\n" . $mailHeader;
-				$success = @mail($this->sendTo, $this->subject, $mailContent, $mailHeader);
+			$smtp = Mail::factory($backend, $params);
+			$mail = $smtp->send($this->sendTo, $headers, $mailContent);
+			if (PEAR::isError($mail)) {
+				echo("<p>" . $mail->getMessage() . "</p>");
+			} else {
+				echo("<p>Message successfully sent!</p>");
+				$success = true;
 			}
 		}
 		return $success;
@@ -266,7 +274,7 @@ Content-Transfer-Encoding: base64
 
 	/**
 	 * get the email content for testing
-	 * 
+	 *
 	 * @return string the mail
 	 */
 	function toString() {

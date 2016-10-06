@@ -250,12 +250,19 @@ function new_user() {
 			$emailText[] = "";
 			$emailText[] = "zur Aktivierung des Zugangs bitte folgenden Link öffnen:";
 			$emailText[] = "";
-			$emailText[] = "http://".$_SERVER['SERVER_NAME'].$htmlroot."/index.php?newAccountConfirm=".$result['confirmationCode'];
+			$emailText[] = "http://".$_SERVER['HTTP_HOST'].$htmlroot."/index.php?newAccountConfirm&confirm=".$result['confirmationCode'];
 			$emailText[] = "";
 			$emailText[] = "Viele Grüße\nDas Login-Team";
 			$emailText[] = "";
 			$email->setText(join("\r\n", $emailText));
-			$result['sendSuccess'] = $email->sendEmail();
+			$smtpParams = array (
+					'host' => 'mail.local',
+					'port' => 25,
+					'auth' => false,
+					'username' => 'testbox',
+					'password' => 'testpass'
+				);
+			$result['sendSuccess'] = $email->sendEmail('smtp', $smtpParams);
 		}
 	}
 	return $result;
