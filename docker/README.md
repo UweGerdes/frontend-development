@@ -62,22 +62,23 @@ $ docker build -t uwegerdes/data ./data/
 
 $ docker build -t uwegerdes/mysql ./mysql/
 
+$ docker build -t uwegerdes/mail ./mail/
+
 $ docker build -t uwegerdes/php-fpm ./php-fpm/
 
 $ docker build -t uwegerdes/nginx ./nginx/
-
-$ docker build -t uwegerdes/mail ./mail/
 ```
 
 To stop, remove, build and run everything copy the following in a shell window (don't ask me what to do on Windows systems):
 
 ```bash
-$ docker stop nginx php-fpm mysql && \
-	docker rm nginx php-fpm mysql data && \
-	docker rmi uwegerdes/nginx uwegerdes/php-fpm uwegerdes/mysql uwegerdes/data uwegerdes/baseimage && \
+$ docker stop nginx php-fpm mail mysql && \
+	docker rm nginx php-fpm mail mysql data && \
+	docker rmi uwegerdes/nginx uwegerdes/php-fpm uwegerdes/mail uwegerdes/mysql uwegerdes/data uwegerdes/baseimage && \
 	docker build -t uwegerdes/baseimage --build-arg APT_PROXY="http://$(hostname -i):3142" --build-arg TZ="Europe/Berlin" ./baseimage/ && \
 	docker build -t uwegerdes/data ./data/ && \
 	docker build -t uwegerdes/mysql ./mysql/ && \
+	docker build -t uwegerdes/mail ./mail/ && \
 	docker build -t uwegerdes/php-fpm ./php-fpm/ && \
 	docker build -t uwegerdes/nginx ./nginx/ && \
 docker run \
@@ -92,8 +93,13 @@ docker run -d \
 	--name mysql \
 	uwegerdes/mysql && \
 docker run -d \
+	--hostname mail.local \
+	--name mail \
+	uwegerdes/mail && \
+docker run -d \
 	--volumes-from data \
 	--link mysql \
+	--link mail \
 	--name php-fpm \
 	uwegerdes/php-fpm && \
 docker run -d \
@@ -102,14 +108,15 @@ docker run -d \
 	--volumes-from php-fpm \
 	--link php-fpm \
 	--name nginx \
-	uwegerdes/nginx
+	uwegerdes/nginx && \
+	date
 
 $ docker start nginx php-fpm mysql
 ```
 
 I'm using my own baseimage, it contains a proxy setting for apt - if you build more often this will save some download time.
 
-## Starting the containers
+## More detailed view
 
 Now we need to start and connect the containers for our application. The commands here do the same as the `docker-compose.yml` but here you see how the magic works. The containers Make sure you have the correct file names if you changed your project structure.
 
@@ -183,6 +190,22 @@ else
 fi
 ```
 
+### mail
+
+For the login application we need a mail server which receives and delivers mail:
+
+```bash
+$ docker run -d \
+	--hostname mail.local \
+	--name mail \
+	uwegerdes/mail
+
+$ docker exec -it mail gosu testbox alpine
+$ docker exec -it mail bash
+```
+
+There is nothing much to say: php-fpm need the php files (the server only sends the http request) and the application want's to use the database.
+
 ### php-fpm
 
 Now let's run a php-fpm container with volumes from the data container and network link to the mysql container:
@@ -191,37 +214,11 @@ Now let's run a php-fpm container with volumes from the data container and netwo
 $ docker run -d \
 	--volumes-from data \
 	--link mysql \
+	--link mail \
 	--name php-fpm \
 	uwegerdes/php-fpm
 
-$ docker run -it \
-	--volumes-from data \
-	--link mysql \
-	--name php-fpm-bash \
-	uwegerdes/php-fpm bash
-```
-
-There is nothing much to say: php-fpm need the php files (the server only sends the http request) and the application want's to use the database.
-
-### mail
-
-For the login application we need a mail server which receives and :
-
-```bash
-$ docker stop mail && docker rm mail && docker rmi uwegerdes/mail && docker build -t uwegerdes/mail ./mail/ && \
-	docker run -d \
-	--hostname mail.local \
-	--name mail \
-	uwegerdes/mail
-
-$ docker exec -it mail gosu testbox bash
-
-$ docker rm mail-client && docker rmi uwegerdes/mail-client && docker build -t uwegerdes/mail-client ./mail-client/ && \
-	docker run -it \
-	--link mail \
-	--name mail-client \
-	uwegerdes/mail-client \
-	bash
+$ docker exec -it php-fpm bash
 ```
 
 There is nothing much to say: php-fpm need the php files (the server only sends the http request) and the application want's to use the database.
@@ -238,12 +235,7 @@ $ docker run -d \
 	--name nginx \
 	uwegerdes/nginx
 
-$ docker run -it \
-	-p 3080:80 \
-	--volumes-from data \
-	--volumes-from php-fpm \
-	--name nginx-bash \
-	uwegerdes/nginx bash
+$ docker exec -it nginx bash
 ```
 
 To use different configuration add the following lines
