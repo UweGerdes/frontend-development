@@ -5,6 +5,7 @@ ARG USERNAME='testbox'
 ARG PASSWORD='testpass'
 
 ENV USERNAME=${USERNAME}
+ENV TERM=xterm
 
 RUN apt-get update && \
 	apt-get install -y \
@@ -27,8 +28,11 @@ RUN apt-get update && \
 
 COPY dovecot/ /etc/dovecot/
 COPY postfix/ /etc/postfix/
+COPY pinerc /home/${USERNAME}/.pinerc
+RUN chown ${USERNAME}:${USERNAME} /home/${USERNAME}/.pinerc
 
 COPY start.sh /start.sh
+RUN chmod a+x /start.sh
 
 EXPOSE 25 110 143
 

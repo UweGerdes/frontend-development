@@ -208,17 +208,19 @@ There is nothing much to say: php-fpm need the php files (the server only sends 
 For the login application we need a mail server which receives and :
 
 ```bash
-$ docker rm mail && docker rmi uwegerdes/mail && docker build -t uwegerdes/mail ./mail/ && date
-
-docker build -t uwegerdes/mail ./mail/
-
-$ docker run -d \
+$ docker stop mail && docker rm mail && docker rmi uwegerdes/mail && docker build -t uwegerdes/mail ./mail/ && \
+	docker run -d \
+	--hostname mail.local \
 	--name mail \
 	uwegerdes/mail
 
+$ docker exec -it mail gosu testbox bash
+
+$ docker rm mail-client && docker rmi uwegerdes/mail-client && docker build -t uwegerdes/mail-client ./mail-client/ && \
 	docker run -it \
-	--name mail \
-	uwegerdes/mail \
+	--link mail \
+	--name mail-client \
+	uwegerdes/mail-client \
 	bash
 ```
 

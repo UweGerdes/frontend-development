@@ -29,10 +29,10 @@ smtp_tls_session_cache_database = btree:${data_directory}/smtp_scache
 
 #smtpd_relay_restrictions = permit_mynetworks permit_sasl_authenticated defer_unauth_destination
 smtpd_relay_restrictions = permit_mynetworks defer_unauth_destination
-myhostname = mailhost
+myhostname = mail
 alias_maps = hash:/etc/aliases
 alias_database = hash:/etc/aliases
-mydestination = $myhostname, docker-mail, localhost.localdomain, localhost
+mydestination = $myhostname, mail.local, mail-smtp, docker-mail, localhost.localdomain, localhost
 relayhost =
 mynetworks = 0.0.0.0/0
 mailbox_size_limit = 0
