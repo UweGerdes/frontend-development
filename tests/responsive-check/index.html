@@ -28,7 +28,7 @@
 var slimerjs = 'slimerjs';
 var phantomjs = 'phantomjs';
 
-var baseUrl = 'http://frontend.local/login/index.php/newAccount';
+var baseUrl = 'http://dockerhost/login/index.php?newAccount';
 var selector = 'form[name="newAccount"]';
 var engines = [ phantomjs, slimerjs ];
 var viewports = [
@@ -62,13 +62,10 @@ module.exports = {
 	engines: engines
 };
 </pre>
+		</div>
 	</div>
 	<div class="footer">
-		<ul class="footerlinks">
-			<li>
-				<span class="copyright">&copy; 2016 by <a href="mailto:entwicklung@uwegerdes.de">Uwe Gerdes</a></span>
-			</li>
-		</ul>
+		<span class="copyright">&copy; 2016 by <a href="mailto:entwicklung@uwegerdes.de">Uwe Gerdes</a></span>
 	</div>
 </body>
 </html>

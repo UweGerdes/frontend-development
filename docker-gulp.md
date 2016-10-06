@@ -46,7 +46,7 @@ Build the dockers in the `docker` subdirectory and run them - nginx is needed fo
 
 Another 5 Minutes and 2 GB later...
 
-Run a container from the image just created and connect to your environment (with the ports of gulp livereload on 5381, responsive-check on 5382 and a running nginx docker container):
+Run a container from the image just created and connect to your environment (with the ports of gulp livereload on 5381, responsive-check on 5382 and a running nginx docker container, dockerhost is used in test configs):
 
 ```bash
 $ docker run -it \

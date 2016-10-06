@@ -77,7 +77,7 @@ Test results are saved in the `results` subdirectory.
 
 ## Headless Slimerjs
 
-If you are on a Linux system (Mac might work too) you can switch the execution of SlimerJS to run headles with Xvfb.
+If you are on a Linux system (Mac might work too) you can switch the execution of SlimerJS to run headless with Xvfb.
 
 ```bash
 $ sudo apt-get install xvfb
