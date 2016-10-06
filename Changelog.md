@@ -2,6 +2,9 @@
 
 ## latest
 
+1.4.2
+updated docs, tests - runs in fresh docker installation.
+
 1.4.1
 Integrated mail container to servers, clients can connect.
 
@@ -12,10 +15,10 @@ Mail server with postfix and dovecot added.
 Added nginx, php-fpm, mysql server for htdocs.
 
 1.2.0
-Added responsive-check and test-forms
+Added responsive-check and test-forms.
 
 1.1.0
-Integrated Bootstrap
+Integrated Bootstrap.
 
 1.0.0
 finished local collection of basic application and development environment with dockered gulp.

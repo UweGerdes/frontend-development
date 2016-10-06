@@ -50,9 +50,9 @@ module.exports = {
 				'//*[@id="headline"]': 'Anmelden',
 				'//*[@id="loginError"]': 'Anmeldung fehlgeschlagen!',
 				'//*[contains(@class, "messages")]': 'Benutzername / Passwort nicht gültig',
-				'//form[@name="login"][contains(@class,"has-error")]': '',
-				'//input[@type="text"][@name="Username"][@value="usernamefailed"]': '',
-				'//input[@type="password"][@name="Password"]': '',
+				'//form[@name="login"]': '',
+				'//div[contains(@class,"has-error")]/input[@type="text"][@name="Username"][@value="usernamefailed"]': '',
+				'//div[contains(@class,"has-error")]/input[@type="password"][@name="Password"]': '',
 				'//*[@type="submit"][@name="submit"]': 'Anmelden'
 			}
 		},
@@ -74,9 +74,9 @@ module.exports = {
 				'//*[@id="headline"]': 'Anmelden',
 				'//*[@id="loginError"]': 'Anmeldung fehlgeschlagen!',
 				'//*[contains(@class, "messages")]': 'Benutzername / Passwort nicht gültig',
-				'//form[@name="login"][contains(@class,"has-error")]': '',
-				'//input[@type="text"][@name="Username"][@value="failed"]': '',
-				'//input[@type="password"][@name="Password"]': '',
+				'//form[@name="login"]': '',
+				'//div[contains(@class,"has-error")]/input[@type="text"][@name="Username"][@value="failed"]': '',
+				'//div[contains(@class,"has-error")]/input[@type="password"][@name="Password"]': '',
 				'//*[@type="submit"][@name="submit"]': 'Anmelden'
 			}
 		},

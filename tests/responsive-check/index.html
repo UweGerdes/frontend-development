@@ -1,19 +1,16 @@
 <!DOCTYPE html>
-<html lang="de"><head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-<title>responsive-check</title>
-<meta name="author" content="Uwe Gerdes, entwicklung@uwegerdes.de">
-<meta name="copyright" content="Uwe Gerdes, entwicklung@uwegerdes.de">
-<meta name="description" content="responsive-check">
-<meta name="robots" content="index,follow">
-<link rel="stylesheet" type="text/css" href="css/app.css">
-<style type="text/css" media="print">
-.noprint { display:none; }
-a        { text-decoration:none; }
-</style>
+<html lang="de">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<title>Frontend-Entwicklung und Test</title>
+	<meta name="author" content="Uwe Gerdes, entwicklung@uwegerdes.de">
+	<meta name="copyright" content="Uwe Gerdes, ELWoMS Systems GmbH">
+	<!-- Bootstrap core CSS -->
+	<link rel="stylesheet" href="/css/bootstrap.css" />
+	<link rel="stylesheet" href="/css/app.css" />
 </head>
-<body>
-	<div id="container">
+<body class="index">
+	<div class="container" role="main">
 		<div id="main">
 			<h1>responsive-check</h1>
 
@@ -35,26 +32,26 @@ var baseUrl = 'http://frontend.local/login/index.php/newAccount';
 var selector = 'form[name="newAccount"]';
 var engines = [ phantomjs, slimerjs ];
 var viewports = [
-      {
-        'name': 'smartphone-portrait',
-        'viewport': {width: 320, height: 480}
-      },
-      {
-        'name': 'smartphone-landscape',
-        'viewport': {width: 480, height: 320}
-      },
-      {
-        'name': 'tablet-portrait',
-        'viewport': {width: 768, height: 1024}
-      },
-      {
-        'name': 'tablet-landscape',
-        'viewport': {width: 1024, height: 768}
-      },
-      {
-        'name': 'desktop-standard',
-        'viewport': {width: 1280, height: 1024}
-      }
+	{
+		'name': 'smartphone-portrait',
+		'viewport': {width: 320, height: 480}
+	},
+	{
+		'name': 'smartphone-landscape',
+		'viewport': {width: 480, height: 320}
+	},
+	{
+		'name': 'tablet-portrait',
+		'viewport': {width: 768, height: 1024}
+	},
+	{
+		'name': 'tablet-landscape',
+		'viewport': {width: 1024, height: 768}
+	},
+	{
+		'name': 'desktop-standard',
+		'viewport': {width: 1280, height: 1024}
+	}
 	];
 
 module.exports = {
@@ -65,10 +62,13 @@ module.exports = {
 	engines: engines
 };
 </pre>
-		</div>
-
-		<div id="footer">
-		</div>
+	</div>
+	<div class="footer">
+		<ul class="footerlinks">
+			<li>
+				<span class="copyright">&copy; 2016 by <a href="mailto:entwicklung@uwegerdes.de">Uwe Gerdes</a></span>
+			</li>
+		</ul>
 	</div>
 </body>
 </html>

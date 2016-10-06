@@ -138,6 +138,8 @@ gulp.task('lessBootstrap', function () {
 		.pipe(gutil.env.type === 'production' ? uglify() : gutil.noop())
 		.pipe(gulp.dest(path.join(destDir, 'css')))
 		.pipe(log({ message: 'written: <%= file.path %>', title: 'Gulp lessBootstrap' }))
+		.pipe(gulp.dest(path.join(testDir, 'responsive-check', 'css')))
+		.pipe(log({ message: 'written: <%= file.path %>', title: 'Gulp lessBootstrap' }))
 		;
 });
 

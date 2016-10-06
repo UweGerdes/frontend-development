@@ -59,7 +59,7 @@ var colorizer = require('colorizer').create('Colorizer'),
 	x = require('casper').selectXPath;
 
 if (!phantom) {
-    console.error('CasperJS needs to be executed in a PhantomJS environment http://phantomjs.org/');
+    console.log('CasperJS needs to be executed in a PhantomJS environment http://phantomjs.org/');
     phantom.exit(1);
 }
 

@@ -12,7 +12,7 @@ var fs = require('fs'),
 	exec = require('child_process').exec;
 
 var configFile = 'config/default.js';
-var timeout = 30000;
+var timeout = 40000;
 
 if (process.argv[2]) {
 	configFile = process.argv[2];
