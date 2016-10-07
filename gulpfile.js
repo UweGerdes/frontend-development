@@ -224,7 +224,7 @@ gulp.task('test-forms-default', function(callback) {
 
 gulp.task('test-forms-default-slimer', function(callback) {
 	del( [
-			path.join(testDir, 'test-forms', 'results', 'default', '*')
+			path.join(testDir, 'test-forms', 'results', 'default-slimerjs', '*')
 		], { force: true } );
 	var loader = exec('xvfb-run -a casperjs --engine=slimerjs test test-forms.js --cfg=config/default.js --dumpDir=./results/default-slimerjs/',
 		{ cwd: path.join(testDir, 'test-forms') },
@@ -255,9 +255,9 @@ gulp.task('test-forms-login', function(callback) {
 
 gulp.task('test-forms-login-slimer', function(callback) {
 	del( [
-			path.join(testDir, 'test-forms', 'results', 'login', '*')
+			path.join(testDir, 'test-forms', 'results', 'login-slimerjs', '*')
 		], { force: true } );
-	var loader = exec('xvfb-run -a casperjs --engine=slimerjs test test-forms.js --cfg=config/login.js',
+	var loader = exec('xvfb-run -a casperjs --engine=slimerjs test test-forms.js --cfg=config/login.js --dumpDir=./results/login-slimerjs/',
 		{ cwd: path.join(testDir, 'test-forms') },
 		function (err, stdout, stderr) {
 			logExecResults(err, stdout, stderr);

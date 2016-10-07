@@ -193,7 +193,7 @@ testCases.push(
 			'form[name="newAccount"]',
 			{
 				Name: 'Uwe',
-				eMail: 'testbox@frontend.local',
+				eMail: 'testbox@mail.local',
 				Username: 'uwe',
 				Password: 'testpassword',
 				Password2: 'testpassword'
@@ -208,7 +208,7 @@ testCases.push(
 			'//form[@name="newAccount"]': '',
 			'//*[@id="newAccountError"]': 'Anwendername \'uwe\' bereits vorhanden.',
 			'//input[@type="text"][@name="Name"][@value="Uwe"]': '',
-			'//input[@type="text"][@name="eMail"][@value="testbox@frontend.local"]': '',
+			'//input[@type="text"][@name="eMail"][@value="testbox@mail.local"]': '',
 			'//div[contains(@class,"has-error")]//input[@type="text"][@name="Username"][@value="uwe"][contains(@class,"has-error")]': '',
 			'//input[@type="password"][@name="Password"]': '',
 			'//input[@type="password"][@name="Password2"]': '',
@@ -229,7 +229,7 @@ testCases.push(
 			'form[name="newAccount"]',
 			{
 				Name: 'Testuser 1',
-				eMail: 'testbox@frontend.local',
+				eMail: 'testbox@mail.local',
 				Username: 'testuser1',
 				Password: 'testpassword1',
 				Password2: 'testpasswordFail'
@@ -244,7 +244,7 @@ testCases.push(
 			'//form[@name="newAccount"]': '',
 			'//*[@id="newAccountError"]': 'Passwort fehlt oder die Passworte stimmen nicht überein.',
 			'//input[@type="text"][@name="Name"][@value="Testuser 1"]': '',
-			'//input[@type="text"][@name="eMail"][@value="testbox@frontend.local"]': '',
+			'//input[@type="text"][@name="eMail"][@value="testbox@mail.local"]': '',
 			'//input[@type="text"][@name="Username"][@value="testuser1"]': '',
 			'//div[contains(@class,"has-error")]//input[@type="password"][@name="Password"][contains(@class,"has-error")]': '',
 			'//div[contains(@class,"has-error")]//input[@type="password"][@name="Password2"][contains(@class,"has-error")]': '',
@@ -262,7 +262,7 @@ testCases.push(
 			'form[name="newAccount"]',
 			{
 				Name: 'Testuser 1',
-				eMail: 'testbox@frontend.local',
+				eMail: 'testbox@mail.local',
 				Username: 'testuser',
 				Password: 'testpassword',
 				Password2: 'testpassword'
@@ -275,7 +275,7 @@ testCases.push(
 			'//body[@class="newAccountBodyOk"]': '',
 			'//*[@id="headline"]': 'Vielen Dank für die Anmeldung',
 			'//*[@id="NameContainer"]//*[@class="form-control-static"]': 'Testuser 1',
-			'//*[@id="eMailContainer"]//*[@class="form-control-static"]': 'testbox@frontend.local',
+			'//*[@id="eMailContainer"]//*[@class="form-control-static"]': 'testbox@mail.local',
 			'//*[@id="UsernameContainer"]//*[@class="form-control-static"]': 'testuser',
 			'//*[@id="PasswordContainer"]//*[@class="form-control-static"]': '*****'
 		},
@@ -331,6 +331,41 @@ testCases.push(
 
 testCases.push(
 	{
+		name: 'ConfirmationMail',
+		uri: baseUrl + scriptName + '?lastUnseenMail',
+		title1: 'Letzte ungelesene Mail',
+		elements: {
+			'//*[@class="link"]': 'http://dockerhost/login/index.php?newAccountConfirm&confirm=e3c5ebf6b5f2c5f0e476e21499d10465'
+		}
+	}
+);
+
+testCases.push(
+	{
+		name: 'ConfirmationMailClickLink',
+		uri: baseUrl + scriptName + '?lastUnseenMail',
+		title1: 'Letzte ungelesene Mail',
+		submit: '//a',
+		alerts: [],
+		title2: 'Login Zugang bestätigt',
+		elements: {
+			'//body[@class="newAccountConfirmBody"]': '',
+			'//*[@id="headline"]': 'Bestätigung der Freischaltung',
+			'//*[@id="newAccountConfirm"]': '',
+			'//*[@id="NameContainer"]//*[@class="form-control-static"]': 'Testuser 1',
+			'//*[@id="eMailContainer"]//*[@class="form-control-static"]': 'testbox@mail.local',
+			'//*[@id="UsernameContainer"]//*[@class="form-control-static"]': 'testuser',
+			'//*[@id="PasswordContainer"]//*[@class="form-control-static"]': '*****',
+			'//a[@href="/login/index.php"]': 'zur Anmeldeseite'
+		},
+		elementsNotExist: [
+			'//*[contains(@class,"has-error")]'
+		]
+	}
+);
+
+testCases.push(
+	{
 		name: 'Confirm',
 		uri: baseUrl + scriptName +'?newAccountConfirm&confirm=e3c5ebf6b5f2c5f0e476e21499d10465',
 		title1: 'Login Zugang bestätigt',
@@ -339,7 +374,7 @@ testCases.push(
 			'//*[@id="headline"]': 'Bestätigung der Freischaltung',
 			'//*[@id="newAccountConfirm"]': '',
 			'//*[@id="NameContainer"]//*[@class="form-control-static"]': 'Testuser 1',
-			'//*[@id="eMailContainer"]//*[@class="form-control-static"]': 'testbox@frontend.local',
+			'//*[@id="eMailContainer"]//*[@class="form-control-static"]': 'testbox@mail.local',
 			'//*[@id="UsernameContainer"]//*[@class="form-control-static"]': 'testuser',
 			'//*[@id="PasswordContainer"]//*[@class="form-control-static"]': '*****',
 			'//a[@href="/login/index.php"]': 'zur Anmeldeseite'
@@ -392,7 +427,7 @@ testCases.push(
 			'//*[@id="headline"]': 'Benutzerdaten bearbeiten',
 			'//form[@name="editAccount"]': '',
 			'//input[@type="text"][@name="Name"][@value="Testuser 1"]': '',
-			'//input[@type="text"][@name="eMail"][@value="testbox@frontend.local"]': '',
+			'//input[@type="text"][@name="eMail"][@value="testbox@mail.local"]': '',
 			'//input[@type="text"][@name="Username"][@value="testuser"]': '',
 			'//input[@type="password"][@name="Password"]': '',
 			'//input[@type="password"][@name="Password2"]': '',
@@ -429,7 +464,7 @@ testCases.push(
 			'//form[@name="editAccount"]': '',
 			'//*[@id="editAccountError"]': 'Anwendername fehlt.Mail-Adresse fehlt.Anmeldename fehlt.',
 			'//div[contains(@class,"has-error")]//input[@type="text"][@name="Name"][@value="Testuser 1"][contains(@class,"has-error")]': '',
-			'//div[contains(@class,"has-error")]//input[@type="text"][@name="eMail"][@value="testbox@frontend.local"][contains(@class,"has-error")]': '',
+			'//div[contains(@class,"has-error")]//input[@type="text"][@name="eMail"][@value="testbox@mail.local"][contains(@class,"has-error")]': '',
 			'//div[contains(@class,"has-error")]//input[@type="text"][@name="Username"][@value="testuser"][contains(@class,"has-error")]': '',
 			'//input[@type="password"][@name="Password"]': '',
 			'//input[@type="password"][@name="Password2"]': '',
@@ -447,7 +482,7 @@ testCases.push(
 		input: [
 			'form[name="editAccount"]',
 			{
-				eMail: 'testbox_frontend.local'
+				eMail: 'testbox_mail.local'
 			}
 		],
 		submit: '//*[@type="submit"]',
@@ -459,7 +494,7 @@ testCases.push(
 			'//form[@name="editAccount"]': '',
 			'//*[@id="editAccountError"]': 'Mail-Adresse falsch.',
 			'//input[@type="text"][@name="Name"][@value="Testuser 1"]': '',
-			'//div[contains(@class,"has-error")]//input[@type="text"][@name="eMail"][@value="testbox@frontend.local"][contains(@class,"has-error")]': '',
+			'//div[contains(@class,"has-error")]//input[@type="text"][@name="eMail"][@value="testbox@mail.local"][contains(@class,"has-error")]': '',
 			'//input[@type="text"][@name="Username"][@value="testuser"]': '',
 			'//input[@type="password"][@name="Password"]': '',
 			'//input[@type="password"][@name="Password2"]': '',
@@ -489,7 +524,7 @@ testCases.push(
 			'//form[@name="editAccount"]': '',
 			'//*[@id="editAccountError"]': 'Anwendername \'uwe\' bereits vorhanden.',
 			'//input[@type="text"][@name="Name"][@value="Testuser 1"]': '',
-			'//input[@type="text"][@name="eMail"][@value="testbox@frontend.local"]': '',
+			'//input[@type="text"][@name="eMail"][@value="testbox@mail.local"]': '',
 			'//div[contains(@class,"has-error")]//input[@type="text"][@name="Username"][@value="testuser"][contains(@class,"has-error")]': '',
 			'//input[@type="password"][@name="Password"]': '',
 			'//input[@type="password"][@name="Password2"]': '',
@@ -520,7 +555,7 @@ testCases.push(
 			'//form[@name="editAccount"]': '',
 			'//*[@id="editAccountError"]': 'Passworte stimmen nicht überein.',
 			'//input[@type="text"][@name="Name"][@value="Testuser 1"]': '',
-			'//input[@type="text"][@name="eMail"][@value="testbox@frontend.local"]': '',
+			'//input[@type="text"][@name="eMail"][@value="testbox@mail.local"]': '',
 			'//input[@type="text"][@name="Username"][@value="testuser"]': '',
 			'//div[contains(@class,"has-error")]//input[@type="password"][@name="Password"][contains(@class,"has-error")]': '',
 			'//div[contains(@class,"has-error")]//input[@type="password"][@name="Password2"][contains(@class,"has-error")]': '',
@@ -551,7 +586,7 @@ testCases.push(
 			'//form[@name="editAccount"]': '',
 			'//*[@id="editAccountError"]': 'Passwort zu kurz.',
 			'//input[@type="text"][@name="Name"][@value="Testuser 1"]': '',
-			'//input[@type="text"][@name="eMail"][@value="testbox@frontend.local"]': '',
+			'//input[@type="text"][@name="eMail"][@value="testbox@mail.local"]': '',
 			'//input[@type="text"][@name="Username"][@value="testuser"]': '',
 			'//div[contains(@class,"has-error")]//input[@type="password"][@name="Password"][contains(@class,"has-error")]': '',
 			'//div[contains(@class,"has-error")]//input[@type="password"][@name="Password2"][contains(@class,"has-error")]': '',
@@ -579,7 +614,7 @@ testCases.push(
 			'//body[@class="editAccountBodyOk"]': '',
 			'//*[@id="headline"]': 'Daten gespeichert:',
 			'//*[@id="NameContainer"]//*[contains(@class,"form-control-static")]': 'Testuser 2',
-			'//*[@id="eMailContainer"]//*[contains(@class,"form-control-static")]': 'testbox@frontend.local',
+			'//*[@id="eMailContainer"]//*[contains(@class,"form-control-static")]': 'testbox@mail.local',
 			'//*[@id="UsernameContainer"]//*[contains(@class,"form-control-static")]': 'testuser',
 			'//*[@id="PasswordContainer"]//*[contains(@class,"form-control-static")]': 'nicht geändert',
 			'//a[@href="/login/index.php"]': 'zurück zum Start'
@@ -1032,30 +1067,6 @@ testCases.push(
 			'//*[contains(@class,"loggedIn")]',
 			'//form',
 			'//input'
-		]
-	}
-);
-
-testCases.push(
-	{
-		name: 'ConfirmationMailClickLink',
-		uri: baseUrl + scriptName + '?lastUnseenMail',
-		title1: 'Letzte ungelesene Mail',
-		submit: '.link',
-		alerts: [],
-		title2: 'Bestätigung der Freischaltung',
-		elements: {
-			'//body[@class="newAccountConfirmBody"]': '',
-			'//*[@id="headline"]': 'Bestätigung der Freischaltung',
-			'//*[@id="newAccountConfirm"]': '',
-			'//*[@id="NameContainer"]//*[@class="form-control-static"]': 'Testuser 1',
-			'//*[@id="eMailContainer"]//*[@class="form-control-static"]': 'testbox@frontend.local',
-			'//*[@id="UsernameContainer"]//*[@class="form-control-static"]': 'testuser',
-			'//*[@id="PasswordContainer"]//*[@class="form-control-static"]': '*****',
-			'//a[@href="/login/index.php"]': 'zur Anmeldeseite'
-		},
-		elementsNotExist: [
-			'//*[contains(@class,"has-error")]'
 		]
 	}
 );

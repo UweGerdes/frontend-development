@@ -339,7 +339,6 @@ function edit_user($loginData) {
 	$result['inputEMailOk'] = true;
 	$result['inputUsernameOk'] = true;
 	$result['inputPasswordOk'] = true;
-	global $cryptosalt;
 	if ($_POST) {
 		if ($_POST['updateAccount'] != "true") {
 			$result['messages'][] = "Daten können geändert werden";
@@ -396,7 +395,7 @@ function edit_user($loginData) {
 						$stmt->execute();
 						$stmt->store_result();
 						if ($stmt->num_rows == 1) {
-							$confirmationCode = hashPassword($_POST['Username'].$cryptosalt);
+							$confirmationCode = hashPassword($_POST['Username']);
 							$update = $mysqli->stmt_init();
 							if ($result['inputPasswordOk'] && $passwordHash != null) {
 								$sql = "UPDATE `Login` SET `Name`=?, `eMail`=?, `Username`=?, ".
@@ -573,12 +572,12 @@ function log_out_user($sessionCookie) {
 // this is only for testing
 function last_unseen_mail() {
 	$result = array();
+	global $imapLogin;
 	$hostname = '{mail.local/novalidate-cert}INBOX';
 	$username = 'testbox';
 	$password = 'testpass';
-	$output = '';
 
-	$inbox = imap_open($hostname,$username,$password) or die('Cannot connect to Tiriyo: ' . imap_last_error());
+	$inbox = imap_open($imapLogin['hostname'], $imapLogin['username'], $imapLogin['password']);
 	if ($inbox) {
 		$emails = imap_search($inbox,'ALL');
 		rsort($emails);
@@ -593,9 +592,9 @@ function last_unseen_mail() {
 					'date' => $overview[0]->date
 				);
 			$message = quoted_printable_decode($message);
-			$message = preg_replace("/$/", "<br />", $message);
+			$message = preg_replace("/\n/", "<br />", $message);
 			$message = preg_replace("/http:\/\/[^\s]+/", '<a href="$0" class="link">$0</a>', $message);
-			$result['message'] = $message;
+			$result['message'] = $message.$_SERVER["REQUEST_URI"];
 		}
 
 		/* close the connection */

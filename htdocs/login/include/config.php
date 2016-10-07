@@ -12,4 +12,9 @@ $smtpParams = array (
 		'password' => 'testpass'
 	);
 
+$imapLogin = array (
+		'hostname' => '{mail.local/novalidate-cert}INBOX',
+		'username' => 'testbox',
+		'password' => 'testpass'
+	);
 ?>
