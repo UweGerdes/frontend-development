@@ -22,7 +22,7 @@ if (isset($fail)) {
 					<span class="date">on <?php echo $header["date"]; ?></span>
 				</div>
 
-				<pre class="body"><?php echo $message; ?></pre>
+				<div class="body"><?php echo $message; ?></div>
 				<?php if (isset($errors)) echo '<div class="errors">'.join("<br />\n", $errors).'</div>'; ?>
 				<?php if (isset($alerts)) echo '<div class="alerts">'.$alerts.'</div>'; ?>
 			</div>

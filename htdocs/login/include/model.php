@@ -592,7 +592,10 @@ function last_unseen_mail() {
 					'to' => $overview[0]->to,
 					'date' => $overview[0]->date
 				);
-			$result['message'] = quoted_printable_decode($message);
+			$message = quoted_printable_decode($message);
+			$message = preg_replace("/$/", "<br />", $message);
+			$message = preg_replace("/http:\/\/[^ ]+/", '<a href="$0" class="link">$0</a>', $message);
+			$result['message'] = $message;
 		}
 
 		/* close the connection */
