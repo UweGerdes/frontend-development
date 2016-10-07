@@ -2,7 +2,7 @@
 $pageId = 'newAccountConfirmBody';
 ?>
 <?php ob_start() ?>
-	<div class="container" class="form-small">
+	<div class="container form-small">
 <?php
 if (!$newAccountOk) {
 $title = 'Login Zugang nicht bestätigt';

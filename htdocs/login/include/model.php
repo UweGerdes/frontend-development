@@ -165,7 +165,7 @@ function new_user() {
 	$result['sendSuccess'] = false;
 	$result['usernameDuplicate'] = "";
 	$result['confirmationCode'] = "";
-	global $emailFrom;
+	global $emailFrom, $smtpBackend, $smtpParams;
 	if ($_POST) {
 		$mysqli = open_database_connection();
 		$result['inputNameOk'] = array_key_exists('Name', $_POST) && $_POST['Name'] != "";
@@ -255,14 +255,7 @@ function new_user() {
 			$emailText[] = "Viele Grüße\nDas Login-Team";
 			$emailText[] = "";
 			$email->setText(join("\r\n", $emailText));
-			$smtpParams = array (
-					'host' => 'mail.local',
-					'port' => 25,
-					'auth' => false,
-					'username' => 'testbox',
-					'password' => 'testpass'
-				);
-			$result['sendSuccess'] = $email->sendEmail('smtp', $smtpParams);
+			$result['sendSuccess'] = $email->sendEmail($smtpBackend, $smtpParams);
 		}
 	}
 	return $result;
@@ -575,6 +568,41 @@ function log_out_user($sessionCookie) {
 		$messages[] = "Failed to connect to database: " . $mysqli->connect_error;
 	}
 	return $messages;
+}
+
+// this is only for testing
+function last_unseen_mail() {
+	$result = array();
+	$hostname = '{mail.local/novalidate-cert}INBOX';
+	$username = 'testbox';
+	$password = 'testpass';
+	$output = '';
+
+	$inbox = imap_open($hostname,$username,$password) or die('Cannot connect to Tiriyo: ' . imap_last_error());
+	if ($inbox) {
+		$emails = imap_search($inbox,'ALL');
+		rsort($emails);
+		if($emails) {
+			$overview = imap_fetch_overview($inbox, $emails[0], 0);
+			$message = imap_fetchbody($inbox, $emails[0], 1);
+
+			$result['header'] = array(
+					'subject' => $overview[0]->subject,
+					'from' => $overview[0]->from,
+					'to' => $overview[0]->to,
+					'date' => $overview[0]->date
+				);
+			$result['message'] = quoted_printable_decode($message);
+		}
+
+		/* close the connection */
+		$result['errors'] = imap_errors();
+		$result['alerts'] = imap_alerts();
+		imap_close($inbox);
+	} else {
+		$result['fail'] = imap_last_error();
+	}
+	return $result;
 }
 
 function set_user_status($mysqli, $sessionCookie, $status) {

@@ -54,6 +54,13 @@ function delete_test_user_action() {
 	return $html;
 }
 
+// this is only for testing
+function last_unseen_mail_action() {
+	$result = last_unseen_mail();
+	$html = render_template('templates/lastUnseenMail.php', $result);
+	return $html;
+}
+
 // helper function to render templates
 function render_template($path, array $args) {
 	global $htmlroot;

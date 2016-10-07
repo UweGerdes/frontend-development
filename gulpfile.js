@@ -417,12 +417,13 @@ gulp.task('build', function(callback) {
  * run all test tasks
  */
 watchFilesFor.tests = [
-	path.join(testDir, 'test-forms', 'test-forms.js')
+	path.join(testDir, 'test-forms', 'test-forms.js'),
+	path.join(destDir, 'login', 'index.php')
 ];
 gulp.task('tests', function(callback) {
 	runSequence('clearTestLog',
 		'test-forms-default',
-		'test-forms-login',
+//		'test-forms-login',
 		callback);
 });
 

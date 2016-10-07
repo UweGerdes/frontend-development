@@ -4,6 +4,7 @@ MAINTAINER Uwe Gerdes <entwicklung@uwegerdes.de>
 RUN apt-get update && \
 	apt-get install -y \
 					php-fpm \
+					php-imap \
 					php-mail \
 					php-mysql \
 					php-pear \

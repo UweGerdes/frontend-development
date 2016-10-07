@@ -46,10 +46,12 @@ Build the dockers in the `docker` subdirectory and run them - nginx is needed fo
 
 Another 5 Minutes and 2 GB later...
 
-Run a container from the image just created and connect to your environment (with the ports of gulp livereload on 5381, responsive-check on 5382 and a running nginx docker container, dockerhost is used in test configs):
+Run a container from the image just created and connect to your environment (with the ports of gulp livereload on 5381, responsive-check on 5382 and a running nginx docker container, dockerhost is used in test configs).
+
+This command removes the container after end - useful if your nginx ip address changes.
 
 ```bash
-$ docker run -it \
+$ docker run -it --rm \
 	--name gulp-frontend \
 	-v $(pwd):/usr/src/app \
 	-p 5381:5381 \
@@ -59,27 +61,20 @@ $ docker run -it \
 	bash
 ```
 
-Inside the running docker container start `bower install` to load more dependencies, they will be in your project directory (you might want to look inside for using the components) and set your git settings - you can `git commit` etc. inside the container:
+Inside the running docker container start `bower install` to load more dependencies, they will be in your project directory (you might want to look inside for using the components).
+
+You will need this step only once, the data is saved in your project and not in the docker container. It will be reused when you run gulp-frontend the next time.
 
 ```bash
 $ bower install
-$ git config --global user.name "Your Name"
-$ git config --global user.email "you@example.com"
 ```
 
-Next start `gulp` with an optional task. If no task is given the default task runs `[ 'build', 'watch' ]`:
+Next start `gulp` with an optional task. If no task is given the default task runs `[ 'build', 'watch' ]`, the test tasks are triggered by their config files, you may add more watch files as you like:
 
 ```bash
 $ gulp build
-$ gulp lint
-$ gulp less
 
 $ gulp tests
-$ gulp test-forms-default
-$ gulp test-forms-default-slimer
-$ gulp test-forms-login
-$ gulp test-forms-login-slimer
-$ gulp responsive-check-default
 
 $ gulp watch
 
@@ -88,7 +83,7 @@ $ gulp
 
 Stop `gulp watch` with CTRL-C and exit the container with CTRL-D.
 
-Restart and attach to the container (just hit RETURN to get a prompt):
+If you started gulp-frontend without --rm you may restart and attach to the container (just hit RETURN to get a prompt):
 
 ```bash
 $ docker start --attach -i gulp-frontend
