@@ -594,7 +594,7 @@ function last_unseen_mail() {
 				);
 			$message = quoted_printable_decode($message);
 			$message = preg_replace("/$/", "<br />", $message);
-			$message = preg_replace("/http:\/\/[^ ]+/", '<a href="$0" class="link">$0</a>', $message);
+			$message = preg_replace("/http:\/\/[^\s]+/", '<a href="$0" class="link">$0</a>', $message);
 			$result['message'] = $message;
 		}
 

@@ -2,9 +2,7 @@
 //
 // (c) Uwe Gerdes, entwicklung@uwegerdes.de
 
-/* globals casper */
-
-var server = casper.cli.options.WEBSERVER || 'dockerhost';
+var server = 'dockerhost';
 var domain = 'http://' + server + '/';
 var baseDir = 'login/';
 var scriptName = 'index.php';
@@ -1034,6 +1032,30 @@ testCases.push(
 			'//*[contains(@class,"loggedIn")]',
 			'//form',
 			'//input'
+		]
+	}
+);
+
+testCases.push(
+	{
+		name: 'ConfirmationMailClickLink',
+		uri: baseUrl + scriptName + '?lastUnseenMail',
+		title1: 'Letzte ungelesene Mail',
+		submit: '.link',
+		alerts: [],
+		title2: 'Bestätigung der Freischaltung',
+		elements: {
+			'//body[@class="newAccountConfirmBody"]': '',
+			'//*[@id="headline"]': 'Bestätigung der Freischaltung',
+			'//*[@id="newAccountConfirm"]': '',
+			'//*[@id="NameContainer"]//*[@class="form-control-static"]': 'Testuser 1',
+			'//*[@id="eMailContainer"]//*[@class="form-control-static"]': 'testbox@frontend.local',
+			'//*[@id="UsernameContainer"]//*[@class="form-control-static"]': 'testuser',
+			'//*[@id="PasswordContainer"]//*[@class="form-control-static"]': '*****',
+			'//a[@href="/login/index.php"]': 'zur Anmeldeseite'
+		},
+		elementsNotExist: [
+			'//*[contains(@class,"has-error")]'
 		]
 	}
 );

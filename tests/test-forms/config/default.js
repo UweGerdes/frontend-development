@@ -2,9 +2,7 @@
 //
 // (c) Uwe Gerdes, entwicklung@uwegerdes.de
 
-/* globals casper */
-
-var server = casper.cli.options.WEBSERVER || 'dockerhost';
+var server = 'dockerhost';
 var baseUrl = 'http://' + server + '/login';
 
 module.exports = {

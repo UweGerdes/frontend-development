@@ -130,7 +130,13 @@ if (testData) {
 
 			if (testCase.submit) {
 				casper.then(function() {
-					casper.click(x(testCase.submit));
+					if (testCase.submit.indexOf('/') === 0) {
+						test.assertExists(x(testCase.submit), logLabel + testCase.submit + ' element found');
+						casper.click(x(testCase.submit));
+					} else {
+						test.assertExists(testCase.submit, logLabel + testCase.submit + ' element found');
+						casper.click(testCase.submit);
+					}
 				});
 			}
 
