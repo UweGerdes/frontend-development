@@ -31,7 +31,7 @@ The docker images are built once (or again if you like - its only a single comma
 
 With an image a container can be started, some parameters connect the container with you system (e.g. mount files or directories of your file system into the container, connect ip ports from the container to ports on you localhost).
 
-## Building the images
+## Preparations
 
 During developement I've used apt-cacher-ng docker to speed up the building of the docker baseimage. The cache settings are included in the baseimage and reused for other builds based on that image.
 
@@ -39,10 +39,9 @@ I'm using some firewall settings on my local system. Make sure the localhost por
 
 ### [apt-cacher-ng](https://hub.docker.com/r/sameersbn/apt-cacher-ng/)
 
-On my system had problems with more than 20(?) files - restart the building the baseimage with APT_PROXY below 5 or 6 times, than the cache is filled. Perhaps other apt-cacher-ng dockers might work better.
-
 ```bash
 $ sudo mkdir -p /srv/docker/apt-cacher-ng
+$ sudo chmod a+w /srv/docker/apt-cacher-ng
 $ docker run --name apt-cacher-ng -d --restart=always -p 3142:3142 -v /srv/docker/apt-cacher-ng:/var/cache/apt-cacher-ng sameersbn/apt-cacher-ng
 ```
 
@@ -250,8 +249,7 @@ If you prefer to use socket connection you should add `--volumes-from php` and c
 
 Open [http://localhost:3080/](http://localhost:3080/) in your preferred browser - you should see the data/htdocs/index.html content. Change the file and reload it.
 
-The log output of nginx is redirected to stdout/stderr (see Dockerfile) so you can easily get it from the running container with `docker logs -f test-nginx`.
-If you prefer to use the standard logging simply remove the `RUN ln -sf...` lines from Dockerfile. You can add a `VOLUME [ "/var/log/nginx" ]` to give the hint that containers should mount a host directory `-v SOMEDIR/nginxlog:/var/log/nginx` for permanent storage of the logs.
+## Some useful docker commands
 
 Now start to examine the container (hit CTRL-C to exit `docker exec -it` and `docker logs -f`):
 
@@ -262,34 +260,16 @@ $ docker logs -f nginx
 $ docker stop nginx
 $ docker start nginx
 $ docker restart nginx
+$ docker volume rm $(docker volume ls -qf dangling=true)
 ```
 
 To get rid of it you need to:
 
 ```bash
-$ docker stop nginx
-$ docker rm nginx
-$ docker rmi uwegerdes/nginx
+$ docker stop nginx php-fpm mail mysql
+$ docker rm nginx php-fpm mail mysql
+$ docker rmi uwegerdes/nginx uwegerdes/php-fpm uwegerdes/mail uwegerdes/mysql uwegerdes/data uwegerdes/baseimage
 ```
-
-We will create another container for our application later so you might wish to remove this container.
-
-Or include `-ti --rm` instead of `-b` to the docker run command to have it removed automatically and see the output in foreground:
-
-```bash
-docker run -ti --rm \
-	-p 3080:80 \
-	-v $(pwd)/config/vhost.conf:/etc/nginx/sites-enabled/vhost.conf \
-	-v $(pwd)/htdocs:/var/www/html \
-	--name tmp-nginx \
-	uwegerdes/nginx
-```
-
-Use another terminal for `docker exec -it tmp-nginx bash`, use CTRL-D to exit.
-
-Hit CTRL-C to stop the docker container `tmp-nginx`.
-
-If you want to work with virtual hosts later, you might want to add `--hostname=nginx.docker` to your run command. That name is added to `/etc/hosts` in the container for it' own ip. You could add a line to your pc /etc/hosts but the ip could change.
 
 ## What is happening
 

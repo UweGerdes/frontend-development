@@ -11,10 +11,9 @@ I'm using some firewall settings on my local system. Make sure the localhost por
 
 ### [apt-cacher-ng](https://hub.docker.com/r/sameersbn/apt-cacher-ng/)
 
-On my system had problems with more than 20(?) files - restart the `docker build` below 5 or 6 times, than the cache is filled. Perhaps other apt-cacher-ng dockers might work better.
-
 ```bash
 $ sudo mkdir -p /srv/docker/apt-cacher-ng
+$ sudo chmod a+w /srv/docker/apt-cacher-ng
 $ docker run --name apt-cacher-ng -d --restart=always -p 3142:3142 -v /srv/docker/apt-cacher-ng:/var/cache/apt-cacher-ng sameersbn/apt-cacher-ng
 ```
 
@@ -22,12 +21,19 @@ $ docker run --name apt-cacher-ng -d --restart=always -p 3142:3142 -v /srv/docke
 
 ```bash
 $ sudo mkdir -p /srv/docker/npm-proxy-cache
+$ sudo chmod a+w /srv/docker/npm-proxy-cache
 $ docker run --name npm-proxy-cache -d --restart=always -p 3143:8080 -v /srv/docker/npm-proxy-cache:/cache kudoz/npm-proxy-cache
 ```
 
-## Create docker image
+## Create application server dockers
 
-Here are the commands to build the docker image - mind the '.' at the end of the commands (meaning use current directory containing `Dockerfile` and other files needed for build). The build-args might be ommitted, the proxy settings assume that your computer `$(hostname -i)` has the proxy servers.
+Build the dockers in the `docker` subdirectory and run them - the servers are needed for tests.
+
+Some 8 Minutes and 2.5 GB later...
+
+## Create gulp docker image
+
+Now build the docker image - mind the '.' at the end of the command (meaning use current directory containing `Dockerfile` and other files needed for build). The build-args might be ommitted, the proxy settings assume that your computer `$(hostname -i)` has the proxy servers.
 
 ```bash
 $ docker build -t uwegerdes/gulp-frontend \
@@ -37,24 +43,13 @@ $ docker build -t uwegerdes/gulp-frontend \
 	--build-arg GULP_LIVERELOAD="5381" \
 	--build-arg RESPONSIVE_CHECK_HTTP="5382" \
 	.
-
-	docker build -t uwegerdes/gulp-frontend \
-	--build-arg APT_PROXY="http://$(hostname -i):3142" \
-	--build-arg NPM_PROXY="--proxy http://$(hostname -i):3143 --https-proxy http://$(hostname -i):3143 --strict-ssl false" \
-	--build-arg NPM_LOGLEVEL="--loglevel warn" \
-	--build-arg TZ="Europe/Berlin" \
-	--build-arg GULP_LIVERELOAD="5381" \
-	--build-arg RESPONSIVE_CHECK_HTTP="5382" \
-	.
 ```
 
-Some 20 Minutes and 1.5 GB later...
+Some 8 Minutes and 1.5 GB later...
 
-Build the dockers in the `docker` subdirectory and run them - nginx is needed for tests.
+## Start the gulp container
 
-Some 5 Minutes and 2 GB later...
-
-Run a container from the image just created and connect to your environment (with the ports of gulp livereload on 5381, responsive-check on 5382 and a running nginx docker container, dockerhost is used in test configs).
+Run a container from the image just created and connect to your environment (with the ports of gulp livereload on 5381, responsive-check on 5382 and a running nginx docker container, the hostname `dockerhost` is used in test configs).
 
 This command removes the container after end - useful if your nginx ip address changes.
 
