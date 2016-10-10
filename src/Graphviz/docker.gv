@@ -9,29 +9,33 @@ digraph Docker {
 	edge [
 	];
 
+	"HTTP Server" [
+		label = "{ { <Webserver> HTTP Server | <nginx> nginx } }"
+	];
+
+	"PHP-FPM Server" [
+		label = "{ { <PHP-Server> PHP-FPM Server | <php-fpm> php-fpm } }"
+	];
+
+	"Datenbank-Server" [
+		label = "{ { <DB-Server> Datenbank-Server | <mysql> mysql } }"
+	];
+
+	"Mail-Server" [
+		label = "{ { <Mail-Server> Mail-Server | <smtp> smtp / imap } }"
+	];
+
 	"Data Container" [
-		label = "{ {<Data> Data Container | <htdocs> /var/www/htdocs | <mysql> /var/lib/mysql} }"
-	];
-
-	"HTTP Sever" [
-		label = "{ { <Webserver> HTTP Sever | <data> nginx } }"
-	];
-
-	"PHP-FPM Sever" [
-		label = "{ { <PHP-Server> PHP-FPM Sever | <data> php-fpm } }"
-	];
-
-	"Datenbank-Sever" [
-		label = "{ { <DB-Server> Datenbank-Sever | <data> mysql } }"
-	];
-
-	"Browser" [
-		label = "Browser"
-		shape = "ellipse"
+		label = "{ {<Data> Data Container | <htdocs> /var/www/htdocs } }"
 	];
 
 	"File System" [
 		label = "File-System"
+		shape = "ellipse"
+	];
+
+	"Browser" [
+		label = "Browser"
 		shape = "ellipse"
 	];
 
@@ -40,12 +44,12 @@ digraph Docker {
 		fontsize = "20px";
 		color=grey;
 		node [style=filled,color=white];
-		"Datenbank-Sever":"data" -> "Data Container":"mysql" [color=black];
-		"HTTP Sever":"data" -> "Data Container":"htdocs" [color=black];
-		"PHP-FPM Sever":"data" -> "Data Container":"htdocs" [color=black];
-		"HTTP Sever" -> "PHP-FPM Sever" [constraint=false, color=green, label="php:9000"];
-		"PHP-FPM Sever" -> "Datenbank-Sever" [constraint=false, color=green, label="mysql:3306"];
+		"HTTP Server":"nginx" -> "Data Container":"htdocs" [color=black];
+		"PHP-FPM Server":"php-fpm" -> "Data Container":"htdocs" [color=black];
+		"PHP-FPM Server":"php-fpm" -> "Mail-Server":"smtp" [color=green, label="mail:25\nmail:143"];
+		"HTTP Server" -> "PHP-FPM Server" [constraint=false, color=black, label="unix:php-fpm.sock"];
+		"PHP-FPM Server" -> "Datenbank-Server" [constraint=false, color=green, label="mysql:3306"];
 	}
-	"HTTP Sever" -> "Browser" [constraint=false, color=green, label="localhost:3080"];
-	"Data Container" -> "File System" [color=black];
+	"Browser" -> "HTTP Server" [constraint=false, color=green, label="localhost:3080\nnginx:80"];
+	"Data Container":"htdocs" -> "File System" [color=black];
 }

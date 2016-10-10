@@ -9,7 +9,7 @@ tests/
 bower.json
 gulpfile.js
 LICENSE
-*.md
+docker-gulp.md
 .editorconfig
 .gitignore
 .jshintrc

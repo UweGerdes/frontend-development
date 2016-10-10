@@ -19,22 +19,17 @@ ENV TZ ${TZ}
 ENV GULP_LIVERELOAD ${GULP_LIVERELOAD}
 ENV RESPONSIVE_CHECK_HTTP ${RESPONSIVE_CHECK_HTTP}
 
-COPY package.json ${APP_DIR}/
+COPY package.json ${NPM_HOME}/
+COPY README.md ${NPM_HOME}/
 
 RUN apt-get update && \
 	apt-get dist-upgrade -y && \
 	apt-get install -y \
-			apt-transport-https \
 			bzip2 \
 			firefox \
-			g++ \
-			git \
 			graphviz \
 			imagemagick \
-			make \
-			openssh-client \
 			python \
-			subversion \
 			sudo \
 			xvfb && \
 	curl -s https://deb.nodesource.com/gpgkey/nodesource.gpg.key | apt-key add - && \
@@ -45,30 +40,30 @@ RUN apt-get update && \
 			nodejs && \
 	apt-get clean && \
 	rm -rf /var/lib/apt/lists/* && \
-	mkdir -p ${NPM_HOME} && \
 	groupadd --gid ${GID} node && \
-	useradd --uid ${UID} --gid ${GID} -s /bin/bash node && \
+	useradd --uid ${UID} --gid ${GID} --home-dir ${NPM_HOME} --shell /bin/bash node && \
 	adduser node sudo && \
 	echo "node:node" | chpasswd && \
-	chown -R node:node ${APP_DIR} && \
+	chown -R node:node /usr/local/bin && \
 	chown -R node:node ${NPM_HOME} && \
-	chown -R node:node /usr/local/bin
-
-ENV HOME ${NPM_HOME}
-
-WORKDIR ${APP_DIR}
+	mkdir -p ${APP_DIR} && \
+	chown -R node:node ${APP_DIR}
 
 USER node
 
-RUN cd ${NPM_HOME} && \
-	ln -s ${APP_DIR}/package.json ./package.json && \
-	npm ${NPM_LOGLEVEL} ${NPM_PROXY} install && \
+ENV HOME ${NPM_HOME}
+
+WORKDIR ${NPM_HOME}
+
+RUN npm ${NPM_LOGLEVEL} ${NPM_PROXY} install && \
 	sed -i -e "s/done/then/" ${NODE_PATH}/gulp-less/index.js && \
 	ln -s ${NODE_PATH}/bower/bin/bower /usr/local/bin/bower && \
 	ln -s ${NODE_PATH}/gulp/bin/gulp.js /usr/local/bin/gulp && \
 	ln -s ${NODE_PATH}/casperjs/bin/casperjs /usr/local/bin/casperjs && \
 	ln -s ${NODE_PATH}/phantomjs-prebuilt/bin/phantomjs /usr/local/bin/phantomjs && \
 	ln -s ${NODE_PATH}/slimerjs/bin/slimerjs /usr/local/bin/slimerjs
+
+WORKDIR ${APP_DIR}
 
 EXPOSE ${GULP_LIVERELOAD} ${RESPONSIVE_CHECK_HTTP}
 

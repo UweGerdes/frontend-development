@@ -30,13 +30,13 @@ $ docker run --name npm-proxy-cache -d --restart=always -p 3143:8080 -v /srv/doc
 Here are the commands to build the docker image - mind the '.' at the end of the commands (meaning use current directory containing `Dockerfile` and other files needed for build). The build-args might be ommitted, the proxy settings assume that your computer `$(hostname -i)` has the proxy servers.
 
 ```bash
-$ docker build -t uwegerdes/gulp-frontend-node4 \
+$ docker build -t uwegerdes/gulp-frontend \
 	--build-arg NPM_PROXY="--proxy http://$(hostname -i):3143 --https-proxy http://$(hostname -i):3143 --strict-ssl false" \
 	--build-arg NPM_LOGLEVEL="--loglevel warn" \
 	--build-arg TZ="Europe/Berlin" \
 	--build-arg GULP_LIVERELOAD="5381" \
 	--build-arg RESPONSIVE_CHECK_HTTP="5382" \
-	. && date
+	.
 
 	docker build -t uwegerdes/gulp-frontend \
 	--build-arg APT_PROXY="http://$(hostname -i):3142" \
@@ -52,7 +52,7 @@ Some 20 Minutes and 1.5 GB later...
 
 Build the dockers in the `docker` subdirectory and run them - nginx is needed for tests.
 
-Another 5 Minutes and 2 GB later...
+Some 5 Minutes and 2 GB later...
 
 Run a container from the image just created and connect to your environment (with the ports of gulp livereload on 5381, responsive-check on 5382 and a running nginx docker container, dockerhost is used in test configs).
 
@@ -65,7 +65,7 @@ $ docker run -it --rm \
 	-p 5381:5381 \
 	-p 5382:5382 \
 	--add-host dockerhost:$(docker inspect --format='{{range .NetworkSettings.Networks}}{{.IPAddress}} {{end}}' nginx) \
-	uwegerdes/gulp-frontend-node4 \
+	uwegerdes/gulp-frontend \
 	bash
 ```
 
