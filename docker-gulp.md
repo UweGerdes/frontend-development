@@ -30,7 +30,15 @@ $ docker run --name npm-proxy-cache -d --restart=always -p 3143:8080 -v /srv/doc
 Here are the commands to build the docker image - mind the '.' at the end of the commands (meaning use current directory containing `Dockerfile` and other files needed for build). The build-args might be ommitted, the proxy settings assume that your computer `$(hostname -i)` has the proxy servers.
 
 ```bash
-$ docker build -t uwegerdes/gulp-frontend \
+$ docker build -t uwegerdes/gulp-frontend-node4 \
+	--build-arg NPM_PROXY="--proxy http://$(hostname -i):3143 --https-proxy http://$(hostname -i):3143 --strict-ssl false" \
+	--build-arg NPM_LOGLEVEL="--loglevel warn" \
+	--build-arg TZ="Europe/Berlin" \
+	--build-arg GULP_LIVERELOAD="5381" \
+	--build-arg RESPONSIVE_CHECK_HTTP="5382" \
+	. && date
+
+	docker build -t uwegerdes/gulp-frontend \
 	--build-arg APT_PROXY="http://$(hostname -i):3142" \
 	--build-arg NPM_PROXY="--proxy http://$(hostname -i):3143 --https-proxy http://$(hostname -i):3143 --strict-ssl false" \
 	--build-arg NPM_LOGLEVEL="--loglevel warn" \
@@ -57,7 +65,7 @@ $ docker run -it --rm \
 	-p 5381:5381 \
 	-p 5382:5382 \
 	--add-host dockerhost:$(docker inspect --format='{{range .NetworkSettings.Networks}}{{.IPAddress}} {{end}}' nginx) \
-	uwegerdes/gulp-frontend \
+	uwegerdes/gulp-frontend-node4 \
 	bash
 ```
 
@@ -79,6 +87,8 @@ $ gulp tests
 $ gulp watch
 
 $ gulp
+
+xvfb-run -a -e xvfb.err casperjs ./bin/load-page.js --url=http://dockerhost/login/index.php?newAccount --selector=form[name="newAccount"] --dest=results/default/slimerjs_smartphone-portrait --engine=slimerjs --width=320
 ```
 
 Stop `gulp watch` with CTRL-C and exit the container with CTRL-D.

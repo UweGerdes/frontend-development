@@ -1,7 +1,6 @@
-FROM node:4
+FROM uwegerdes/baseimage
 MAINTAINER Uwe Gerdes <entwicklung@uwegerdes.de>
 
-ARG APT_PROXY
 ARG NPM_PROXY
 ARG NPM_LOGLEVEL
 ARG TZ='Europe/Berlin'
@@ -20,18 +19,30 @@ ENV TZ ${TZ}
 ENV GULP_LIVERELOAD ${GULP_LIVERELOAD}
 ENV RESPONSIVE_CHECK_HTTP ${RESPONSIVE_CHECK_HTTP}
 
-RUN if [ -n "${APT_PROXY}" ]; then echo "Acquire::http { Proxy \"${APT_PROXY}\"; };" >> /etc/apt/apt.conf.d/01proxy; fi
-
 COPY package.json ${APP_DIR}/
 
 RUN apt-get update && \
 	apt-get dist-upgrade -y && \
 	apt-get install -y \
+			apt-transport-https \
+			bzip2 \
+			firefox \
+			g++ \
+			git \
 			graphviz \
-			iceweasel \
+			imagemagick \
+			make \
+			openssh-client \
+			python \
+			subversion \
 			sudo \
-			vim \
 			xvfb && \
+	curl -s https://deb.nodesource.com/gpgkey/nodesource.gpg.key | apt-key add - && \
+	echo 'deb http://deb.nodesource.com/node_4.x xenial main' > /etc/apt/sources.list.d/nodesource.list && \
+	echo 'deb-src http://deb.nodesource.com/node_4.x xenial main' >> /etc/apt/sources.list.d/nodesource.list && \
+	apt-get update && \
+	apt-get install -y \
+			nodejs && \
 	apt-get clean && \
 	rm -rf /var/lib/apt/lists/* && \
 	mkdir -p ${NPM_HOME} && \
