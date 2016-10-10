@@ -25,17 +25,15 @@ My system is Ubuntu 16.04 - perhaps there are some other steps to be taken on Wi
 
 You may also try this installation in a virtual machine. It worked for me on an Ubuntu 16.04 (I hope all dependencies are included here).
 
-Or build a Docker image using the supplied Dockerfile (and keep your project directory clean from node_modules).
+Or build a Docker image using the supplied Dockerfile (and keep your project directory clean from node_modules). Sorry for repeating myself.
 
 # Installation on your OS (no docker)
 
 Some software is required on a blank Ubuntu system:
 
 ```bash
-$ sudo apt-get install g++ git imagemagick python
+$ sudo apt-get install bzip2 curl git imagemagick python wget
 ```
-
-Perhaps some other packages might be useful: ```bzip2 curl make openssh-client subversion wget```
 
 Install [Node.js](https://nodejs.org/en/) (my version is 4.4.7, don't use the version from Ubuntu repositories if it is still below 4.x) and use `npm` to install [PhantomJS](http://phantomjs.org), [CasperJS](http://phantomjs.org) and [SlimerJS](https://slimerjs.org):
 
@@ -54,6 +52,7 @@ Some node modules have to be installed:
 ```bash
 $ cd frontend-development
 $ npm install
+$ bower install
 ```
 
 If you pull from this repository and get a new version of `package.json` you should run:
@@ -66,14 +65,14 @@ $ npm update
 
 Use the default config file or edit your own.
 
-Start the tests with:
+Start the gulp with:
 
 ```bash
 $ cd frontend-development
-$ gulp [task]
+$ gulp
 ```
 
-Test results are saved in the `results` subdirectory.
+Build tasks are executed and the responsive-check server is started. Check the configurations and edit the hostname for the tests to your environment.
 
 ## Headless Slimerjs
 
