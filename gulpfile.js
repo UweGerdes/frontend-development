@@ -351,7 +351,7 @@ gulp.task('logTestResults', function(callback) {
 });
 
 // start responsive-check server
-gulp.task('server:start', function() {
+gulp.task('server-responsive-check:start', function() {
 	server.listen({
 			path: path.join(testDir, 'responsive-check', 'server.js'),
 			env: { LIVERELOAD_PORT: lifereloadPort, VERBOSE: false },
@@ -359,14 +359,14 @@ gulp.task('server:start', function() {
 		}
 	);
 });
-gulp.task('server:stop', function() {
+gulp.task('server-responsive-check:stop', function() {
     server.kill();
 });
-// restart server if server.js changed
-watchFilesFor.server = [
+// restart server-responsive-check if server.js changed
+watchFilesFor['server-responsive-check'] = [
 	path.join(testDir, 'responsive-check', 'server.js')
 ];
-gulp.task('server', function() {
+gulp.task('server-responsive-check', function() {
 	server.changed(function(error) {
 		if( error ) {
 			console.log('tests/responsive-check/server.js restart error: ' + JSON.stringify(error, null, 4));
@@ -379,8 +379,8 @@ gulp.task('server', function() {
  * gulp postmortem task to stop server on termination of gulp
  */
 gulp.task('postMortem', function() {
-	return gulp.src( watchFilesFor.server )
-		.pipe(postMortem({gulp: gulp, tasks: [ 'server:stop' ]}))
+	return gulp.src( watchFilesFor['server-responsive-check'] )
+		.pipe(postMortem({gulp: gulp, tasks: [ 'server-responsive-check:stop' ]}))
 		;
 });
 
@@ -454,7 +454,7 @@ gulp.task('watch', function() {
  */
 gulp.task('default', function(callback) {
 	runSequence('build',
-		'server:start',
+		'server-responsive-check:start',
 		'watch',
 		'postMortem',
 		callback);
