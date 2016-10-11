@@ -1,4 +1,12 @@
 --
+-- Create database and user
+--
+
+CREATE DATABASE IF NOT EXISTS demoDb;
+GRANT ALL PRIVILEGES ON demoDb.* TO 'demoUser' IDENTIFIED BY 'demoPass';
+USE `demoDb`;
+
+--
 -- Table structure for table `Login`
 --
 

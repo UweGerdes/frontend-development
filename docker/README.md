@@ -21,6 +21,18 @@ You find more on starting, stopping, inspecting, changing and much more below.
 
 If you have a project simply copy the file `docker-compose.yml` into that directory, change some path names that point to your project structure and storage directories, give it a unique local ip port and fire it up.
 
+## Installation with docker-compose
+
+Make sure you have at least docker-compose version 1.6.0 to use the version 2 syntax of docker-compose.yml. On Linux you have to follow the instructions on [https://docs.docker.com/compose/install/](https://docs.docker.com/compose/install/).
+
+In the root directory of this project you find a docker-compose.yml to set up and run the server dockers. If you have an apt-cacher-ng proxy server you should run:
+
+```bash
+$ export APT_PROXY=http://$(hostname -i):3142
+$ export TZ=Europe/Berlin
+$ docker-compose up
+```
+
 ## Docker basics
 
 You need [Docker](https://www.docker.com/) installed on your System - see the documentation. Please read the notes to you operating system - I'm using Ubuntu. You may give it a try in a virtual machine - connect some shared directories to for your project files.
@@ -260,6 +272,7 @@ $ docker logs -f nginx
 $ docker stop nginx
 $ docker start nginx
 $ docker restart nginx
+$ docker rmi $(docker images --filter "dangling=true" -q --no-trunc)
 $ docker volume rm $(docker volume ls -qf dangling=true)
 ```
 

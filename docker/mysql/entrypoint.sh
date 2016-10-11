@@ -2,6 +2,8 @@
 set -eo pipefail
 shopt -s nullglob
 
+echo "starting entrypoint.sh"
+
 # if command starts with an option, prepend mysqld
 if [ "${1:0:1}" = '-' ]; then
 	set -- mysqld "$@"

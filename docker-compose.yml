@@ -1,0 +1,57 @@
+version: '2'
+services:
+  baseimage:
+    build:
+      context: ./docker/baseimage
+      args:
+        - APT_PROXY
+        - TZ
+    image: uwegerdes/baseimage
+    environment:
+      - TZ
+
+  data:
+    build:
+      context: ./docker/data
+    image: uwegerdes/data
+    container_name: data
+    volumes:
+      - ./htdocs:/var/www/htdocs
+
+  mysql:
+    build:
+      context: ./docker/mysql
+      args:
+        - MYSQL_ROOT_PASSWORD=123456
+    image: uwegerdes/mysql
+    container_name: mysql
+    environment:
+      - MYSQL_ROOT_PASSWORD=123456
+
+  mail:
+    build:
+      context: ./docker/mail
+    image: uwegerdes/mail
+    container_name: mail
+
+  php-fpm:
+    build:
+      context: ./docker/php-fpm
+    image: uwegerdes/php-fpm
+    container_name: php-fpm
+    volumes_from:
+      - data
+    links:
+      - mysql
+      - mail:mail.local
+
+  nginx:
+    build:
+      context: ./docker/nginx
+    image: uwegerdes/nginx
+    container_name: nginx
+    ports:
+      - "3280:80"
+    volumes_from:
+      - data
+      - php-fpm
