@@ -59,6 +59,7 @@ $ docker run -it --rm \
 	-v $(pwd):/usr/src/app \
 	-p 5381:5381 \
 	-p 5382:5382 \
+	--network="$(docker inspect --format='{{.HostConfig.NetworkMode}}' nginx)" \
 	--add-host dockerhost:$(docker inspect --format='{{range .NetworkSettings.Networks}}{{.IPAddress}} {{end}}' nginx) \
 	uwegerdes/gulp-frontend \
 	bash
