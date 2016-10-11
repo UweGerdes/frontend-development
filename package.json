@@ -38,6 +38,7 @@
     "gulp-lesshint": "^2.0.0",
     "gulp-livereload": "^3.8.1",
     "gulp-notify": "^2.1.0",
+    "gulp-phplint": "^0.3.2",
     "gulp-postmortem": "^1.0.5",
     "gulp-shell": "^0.5.2",
     "gulp-uglify": "^1.0.2",
@@ -45,6 +46,7 @@
     "jshint": "^2.9.3",
     "morgan": "^1.7.0",
     "phantomjs-prebuilt": "^2.1.12",
+    "phplint": "^1.7.1",
     "rename": "^1.0.3",
     "run-sequence": "^1.1.5",
     "slimerjs": "^0.906.2"

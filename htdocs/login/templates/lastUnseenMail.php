@@ -23,8 +23,8 @@ if (isset($fail)) {
 				</div>
 
 				<div class="body"><?php echo $message; ?></div>
-				<?php if (isset($errors)) echo '<div class="errors">'.join("<br />\n", $errors).'</div>'; ?>
-				<?php if (isset($alerts)) echo '<div class="alerts">'.$alerts.'</div>'; ?>
+				<?php if (isset($errors)) echo '<div class="errors hidden">'.join("<br />\n", $errors).'</div>'; ?>
+				<?php if (isset($alerts)) echo '<div class="alerts hidden">'.$alerts.'</div>'; ?>
 			</div>
 <?php
 }

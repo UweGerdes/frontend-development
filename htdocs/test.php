@@ -15,7 +15,7 @@
 			<p>DON'T USE THIS IN PRODUCTION ENVIRONMENT</p>
 			<h4>Open <a href="http://<?php echo $_SERVER['HTTP_HOST']; ?>/test.php/foo/bar.php?v=1">http://<?php echo $_SERVER["HTTP_HOST"]; ?>/test.php/foo/bar.php?v=1</a> for a full list of request elements.</h4>
 <pre>
-$_SERVER = <?php var_export($_SERVER)?>
+$_SERVER = <?php var_export($_SERVER); ?>
 </pre>
 		</div>
 	</div>

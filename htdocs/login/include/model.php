@@ -573,9 +573,6 @@ function log_out_user($sessionCookie) {
 function last_unseen_mail() {
 	$result = array();
 	global $imapLogin;
-	$hostname = '{mail.local/novalidate-cert}INBOX';
-	$username = 'testbox';
-	$password = 'testpass';
 
 	$inbox = imap_open($imapLogin['hostname'], $imapLogin['username'], $imapLogin['password']);
 	if ($inbox) {
@@ -596,8 +593,6 @@ function last_unseen_mail() {
 			$message = preg_replace("/http:\/\/[^\s]+/", '<a href="$0" class="link">$0</a>', $message);
 			$result['message'] = $message;
 		}
-
-		/* close the connection */
 		$result['errors'] = imap_errors();
 		$result['alerts'] = imap_alerts();
 		imap_close($inbox);

@@ -25,6 +25,7 @@ var autoprefixer = require('gulp-autoprefixer'),
 	less = require('gulp-less'),
 	gulpLivereload = require('gulp-livereload'),
 	notify = require('gulp-notify'),
+	gulpPhplint = require('gulp-phplint'),
 	path = require('path'),
 	postMortem = require('gulp-postmortem'),
 	os = require('os'),
@@ -53,6 +54,20 @@ var lifereloadPort = process.env.GULP_LIVERELOAD || 5081;
  */
 var log = notify.withReporter(function (options, callback) {
 	callback();
+});
+
+/*
+ * php files lint
+ */
+watchFilesFor.phpLint = [
+	path.join(destDir, '**', '*.php')
+];
+gulp.task('phpLint', function () {
+	var opts = { skipPassedFiles: true };
+	return gulp.src( watchFilesFor.phpLint )
+		.pipe(gulpPhplint('', opts))
+		.pipe(gulpPhplint.reporter('fail'))
+		;
 });
 
 /*
@@ -404,7 +419,8 @@ gulp.task('livereload', function() {
  * run all build tasks
  */
 gulp.task('build', function(callback) {
-	runSequence('lessLintStylish',
+	runSequence('phpLint',
+		'lessLintStylish',
 		'less',
 		'lessResponsiveCheck',
 		'lessBootstrap',
