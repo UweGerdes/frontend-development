@@ -6,9 +6,9 @@ var slimerjs = 'slimerjs';
 var phantomjs = 'phantomjs';
 
 var server = 'dockerhost';
-var baseUrl = 'http://' + server + '/login/index.php?logout=true';
-var selector = 'form';
-var destDir = 'default';
+var baseUrl = 'http://' + server + '/login/index.php?newAccount';
+var selector = 'form[name="newAccount"]';
+var destDir = 'newAccount';
 var engines = [ phantomjs, slimerjs ];
 var viewports = [
 	{

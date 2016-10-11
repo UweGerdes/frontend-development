@@ -61,7 +61,7 @@ app.get('/results/:config', function(req, res){
 				config: config,
 				httpPort: httpPort,
 				livereloadPort: livereloadPort,
-				baseDir: baseDir + '/' + req.params.config
+				baseDir: baseDir
 			});
 		} else {
 			config.error = 'config file not found: ' + configFilename;
@@ -73,7 +73,7 @@ app.get('/results/:config', function(req, res){
 
 // Handle AJAX requests for run configs
 app.get('/start/:config', function(req, res){
-	runConfigAsync(req.params.config, res);
+	runConfig(req.params.config, res);
 });
 
 // Route for root dir
@@ -112,18 +112,19 @@ function getConfigs() {
 }
 
 // start compare-layouts with config file
-function runConfigAsync(config, res) {
+function runConfig(config, res) {
 	var destDir = path.join(__dirname, 'results', config);
 	var logfilePath = path.join(destDir, 'result.log');
 	var log = function (msg) {
 		console.log(msg);
 		fs.appendFileSync(logfilePath, msg + '\n');
-		res.write(replaceAnsiColors(msg) + '\n');
+		res.write(replaceAnsiColors(msg).replace(/\n/, '<br />\n') + '<br />\n');
 	};
 	if (!fs.existsSync(destDir)) {
 		fs.mkdirSync(destDir);
 	}
-	log('server starting index.js ' + config);
+	res.write('<!DOCTYPE html>\n<html>\n<head>\n<meta charset="utf-8" />\n<title>' + config + '</title>\n<link href="/css/app.css" rel="stylesheet" />\n</head>\n<body>\n<div class="runView">\n');
+
 	running.push(config);
 	if (fs.existsSync(logfilePath)) {
 		fs.unlinkSync(logfilePath);
@@ -138,6 +139,7 @@ function runConfigAsync(config, res) {
 		}
 		log('server finished ' + config);
 		running.splice(running.indexOf(config), 1);
+		res.write('<div class="close"><a href="javascript:window.close();">close window</a></div></div>\n</body>\n</html>\n');
 		if (running.length === 0) {
 			res.end();
 		}

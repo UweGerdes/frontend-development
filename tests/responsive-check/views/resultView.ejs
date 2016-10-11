@@ -4,32 +4,51 @@
 <meta charset="utf-8" />
 <title>Responsive Check <%= config.url %> <%= config.selector %></title>
 <link href="/css/app.css" rel="stylesheet" />
+<script language="JavaScript">
+function run(link) {
+	var running = window.open(link, 'runWindow', 'width=1000,height=600');
+	if (running != null) {
+		if (running.opener == null) {
+			running.opener = self;
+		}
+		running.focus();
+		return;
+	}
+	else {
+		alert("window could not be opened, please allow opening of windows with javascript for this server!");
+		return;
+	}
+}
+</script>
 </head>
 <body>
 	<div class="resultView">
-		<h1>Responsive Check <a href="/start/<%= configName %>" target="_blank">restart</a></h1>
-		<p>
+		<h1 class="headline">Responsive Check: <%= configName %> <a href="javascript:run('/start/<%= configName %>');" target="_blank">restart</a></h1>
+		<div class="configs">Select config:
 		<% configs.forEach(function(config) { %>
-			<a href="/results/<%= config %>"><%= config %></a>
+			<a href="/results/<%= config %>" class="config-link"><%= config %></a>
 		<% }) %>
-		</p>
-		<h2><%= config.url %> <%= config.selector %></h2>
-		<% config.engines.forEach(function(engine) { %>
-			<% config.viewports.forEach(function(viewport) { %>
-				<div class="result">
-					<div class="result-headline">
-						<%= engine %>, <%= viewport.name %>
-					</div>
-					<div class="result-image" style="width: <%= viewport.viewport.width %>px;height:<%= viewport.viewport.height %>px;">
-						<img src="<%= baseDir %>/<%= engine %>_<%= viewport.name %>.png" />
-					</div>
+		</div>
+		<h2 class="subheadline"><%= config.url %> -&gt; <%= config.selector %></h2>
+<% config.viewports.forEach(function(viewport) { %>
+		<div class="result">
+<% config.engines.forEach(function(engine) { %>
+			<div class="engine">
+				<div class="result-headline">
+					<%= engine %>, <%= viewport.name %>, <%= viewport.viewport.width %>x<%= viewport.viewport.height %>
 				</div>
-			<% }) %>
-		<% }) %>
+				<div class="result-image" style="max-width: <%= viewport.viewport.width %>px;max-height:<%= viewport.viewport.height %>px;">
+					<img src="<%= baseDir %>/<%= config.destDir %>/<%= engine %>_<%= viewport.name %>.png" />
+				</div>
+			</div>
+<% }) %>
+		</div>
+<% }) %>
 	</div>
 <% if (typeof livereloadPort != "undefined") { %>
 	<script>document.write('<script src="http://' + (location.host || 'localhost').split(':')[0] + ':<%= livereloadPort %>/livereload.js"></' + 'script>')</script>
 <% } %>
-<br />
+	<br />
 </body>
+</html>
 

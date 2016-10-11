@@ -219,7 +219,7 @@ casper.open(url, function() {
 		this.echo('page has horizontal scrollbar', 'WARNING');
 		fs.write(destDir + '/result.log', url + ' ' + selector + ' page has horizontal scrollbar\n', 'a');
 	} else {
-		this.echo('page loaded ok', 'WARNING');
+		this.echo('page loaded ok', 'INFO');
 		fs.write(destDir + '/result.log', url + ' ' + selector + ' page loaded ok\n', 'a');
 	}
 });

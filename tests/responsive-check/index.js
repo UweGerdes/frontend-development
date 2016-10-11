@@ -80,7 +80,7 @@ function loadPage(config, engine, viewport, callback) {
 	if (verbose) {
 		console.log('starting: ' + cmd + ' ' + args.join(' '));
 	} else {
-		console.log('starting: ' + config.selector + ' ' + pageKey);
+		console.log('starting: ' + config.url + ' / ' + config.selector + ' with ' + engine + ' ' + viewport.name);
 	}
 	var loader = exec(cmd + ' ' + args.join(' '), { timeout: timeout },
 		function (error, stdout, stderr) {
@@ -95,13 +95,13 @@ function loadPage(config, engine, viewport, callback) {
 			console.log('load ' + page.url + ' exit: ' + code);
 		}
 		page.loaded = true;
-		callback(config.selector, engine, viewport);
+		callback(config.url, config.selector, engine, viewport);
 	});
 }
 
-var addResult = function(selector, engine, viewport) {
+var addResult = function(url, selector, engine, viewport) {
 	pagesLoaded.push(getPageKey(engine, viewport.name));
-	console.log('finished: ' + selector + ' ' + getPageKey(engine, viewport.name));
+	console.log('finished: ' + url + ' / ' + selector + ' with ' + engine + ' ' + viewport.name);
 	if (pagesExpected.length == pagesLoaded.length) {
 		console.log('finished all');
 		fs.appendFileSync(destDir + '/result.log', config.baseUrl + ' ' + selector + ' pages completely loaded\n');

@@ -389,6 +389,7 @@ gulp.task('postMortem', function() {
  */
 watchFilesFor.livereload = [
 	path.join(testDir, 'responsive-check', 'views', '*.ejs'),
+	path.join(testDir, 'responsive-check', 'css', '*.css'),
 //	path.join(testDir, 'responsive-check', 'results', '**', '*.png'),
 	path.join(testDir, 'responsive-check', 'results', '**', '*.log')
 ];
