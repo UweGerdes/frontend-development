@@ -1,6 +1,6 @@
 # frontend-development
 
-Frontend Development and Testing with gulp, nginx, php, mysql, casperjs and docker
+Frontend Development and Testing with gulp, nginx, php, mysql, mail, casperjs and docker
 
 This example shows an application where a user can create an account, confirm, login, modify and delete the account.
 
@@ -13,7 +13,9 @@ To run the application you have to install and configure:
 - GulpJS
 - and some more
 
-There is another way: install [Docker](https://www.docker.com/) (please read the installation guide carefully, on Linux don't forget to add yourself to the docker group) and use the `Dockerfile`s included in the project directory and the `docker` subdirectory. A `docker-compose.yml` will be included and can be used in every project you have on your system to start and stop the environment and keep them separated. Please read `docker/README.md`.
+There is another way: install [Docker](https://www.docker.com/) (please read the installation guide carefully, on Linux don't forget to add yourself to the docker group) and use the `Dockerfile`s included in the project directory and the `docker` subdirectory.
+
+A `docker-compose.yml` is included and can be used in every project you have on your system to start and stop the environment and keep them separated. Please read `docker/README.md`.
 
 There is also a `gulpfile.js` for different tasks like compile less and graphviz, check js files, execute tests with CasperJS and more. A `Dockerfile` for that is included. Please read `docker-gulp.md`.
 
@@ -25,7 +27,7 @@ My system is Ubuntu 16.04 - perhaps there are some other steps to be taken on Wi
 
 You may also try this installation in a virtual machine. It worked for me on an Ubuntu 16.04 (I hope all dependencies are included here).
 
-Or build a Docker image using the supplied Dockerfile (and keep your project directory clean from node_modules). Sorry for repeating myself.
+Or build Docker containers using the supplied `docker-compose.yml` (and keep your project directory clean from node_modules). Sorry for repeating myself.
 
 # Installation on your OS (no docker)
 
