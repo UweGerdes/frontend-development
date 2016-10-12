@@ -44,8 +44,8 @@ RUN apt-get update && \
 	rm -rf /var/lib/apt/lists/* && \
 	groupadd --gid ${GID} node && \
 	useradd --uid ${UID} --gid ${GID} --home-dir ${NPM_HOME} --shell /bin/bash node && \
+	echo "Adding node to group sudo" && \
 	adduser node sudo && \
-	echo "Setting password for node" && \
 	echo "node:node" | chpasswd && \
 	echo "changing file owner for some files - please stand by" && \
 	chown -R node:node /usr/local/bin && \

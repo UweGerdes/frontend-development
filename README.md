@@ -46,7 +46,7 @@ $ sudo npm install -g bower casperjs gulp phantomjs-prebuilt phplint slimerjs
 Now you should clone this repository in a project directory:
 
 ```bash
-$ git clone https://bitbucket.org/uwegerdes/frontend-development.git
+$ git clone https://github.com/TinTom/frontend-development.git
 ```
 
 Some node modules and bower components have to be installed:

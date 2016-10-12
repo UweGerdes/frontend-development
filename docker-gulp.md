@@ -67,7 +67,7 @@ $ docker run -it --rm \
 
 Inside the running docker container start `bower install` to load more dependencies, they will be in your project directory (you might want to look inside for using the components).
 
-You will need this step only once, the data is saved in your project and not in the docker container. It will be reused when you run gulp-frontend the next time.
+You will need this step only once, the data is saved in your project and not in the docker container.
 
 ```bash
 $ bower install
@@ -87,7 +87,13 @@ $ gulp
 
 Stop `gulp watch` with CTRL-C and exit the container with CTRL-D.
 
-If you started gulp-frontend without --rm you may restart and attach to the container (just hit RETURN to get a prompt):
+To have a second terminal connected to the gulp container (perhaps start tasks that are not triggered by watch):
+
+```bash
+$ docker exec -it gulp-frontend bash
+```
+
+If you started gulp-frontend without `--rm` you may restart and attach to the container (just hit RETURN to get a prompt):
 
 ```bash
 $ docker start --attach -i gulp-frontend
@@ -111,6 +117,6 @@ $ cd ${HOME} && \
 
 The cp commands make shure that `npm` uses the projects `package.json`. Because `npm` hard replaces `package.json` it cannot use a soft link inside the container.
 
-You can also restart this container in another project which uses gulp. All installed node modules will be available in all projects. Please be careful not to remove modules used in other projects. Removing them from the `package.json` should be enough.
+You can also run this container in another project which uses gulp. Make sure to `npm update` to get additional project dependencies installed in the container.
 
 If you think of removing a container after installing some node modules and want to run it later and *must* call the update command above inside the new container to reinstall the modules. Or you can `docker build` the image with the full featured `package.json`.
