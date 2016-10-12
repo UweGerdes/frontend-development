@@ -25,26 +25,29 @@ COPY README.md ${NPM_HOME}/
 RUN apt-get update && \
 	apt-get dist-upgrade -y && \
 	apt-get install -y \
-			bzip2 \
-			firefox \
-			graphviz \
-			imagemagick \
-			php-cli \
-			python \
-			sudo \
-			xvfb && \
+					bzip2 \
+					firefox \
+					git \
+					graphviz \
+					imagemagick \
+					php-cli \
+					python \
+					sudo \
+					xvfb && \
 	curl -s https://deb.nodesource.com/gpgkey/nodesource.gpg.key | apt-key add - && \
 	echo 'deb http://deb.nodesource.com/node_4.x xenial main' > /etc/apt/sources.list.d/nodesource.list && \
 	echo 'deb-src http://deb.nodesource.com/node_4.x xenial main' >> /etc/apt/sources.list.d/nodesource.list && \
 	apt-get update && \
 	apt-get install -y \
-			nodejs && \
+					nodejs && \
 	apt-get clean && \
 	rm -rf /var/lib/apt/lists/* && \
 	groupadd --gid ${GID} node && \
 	useradd --uid ${UID} --gid ${GID} --home-dir ${NPM_HOME} --shell /bin/bash node && \
 	adduser node sudo && \
+	echo "Setting password for node" && \
 	echo "node:node" | chpasswd && \
+	echo "changing file owner for some files - please stand by" && \
 	chown -R node:node /usr/local/bin && \
 	chown -R node:node ${NPM_HOME} && \
 	mkdir -p ${APP_DIR} && \

@@ -6,9 +6,9 @@ Or install Docker on your computer and use the scripts here to generate the dock
 
 ## Quick start
 
-- Install the newest [Docker](https://www.docker.com/) version and docker-compose. Read the docs, there might be a bit more configuration required.
+- Install the newest [Docker](https://www.docker.com/) version and docker-compose (see below). Read the docs, there might be a bit more configuration required.
 - Create a project directory: `mkdir ~/projects/sample-frontend-projects` and `cd ~/projects/sample-frontend-projects`.
-- Clone this repository (or download and unpack the zip file): `git clone https://bitbucket.org/uwegerdes/frontend-development.git`.
+- Clone this repository (or download and unpack the zip file): `git clone https://github.com/TinTom/frontend-development.git`.
 - Change to the new directory: `cd frontend-development`.
 - Build Docker server images and launch containers: `docker-compose up -d`.
 - Open [http://localhost:3080](http://localhost:3080) in your favorite browser.
@@ -21,11 +21,11 @@ If you have a firewall you might want to open some ports.
 
 You find more on starting, stopping, inspecting, changing and much more below.
 
-## Installation with docker-compose
+## Installing docker-compose
 
-Make sure you have at least docker-compose version 1.6.0 to use the version 2 syntax of docker-compose.yml. On Linux you have to follow the instructions on [https://docs.docker.com/compose/install/](https://docs.docker.com/compose/install/). On Windows or Mac the Docker setup should have done this.
+Make sure you have at least docker-compose version 1.6.0 to use the version 2 syntax of `docker-compose.yml`. On Linux you have to follow the instructions on [https://docs.docker.com/compose/install/](https://docs.docker.com/compose/install/). On Windows or Mac the Docker setup should have done this.
 
-In the root directory of this project you find a docker-compose.yml to set up and run the server dockers.
+In the root directory of this project you find `docker-compose.yml` to set up and run the server dockers.
 
 If you have an apt-cacher-ng proxy server (see below) you should run:
 
@@ -39,8 +39,11 @@ Now build and start the servers:
 
 ```bash
 $ export TZ=Europe/Berlin
-$ docker-compose up
+$ docker-compose up -d
+$ docker ps
 ```
+
+Open [http://localhost:3080/](http://localhost:3080/) in your preferred browser
 
 ## Install in another project
 

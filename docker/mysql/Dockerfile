@@ -1,18 +1,12 @@
 FROM uwegerdes/baseimage
 MAINTAINER Uwe Gerdes <entwicklung@uwegerdes.de>
 
-ARG DB_NAME=demoDb
-ARG DB_USER=demoUser
-ARG DB_PASS=demoPass
 ARG MYSQL_ROOT_PASSWORD=123456
 
 ENV MYSQL_USER=mysql
 ENV MYSQL_DATA_DIR=/var/lib/mysql
 ENV MYSQL_RUN_DIR=/run/mysqld
 ENV MYSQL_LOG_DIR=/var/log/mysql
-ENV DB_NAME=${DB_NAME}
-ENV DB_USER=${DB_USER}
-ENV DB_PASS=${DB_PASS}
 ENV MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
 
 RUN { \

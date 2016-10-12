@@ -23,7 +23,7 @@ function run(link) {
 </head>
 <body>
 	<div class="resultView">
-		<h1 class="headline">Responsive Check: <%= configName %> <a href="javascript:run('/start/<%= configName %>');" target="_blank">restart</a></h1>
+		<h1 class="headline">Responsive Check: <%= configName %> <a href="javascript:run('/start/<%= configName %>');">restart</a></h1>
 		<div class="configs">Select config:
 		<% configs.forEach(function(config) { %>
 			<a href="/results/<%= config %>" class="config-link"><%= config %></a>

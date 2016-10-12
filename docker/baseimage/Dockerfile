@@ -5,7 +5,7 @@ ARG APT_PROXY
 ARG TZ=Europe/Berlin
 
 ENV DEBIAN_FRONTEND noninteractive
-ENV TZ Europe/Berlin
+ENV TZ ${TZ}
 
 RUN if [ -n "${APT_PROXY}" ]; then \
 		echo "Acquire::http { Proxy \"${APT_PROXY}\"; };" >> /etc/apt/apt.conf.d/01proxy; \

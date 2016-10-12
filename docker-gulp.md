@@ -83,8 +83,6 @@ $ gulp tests
 $ gulp watch
 
 $ gulp
-
-xvfb-run -a -e xvfb.err casperjs ./bin/load-page.js --url=http://dockerhost/login/index.php?newAccount --selector=form[name="newAccount"] --dest=results/default/slimerjs_smartphone-portrait --engine=slimerjs --width=320
 ```
 
 Stop `gulp watch` with CTRL-C and exit the container with CTRL-D.
