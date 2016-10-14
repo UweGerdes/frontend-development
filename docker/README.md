@@ -90,7 +90,7 @@ $ cd docker
 The commands to build the docker images for the application servers are:
 
 ```bash
-$ docker build -t uwegerdes/baseimage --build-arg TZ="Europe/Berlin" ./baseimage/
+$ docker build -t uwegerdes/baseimage ./baseimage/
 
 ### with apt-cacher-ng
 $ docker build -t uwegerdes/baseimage --build-arg APT_PROXY="http://$(hostname -i):3142" --build-arg TZ="Europe/Berlin" ./baseimage/
@@ -165,7 +165,7 @@ To see what is happening there you might want to:
 
 ```bash
 $ docker exec -it mail gosu testbox alpine
-$ docker exec -it php-fpm tail -f /var/log/www-fpm.log
+$ docker exec -it mail tail -f /var/log/dovecot.log
 $ docker exec -it mail bash
 ```
 

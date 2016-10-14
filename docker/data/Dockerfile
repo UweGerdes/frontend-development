@@ -10,4 +10,3 @@ RUN mkdir -p ${WWW_ROOT}
 VOLUME [ "${WWW_ROOT}" ]
 
 CMD [ "true" ]
-#CMD [ "/bin/bash" ]
