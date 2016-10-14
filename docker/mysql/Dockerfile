@@ -21,7 +21,8 @@ RUN { \
 	rm -rf ${MYSQL_DATA_DIR} && \
 	rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* && \
 	rm -rf /var/lib/mysql && \
-	mkdir -p /var/lib/mysql /var/run/mysqld && \
+	mkdir -p /var/lib/mysql && \
+	mkdir -p /var/run/mysqld && \
 	chown -R mysql:mysql /var/lib/mysql /var/run/mysqld && \
 	chmod 777 /var/run/mysqld && \
 	sed -Ei 's/^(bind-address|log)/#&/' /etc/mysql/mysql.conf.d/mysqld.cnf && \
