@@ -24,5 +24,3 @@ RUN echo 'APT::Install-Recommends 0;' >> /etc/apt/apt.conf.d/01norecommends && \
 					vim \
 					wget && \
 	rm -rf /var/lib/apt/lists/*
-
-RUN echo $TZ > tz.txt
