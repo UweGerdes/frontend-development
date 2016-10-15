@@ -2,9 +2,7 @@
 
 Frontend Development and Testing with gulp, nginx, php, mysql, mail, casperjs and docker.
 
-Please see [my github repo](https://github.com/UweGerdes/frontend-development).
-
-The example shows an application where a user can create an account, confirm, login, modify and delete the account.
+The example is an application where a user can create an account, confirm, login, modify and delete the account.
 
 To run the application you have to install and configure:
 
@@ -18,6 +16,8 @@ To run the application you have to install and configure:
 Well - install [Docker](https://www.docker.com/) (please read the installation guide carefully, on Linux don't forget to add yourself to the docker group).
 
 ## docker-compose.yml
+
+To install the servers please clone [my github repo](https://github.com/UweGerdes/frontend-development) and use `docker-compose` to fire them up.
 
 Make sure you have at least docker-compose version 1.6.0 to use the version 2 syntax of `docker-compose.yml`. On Linux you have to follow the instructions on [https://docs.docker.com/compose/install/](https://docs.docker.com/compose/install/). On Windows or Mac the Docker setup should have done this.
 
