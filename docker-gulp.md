@@ -27,7 +27,7 @@ $ docker run --name npm-proxy-cache -d --restart=always -p 3143:8080 -v /srv/doc
 
 ## Create application server dockers
 
-Build the dockers in the `docker` subdirectory and run them - the servers are needed for tests.
+Build the dockers in the `docker-compose.yml` - the servers are needed for tests.
 
 Some 8 Minutes and 1.5 GB later...
 

@@ -2,7 +2,9 @@
 
 Frontend Development and Testing with gulp, nginx, php, mysql, mail, casperjs and docker.
 
-This example shows an application where a user can create an account, confirm, login, modify and delete the account.
+Please see [my github repo](https://github.com/UweGerdes/frontend-development).
+
+The example shows an application where a user can create an account, confirm, login, modify and delete the account.
 
 To run the application you have to install and configure:
 
@@ -13,66 +15,84 @@ To run the application you have to install and configure:
 - GulpJS
 - and some more
 
-There is another way: install [Docker](https://www.docker.com/) (please read the installation guide carefully, on Linux don't forget to add yourself to the docker group) and use the `Dockerfile`s included in the project directory and the `docker` subdirectory.
+Well - install [Docker](https://www.docker.com/) (please read the installation guide carefully, on Linux don't forget to add yourself to the docker group).
 
-A `docker-compose.yml` is included to start and stop the environment. Please read `docker/README.md`.
+## docker-compose.yml
 
-There is also a `gulpfile.js` for tasks like compile less and graphviz, check js files, execute tests with CasperJS and more. A `Dockerfile` for that is included. Please read `docker-gulp.md`.
+Make sure you have at least docker-compose version 1.6.0 to use the version 2 syntax of `docker-compose.yml`. On Linux you have to follow the instructions on [https://docs.docker.com/compose/install/](https://docs.docker.com/compose/install/). On Windows or Mac the Docker setup should have done this.
 
-## Installation without Docker
+In the root directory of this project you find `docker-compose.yml` to set up and run the server dockers.
 
-The documentation here is not complete - consider using the dockered application environment.
-
-My system is Ubuntu 16.04 - there are some other steps to be taken on Windows systems.
-
-You may also try this installation in a virtual machine. It worked for me on an Ubuntu 16.04 (I hope all dependencies are included here).
-
-Or build Docker containers using the supplied `docker-compose.yml` (and keep your project directory clean from node_modules). Sorry for repeating myself.
-
-# Installation on your OS (no docker)
-
-Some software is required on a blank Ubuntu system:
+If you have an apt-cacher-ng proxy server (see below) you should run:
 
 ```bash
-$ sudo apt-get install bzip2 curl git imagemagick python wget
+$ export APT_PROXY=http://$(hostname -i):3142
 ```
 
-Install [Node.js](https://nodejs.org/en/) (my version is 4.4.7, don't use the version from Ubuntu repositories if it is still below 4.x) and use `npm` to install [PhantomJS](http://phantomjs.org), [CasperJS](http://phantomjs.org) and [SlimerJS](https://slimerjs.org) (make sure you have Firefox installed for SlimerJS):
+Perhaps open port 3142 in your firewall to allow access from the docker-engine.
+
+Now build and start the servers:
 
 ```bash
-$ sudo npm install -g bower casperjs gulp phantomjs-prebuilt phplint slimerjs
+$ export TZ=Europe/Berlin
+$ docker-compose up -d
+$ docker ps
 ```
 
-Now you should clone this repository in a project directory:
+Open [http://localhost:3080/](http://localhost:3080/) in your preferred browser
+
+## Create gulp docker image
+
+Now build the gulp docker image - mind the '.' at the end of the command (meaning use current directory containing `Dockerfile` and other files needed for build). The build-args might be ommitted, the proxy settings assume that your computer `$(hostname -i)` has the proxy servers.
 
 ```bash
-$ git clone https://github.com/TinTom/frontend-development.git
+$ docker build -t uwegerdes/gulp-frontend \
+	--build-arg NPM_PROXY="--proxy http://$(hostname -i):3143 --https-proxy http://$(hostname -i):3143 --strict-ssl false" \
+	--build-arg NPM_LOGLEVEL="--loglevel warn" \
+	--build-arg TZ="Europe/Berlin" \
+	--build-arg GULP_LIVERELOAD="5381" \
+	--build-arg RESPONSIVE_CHECK_HTTP="5382" \
+	.
 ```
 
-Some node modules and bower components have to be installed:
+Some 8 Minutes and 1.5 GB later...
+
+## Start the gulp container
+
+Run a container from the image just created and connect to your environment (with the ports of gulp livereload on 5381, responsive-check on 5382 and a running nginx docker container, the hostname `dockerhost` is used in test configs).
+
+This command removes the container after end - useful if your nginx ip address changes.
 
 ```bash
-$ cd frontend-development
-$ npm install
+$ docker run -it --rm \
+	--name gulp-frontend \
+	-v $(pwd):/usr/src/app \
+	-p 5381:5381 \
+	-p 5382:5382 \
+	--network="$(docker inspect --format='{{.HostConfig.NetworkMode}}' nginx)" \
+	--add-host dockerhost:$(docker inspect --format='{{range .NetworkSettings.Networks}}{{.IPAddress}} {{end}}' nginx) \
+	uwegerdes/gulp-frontend \
+	bash
+```
+
+Inside the running docker container start `bower install` to load more dependencies, they will be in your project directory (you might want to look inside for using the components).
+
+You will need this step only once, the data is saved in your project and not in the docker container.
+
+```bash
 $ bower install
 ```
 
-## Usage
-
-Start the gulp with:
+Next start `gulp` with an optional task. If no task is given the default task runs `[ 'build', 'watch' ]`, the test tasks are triggered by their config files, you may add more watch files as you like:
 
 ```bash
-$ cd frontend-development
+$ gulp build
+
+$ gulp tests
+
+$ gulp watch
+
 $ gulp
 ```
 
-Build tasks are executed and the responsive-check server is started. Check the configurations and edit the hostname for the tests to your environment.
-
-## Headless Slimerjs
-
-If you are on a Linux system (Mac might work too) you can switch the execution of SlimerJS to run headless with Xvfb.
-
-```bash
-$ sudo apt-get install xvfb
-$ xvfb-run -a [-e /dev/stdout] casperjs test --engine=slimerjs test-forms.js --cfg=config/default.js
-```
+Stop `gulp watch` with CTRL-C and exit the container with CTRL-D.

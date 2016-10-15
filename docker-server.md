@@ -8,7 +8,7 @@ Or install Docker on your computer and use the scripts here to generate the dock
 
 - Install the newest [Docker](https://www.docker.com/) version and docker-compose (see below). Read the docs, there might be a bit more configuration required.
 - Create a project directory: `mkdir ~/projects/sample-frontend-projects` and `cd ~/projects/sample-frontend-projects`.
-- Clone this repository (or download and unpack the zip file): `git clone https://github.com/TinTom/frontend-development.git`.
+- Clone this repository (or download and unpack the zip file): `git clone https://github.com/UweGerdes/frontend-development.git`.
 - Change to the new directory: `cd frontend-development`.
 - Build Docker server images and launch containers: `docker-compose up -d`.
 - Drink coffee.
