@@ -1,6 +1,6 @@
 # frontend-development
 
-Frontend Development and Testing with gulp, nginx, php, mysql, mail, casperjs and docker
+Frontend Development and Testing with gulp, nginx, php, mysql, mail, casperjs and docker.
 
 This example shows an application where a user can create an account, confirm, login, modify and delete the account.
 

@@ -1,15 +1,16 @@
 # dockerignore for gulp-frontend
-Arbeit/
+.git/
 bower_components/
-docker/
 htdocs/
 src/
 tests/
-.git/
-bower.json
-gulpfile.js
-LICENSE
-docker-gulp.md
 .editorconfig
 .gitignore
 .jshintrc
+Changelog.md
+bower.json
+docker-compose.yml
+docker-gulp.md
+docker-server.md
+gulpfile.js
+LICENSE

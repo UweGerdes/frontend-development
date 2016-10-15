@@ -2,6 +2,15 @@
 
 ## latest
 
+1.6.0
+Integration of github repositories, docker directory removed
+
+1.5.1
+Changes to Dockerfiles for docker-compose
+
+1.5.0
+Created docker-compose.yml
+
 1.4.3
 Login confirmation mail sending from php-fpm to mail container.
 
