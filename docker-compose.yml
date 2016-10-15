@@ -2,7 +2,7 @@ version: '2'
 services:
   baseimage:
     build:
-      context: ./docker/baseimage
+      context: https://github.com/UweGerdes/docker-baseimage.git
       args:
         - APT_PROXY
         - TZ
@@ -12,7 +12,7 @@ services:
 
   data:
     build:
-      context: ./docker/data
+      context: https://github.com/UweGerdes/docker-data.git
     image: uwegerdes/data
     container_name: data
     volumes:
@@ -20,7 +20,7 @@ services:
 
   mysql:
     build:
-      context: ./docker/mysql
+      context: https://github.com/UweGerdes/docker-mysql.git
       args:
         - MYSQL_ROOT_PASSWORD=123456
     image: uwegerdes/mysql
@@ -30,13 +30,13 @@ services:
 
   mail:
     build:
-      context: ./docker/mail
+      context: https://github.com/UweGerdes/docker-mail.git
     image: uwegerdes/mail
     container_name: mail
 
   php-fpm:
     build:
-      context: ./docker/php-fpm
+      context: https://github.com/UweGerdes/docker-php-fpm.git
     image: uwegerdes/php-fpm
     container_name: php-fpm
     volumes_from:
@@ -47,7 +47,7 @@ services:
 
   nginx:
     build:
-      context: ./docker/nginx
+      context: https://github.com/UweGerdes/docker-nginx.git
     image: uwegerdes/nginx
     container_name: nginx
     ports:

@@ -17,8 +17,8 @@ digraph Docker {
 		label = "{ { <PHP-Server> PHP-FPM Server | <php-fpm> php-fpm } }"
 	];
 
-	"Datenbank-Server" [
-		label = "{ { <DB-Server> Datenbank-Server | <mysql> mysql } }"
+	"Database-Server" [
+		label = "{ { <DB-Server> Database-Server | <mysql> mysql } }"
 	];
 
 	"Mail-Server" [
@@ -48,7 +48,7 @@ digraph Docker {
 		"PHP-FPM Server":"php-fpm" -> "Data Container":"htdocs" [color=black];
 		"PHP-FPM Server":"php-fpm" -> "Mail-Server":"smtp" [color=green, label="mail:25\nmail:143"];
 		"HTTP Server" -> "PHP-FPM Server" [constraint=false, color=black, label="unix:php-fpm.sock"];
-		"PHP-FPM Server" -> "Datenbank-Server" [constraint=false, color=green, label="mysql:3306"];
+		"PHP-FPM Server" -> "Database-Server" [constraint=false, color=green, label="mysql:3306"];
 	}
 	"Browser" -> "HTTP Server" [constraint=false, color=green, label="localhost:3080\nnginx:80"];
 	"Data Container":"htdocs" -> "File System" [color=black];
