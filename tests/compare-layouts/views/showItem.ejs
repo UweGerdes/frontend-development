@@ -1,0 +1,5 @@
+<tr class="<% if (result.imageStderr != '0') { %>fail<% } else { %>success<% } %>">
+	<td><% if(result.jsonFilename) { %><a href="/show/<%= config.name %>/<%= resultKey %>" title="Testergebnis"><%= resultKey %></a><% } else { %><%= resultKey %><% } %></td>
+	<td><a href="/results/<%= config.data.destDir %>/<%= result.page1 %>/page.png" title="Screenshot Seite" class="compare1"><%= result.page1 %></a> <% if(result.exists1) { %><a href="/<%= result.baseFilename1 %>.png" title="Screenshot Element" class="compare1"><%= result.selector1 %></a><% } else { %><%= result.selector1 %> NOT FOUND<% } %></td>
+	<td><a href="/results/<%= config.data.destDir %>/<%= result.page2 %>/page.png" title="Screenshot Seite" class="compare2"><%= result.page2 %></a> <% if(result.exists2) { %><a href="/<%= result.baseFilename2 %>.png" title="Screenshot Element" class="compare2"><%= result.selector2 %></a><% } else { %><%= result.selector2 %> NOT FOUND<% } %></td>
+</tr>

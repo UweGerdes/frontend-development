@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="de"><head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<title>compare-layouts</title>
+<meta name="author" content="Uwe Gerdes, entwicklung@uwegerdes.de">
+<meta name="copyright" content="Uwe Gerdes, entwicklung@uwegerdes.de">
+<meta name="description" content="compare-layouts">
+<meta name="robots" content="index,follow">
+<link rel="stylesheet" type="text/css" href="css/app.css">
+<style type="text/css" media="print">
+.noprint { display:none; }
+a        { text-decoration:none; }
+</style>
+</head>
+<body>
+	<div id="container">
+		<div id="main">
+			<h1>compare-layouts</h1>
+			<h2>Anwendung server</h2>
+			<p>Ein Web-Server unter Node.js zum Start der Tests und zur Anzeige von Ergebnissen wird gestartet mit:</p>
+			<pre class="console">npm start</pre>
+			<script>document.write('<p>Ist der Server gestartet, <a href="http://' + (location.host || 'localhost').split(':')[0] + ':3000/app">bitte hier klicken</a>.</p>')</script>
+			<p>In der Anwendung kann die Konfiguration <span class="editor">default</span> gewählt und dann gestartet werden. Nach Beendigung des Durchlaufs einmal auf <span class="editor">neu laden</span> klicken und die Ergebnisse anschauen.</p>
+			<p>Weitere Script-Dateien können im Ordner <span class="editor">scripts</span> angelegt werden.</p>
+
+			<h2>Aufbau der Script-Dateien</h2>
+			<p>Script-Dateien sollten im Verzeichnis config gespeichert werden. Die Syntax ist JavaScript, es muss eine Datenstruktur über module.export gesetzt werden.</p>
+			<p>Das Beispielscript default.js vergleicht das form-Element von google.de - allerdings vergleicht es die beiden Browsertypen Webkit (phantomjs) und Firefox (slimerjs) - es ist also mit Unterschieden zu rechnen.</p>
+			<pre class="editor">
+//
+// default configuration for compare-layouts
+//
+
+var slimerjs = 'slimerjs';
+var phantomjs = 'phantomjs';
+
+module.exports = {
+	destDir: 'default',
+	whitelist: 'www.uwegerdes.de', // allow load from uri with this substring
+	blacklist: '.js', // do not load - even if it comes from whitelist
+	pages: {
+		'index-phantomjs': {
+			'url': 'http://localhost:3000/',
+			'selector': 'body',
+			'engine': phantomjs,
+			'cache': false
+		},
+		'index-slimerjs': {
+			'url': 'http://localhost:3000/',
+			'selector': 'body',
+			'engine': slimerjs,
+			'cache': false
+		},
+		'app-phantomjs': {
+			'url': 'http://localhost:3000/app',
+			'selector': 'body',
+			'engine': phantomjs,
+			'cache': false
+		},
+		'app-slimerjs': {
+			'url': 'http://localhost:3000/app',
+			'selector': 'body',
+			'engine': slimerjs,
+			'cache': false
+		}
+	},
+	compares: {
+		'index-phantomjs-slimerjs': {
+			compare: ['tagName', 'type', 'textContent', 'name', 'value'],
+			page1: 'index-phantomjs',
+			page2: 'index-slimerjs',
+			showHTML: true
+		},
+		'app-phantomjs-slimerjs': {
+			compare: ['tagName', 'type', 'textContent', 'name', 'value'],
+			page1: 'app-phantomjs',
+			page2: 'app-slimerjs',
+			showHTML: true
+		}
+	}
+};</pre>
+		</div>
+
+		<div id="footer">
+		</div>
+	</div>
+</body>
+</html>

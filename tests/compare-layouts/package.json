@@ -1,0 +1,53 @@
+{
+  "name": "compare-layouts",
+  "description": "compare rendered html page elements",
+  "version": "0.3.3",
+  "license": "(ISC OR GPL-3.0)",
+  "keywords": [
+    "compare",
+    "rendered",
+    "web",
+    "html",
+    "css",
+    "pages"
+  ],
+  "author": {
+    "name": "Uwe Gerdes",
+    "url": "http://frontend.uwegerdes.de/"
+  },
+  "homepage": "http://compare-layout.uwegerdes.de",
+  "repository": {
+    "type": "svn",
+    "url": "https://localhost/svn/Frontend/trunk/"
+  },
+  "bugs": {
+    "email": "entwicklung@uwegerdes.de"
+  },
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "files": [
+    "compare-layouts.js",
+    "server.js",
+    "bin",
+    "views",
+    "css"
+  ],
+  "config": {
+    "port": "3000",
+    "livereload": "35730"
+  },
+  "dependencies": {
+    "body-parser": "^1.15.0",
+    "dateformat": "^1.0.12",
+    "ejs": "^2.4.1",
+    "eval": "^0.1.1",
+    "express": "^4.13.4",
+    "file-system": "^2.2.1",
+    "fs-tools": "^0.2.11",
+    "livereload": "^0.4.1",
+    "mkdirp": "^0.5.1",
+    "morgan": "^1.7.0"
+  }
+}

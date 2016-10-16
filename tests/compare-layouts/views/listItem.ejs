@@ -1,0 +1,5 @@
+<li<% if ( ! config.success ) { %> class="failed"<% } %>>
+	<div class="name"><a href="/app/<%= config.name %>" title="config.name anzeigen"><%= config.name %></a></div>
+	<div class="result"><% if (running.indexOf(config.name) > -1 ) { %>running<% } else { %><% if ( config.totalTests > 0 ) { %><% if ( config.success ) { %><%= config.totalTests %> test<% if ( config.totalTests != 1 ) { %>s<% } %> OK<% } else { %><%= config.failedTests %> of <%= config.totalTests %> test<% if ( config.totalTests != 1 ) { %>s<% } %> FAILED<% } %><% } %><% } %></div>
+	<div class="lastRun"><% if (running.indexOf(config.name) > -1) { %>gestartet<% } else { %><%= config.lastRun %><% } %></div>
+</li>

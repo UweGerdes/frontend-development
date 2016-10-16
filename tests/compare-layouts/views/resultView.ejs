@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8" />
+<title>Compare Layouts <%= page1.url %> <%= result.selector1 %> &lt;=&gt; <%= page2.url %> <%= result.selector1 %></title>
+<link href="/css/app.css" rel="stylesheet" />
+</head>
+<body>
+<div id="result">
+	<h1>Compare Layouts</h1>
+	<h4><%= page1.url %> "<%= result.selector1 %>"</h4>
+	<div class="image1"><img src="/<%= result.baseFilename1 %>.png" /></div>
+    <br />
+	<h4><%= page2.url %> "<%= result.selector2 %>"</h4>
+	<div class="image2"><img src="/<%= result.baseFilename2 %>.png" /></div>
+    <br />
+	<% if (result.imageStderr && result.imageStderr.indexOf('a') > 0) { %>
+		<h2>Unterschiede können nicht ermittelt werden:</h2>
+		<div class="imageDiff compare"><%= result.imageStderr.replace(/ @.+/, '') %></div>
+        <br />
+	<% } else { %>
+		<% if (result.imageStderr != "0") { %>
+			<h2>Unterschiede</h2>
+			<h3>Maske</h3>
+			<div class="imageDiff"><img src="/<%= result.compareFilename %>" /></div>
+            <br />
+		<% } else { %>
+			<h2>Screenshots sind identisch</h2>
+            <br />
+		<% } %>
+	<% } %>
+	<% if (result.imageStderr != "0") { %>
+		<h3>Differenz</h3>
+		<div class="imageDiff composite"><img src="/<%= result.compositeFilename %>" /></div><br />
+		<h3>Differenz monochrom</h3>
+		<div class="imageDiff composite_monochrome"><img src="/<%= result.composite_monochromeFilename %>" /></div><br />
+	<% } %>
+	<div class="compareResult">
+		<h2>Style-Unterschiede</h2>
+		<%- result.resultHtml %>
+	</div>
+</div>
+<!--
+		<script>document.write('<script src="http://' + (location.host || 'localhost').split(':')[0] + ':<%= livereloadPort %>/livereload.js"></' + 'script>')</script>
+-->
+<br />
+</body>
+
