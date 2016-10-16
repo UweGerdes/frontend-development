@@ -1,7 +1,6 @@
 # Dockerfile for frontend development and testing environment with GulpJS, PhantomJS, CasperJS, SlimerJS
 
-
-# Docker uwegerdes/gulp-frontend
+## Docker uwegerdes/gulp-frontend
 
 Install [Docker](https://www.docker.com/).
 

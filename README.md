@@ -49,7 +49,6 @@ Now build the gulp docker image - mind the '.' at the end of the command (meanin
 $ docker build -t uwegerdes/gulp-frontend \
 	--build-arg NPM_PROXY="--proxy http://$(hostname -i):3143 --https-proxy http://$(hostname -i):3143 --strict-ssl false" \
 	--build-arg NPM_LOGLEVEL="--loglevel warn" \
-	--build-arg TZ="Europe/Berlin" \
 	--build-arg GULP_LIVERELOAD="5381" \
 	--build-arg RESPONSIVE_CHECK_HTTP="5382" \
 	.

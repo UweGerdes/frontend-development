@@ -2,6 +2,9 @@
 
 ## latest
 
+1.6.1
+Enhancements for docker-compose.yml, updated docs
+
 1.6.0
 Integration of github repositories, docker directory removed
 
