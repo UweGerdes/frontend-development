@@ -390,12 +390,40 @@ gulp.task('server-responsive-check', function() {
 		}
 	});
 });
+
+// start compare-layouts server
+gulp.task('server-compare-layouts:start', function() {
+	server.listen({
+			path: path.join(testDir, 'compare-layouts', 'server.js'),
+			env: { LIVERELOAD_PORT: lifereloadPort, VERBOSE: false },
+			cwd: path.join(testDir, 'compare-layouts')
+		}
+	);
+});
+gulp.task('server-compare-layouts:stop', function() {
+    server.kill();
+});
+// restart server-compare-layouts if server.js changed
+watchFilesFor['server-compare-layouts'] = [
+	path.join(testDir, 'compare-layouts', 'server.js')
+];
+gulp.task('server-compare-layouts', function() {
+	server.changed(function(error) {
+		if( error ) {
+			console.log('tests/compare-layouts/server.js restart error: ' + JSON.stringify(error, null, 4));
+		} else {
+			console.log('tests/compare-layouts/server.js restarted');
+		}
+	});
+});
 /*
  * gulp postmortem task to stop server on termination of gulp
  */
 gulp.task('postMortem', function() {
-	return gulp.src( watchFilesFor['server-responsive-check'] )
-		.pipe(postMortem({gulp: gulp, tasks: [ 'server-responsive-check:stop' ]}))
+	return gulp.src(
+		watchFilesFor['server-responsive-check'].concat(
+		watchFilesFor['server-compare-layouts'] ) )
+		.pipe(postMortem({gulp: gulp, tasks: [ 'server-responsive-check:stop', 'server-compare-layouts:stop' ]}))
 		;
 });
 
@@ -405,7 +433,6 @@ gulp.task('postMortem', function() {
 watchFilesFor.livereload = [
 	path.join(testDir, 'responsive-check', 'views', '*.ejs'),
 	path.join(testDir, 'responsive-check', 'css', '*.css'),
-//	path.join(testDir, 'responsive-check', 'results', '**', '*.png'),
 	path.join(testDir, 'responsive-check', 'results', '**', '*.log')
 ];
 gulp.task('livereload', function() {
@@ -471,6 +498,7 @@ gulp.task('watch', function() {
 gulp.task('default', function(callback) {
 	runSequence('build',
 		'server-responsive-check:start',
+		'server-compare-layouts:start',
 		'watch',
 		'postMortem',
 		callback);
