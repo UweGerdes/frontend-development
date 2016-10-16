@@ -90,8 +90,7 @@ function loadPage(configFile, pageKey, page) {
 		args.unshift('--engine="' + page.engine + '"');
 		if (page.engine == 'slimerjs') {
 //			cmd = 'xvfb-run -a -e /dev/stdout casperjs';
-//			cmd = 'xvfb-run -a casperjs';
-			cmd = 'casperjs';
+			cmd = 'xvfb-run -a casperjs';
 		}
 	}
 	console.log('starting: ' + cmd + ' ' + args.join(' '));
