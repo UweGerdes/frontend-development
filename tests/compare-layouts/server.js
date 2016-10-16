@@ -1,31 +1,30 @@
-//
-// Start eines HTTP-Servers für compare-layouts
-//
-// node server.js
-//
-// config-Dateien in ./config
-// Ergebnis-Dateien in ./results
-//
-// (c) Uwe Gerdes, entwicklung@uwegerdes.de
+/*
+ * Start eines HTTP-Servers für compare-layouts
+ *
+ * node server.js
+ *
+ * config-Dateien in ./config
+ * Ergebnis-Dateien in ./results
+ *
+ * (c) Uwe Gerdes, entwicklung@uwegerdes.de
+ */
+'use strict';
 
 var fs = require('fs'),
-	fs_tools = require('fs-tools'),
+	fsTools = require('fs-tools'),
 	path = require('path'),
 	os = require('os'),
 	exec = require('child_process').exec,
-	execSync = require('child_process').execSync,
 	express = require('express'),
 	bodyParser = require('body-parser'),
 	logger = require('morgan'),
 	dateFormat = require('dateformat'),
-	livereload = require('livereload'),
 	_eval = require('eval'),
-	obj2html = require('./bin/obj2html.js'),
 	interfaces = os.networkInterfaces(),
 	app = express();
 
-var livereloadPort = process.env.npm_package_config_livereload,
-	httpPort = process.env.npm_package_config_port;
+var livereloadPort = process.env.LIVERELOAD_PORT,
+	httpPort = process.env.COMPARE_LAYOUTS_HTTP;
 
 var configDir = path.join(__dirname, 'config'),
 	resultsDir = path.join(__dirname, 'results');
@@ -36,11 +35,6 @@ if (!fs.existsSync(resultsDir)) {
 
 var running = [],
 	configs = [];
-
-// Start livereload server
-//var server = livereload.createServer( { port: livereloadPort } );
-//server.watch(resultsDir + '/**/index.html', './server.js');
-//console.log('app livereload listening on port ' + livereloadPort);
 
 // Log the requests
 app.use(logger('dev'));
@@ -177,7 +171,6 @@ for (var k in interfaces) {
 }
 // console.log("IP address of container  :  " + addresses);
 console.log('compare-layouts server listening on http://' + addresses[0] + ':' + httpPort);
-console.log('compare-layouts livereload listening on http://' + addresses[0] + ':' + livereloadPort);
 
 // Model //
 // get list of configurations and result status
@@ -319,7 +312,7 @@ function runConfigAsync(config, verbose, res) {
 		fs.unlinkSync(logfilePath);
 	}
 	var configFilename = 'config/' + config.name + '.js';
-	var loader = exec('node compare-layouts.js ' + configFilename + (verbose ? ' -v' : ''));
+	var loader = exec('node index.js ' + configFilename + (verbose ? ' -v' : ''));
 	loader.stdout.on('data', function(data) { log(data.toString().trim()); });
 	loader.stderr.on('data', function(data) { log(data.toString().trim()); });
 	loader.on('error', function(err) { log(' error: ' + err.toString().trim()); });
@@ -343,7 +336,7 @@ function clearResult(config, res) {
 		res.write(replaceAnsiColors(msg) + '\n');
 	};
 	if (fs.existsSync(destDir)) {
-		fs_tools.removeSync(destDir);
+		fsTools.removeSync(destDir);
 	}
 	log('Ergebnisse gelöscht für ' + config.name);
 	res.end();

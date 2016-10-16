@@ -51,6 +51,7 @@ $ docker build -t uwegerdes/gulp-frontend \
 	--build-arg NPM_LOGLEVEL="--loglevel warn" \
 	--build-arg GULP_LIVERELOAD="5381" \
 	--build-arg RESPONSIVE_CHECK_HTTP="5382" \
+	--build-arg COMPARE_LAYOUTS_HTTP="5383" \
 	.
 ```
 
@@ -68,6 +69,7 @@ $ docker run -it --rm \
 	-v $(pwd):/usr/src/app \
 	-p 5381:5381 \
 	-p 5382:5382 \
+	-p 5383:5383 \
 	--network="$(docker inspect --format='{{.HostConfig.NetworkMode}}' nginx)" \
 	--add-host dockerhost:$(docker inspect --format='{{range .NetworkSettings.Networks}}{{.IPAddress}} {{end}}' nginx) \
 	uwegerdes/gulp-frontend \

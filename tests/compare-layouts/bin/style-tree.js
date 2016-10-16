@@ -1,7 +1,9 @@
-//
-// Vergleich von HTML-Style-Trees für Regressions- und Back-to-Back-Tests
-//
-// (c) Uwe Gerdes, entwicklung@uwegerdes.de
+/*
+ * Vergleich von HTML-Style-Trees für Regressions- und Back-to-Back-Tests
+ *
+ * (c) Uwe Gerdes, entwicklung@uwegerdes.de
+ */
+'use strict';
 
 var totalError = false;
 
@@ -15,7 +17,7 @@ function compare(element1, element2, properties) {
 	var styleDifference = [];
 	var hasChildWithSameTextContent = false;
 	var ownTextContent = element1.textContent;
-	element1.z_childElementInfo.forEach(function(element) {
+	element1._childElementInfo.forEach(function(element) {
 		if (element.textContent == element1.textContent) {
 			hasChildWithSameTextContent = true;
 		}
@@ -74,7 +76,7 @@ function compare(element1, element2, properties) {
 			error: "Element auf anderer Seite nicht gefunden - Suche nach: " + properties
 		});
 	}
-	element1.z_childElementInfo.forEach(function(element) {
+	element1._childElementInfo.forEach(function(element) {
 		if (otherElement) {
 			result.push(compare(element, otherElement, properties));
 		} else {
@@ -86,7 +88,7 @@ function compare(element1, element2, properties) {
 
 function search(element, what) {
 	var found;
-	element.z_childElementInfo.forEach(function(elem) {
+	element._childElementInfo.forEach(function(elem) {
 		var res = search(elem, what);
 		if (res !== undefined) {
 			found = res;
@@ -110,7 +112,7 @@ function normalize(val) {
 	var colorNames = /(transparent|white|black)/;
 	var colorHex = /#([0-9A-za-z]{2})([0-9A-za-z]{2})([0-9A-za-z]{2})/;
 	var colorRgb = /rgb\(([0-9]+, ?[0-9]+, ?[0-9]+)\)/;
-	var colorRgba = /rgba\([0-9]+, ?[0-9]+, ?[0-9]+, ?[0-9]+\)/;
+	//var colorRgba = /rgba\([0-9]+, ?[0-9]+, ?[0-9]+, ?[0-9]+\)/;
 	var result = "";
 	if (val.match(colorRgb)) {
 		result = 'rgba(' + RegExp.$1 + ', 255)';

@@ -11,25 +11,25 @@ module.exports = {
 	blacklist: '.js', // do not load - even if it comes from whitelist
 	pages: {
 		'index-phantomjs': {
-			'url': 'http://localhost:3000/',
+			'url': 'http://dockerhost/',
 			'selector': 'body',
 			'engine': phantomjs,
 			'cache': false
 		},
 		'index-slimerjs': {
-			'url': 'http://localhost:3000/',
+			'url': 'http://dockerhost/',
 			'selector': 'body',
 			'engine': slimerjs,
 			'cache': false
 		},
 		'app-phantomjs': {
-			'url': 'http://localhost:3000/app',
+			'url': 'http://dockerhost/app',
 			'selector': 'body',
 			'engine': phantomjs,
 			'cache': false
 		},
 		'app-slimerjs': {
-			'url': 'http://localhost:3000/app',
+			'url': 'http://dockerhost/app',
 			'selector': 'body',
 			'engine': slimerjs,
 			'cache': false

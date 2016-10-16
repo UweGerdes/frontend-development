@@ -1,13 +1,17 @@
-//
-// Laden von Styledaten einer HTML-Seite vom Browser
-// für Vergleich von HTML-Styles für Regressions- und Back-to-Back-Tests
-//
-// casperjs load-page-styles.js --configFile="../config/default.js" --pageKey="google-form-phantomjs"
-//
-// additional argument to overwrite config settings:
-// --url=http://www.google.de --selector="form" --subdir=google-form --hover="#submit" --blacklist="adserv,doubleclick" --whitelist="trustedhostname.de"
-//
-// (c) Uwe Gerdes, entwicklung@uwegerdes.de
+/*
+ * Laden von Styledaten einer HTML-Seite vom Browser
+ * für Vergleich von HTML-Styles für Regressions- und Back-to-Back-Tests
+ *
+ * casperjs load-page-styles.js --configFile="../config/default.js" --pageKey="google-form-phantomjs"
+ *
+ * additional argument to overwrite config settings:
+ * --url=http://www.google.de --selector="form" --subdir=google-form --hover="#submit" --blacklist="adserv,doubleclick" --whitelist="trustedhostname.de"
+ *
+ * (c) Uwe Gerdes, entwicklung@uwegerdes.de
+ */
+'use strict';
+
+/* globals document, XPathResult */
 
 var casper = require('casper').create( { viewportSize : { width: 1024, height: 640 } } ),
 	x = require('casper').selectXPath,
@@ -15,10 +19,9 @@ var casper = require('casper').create( { viewportSize : { width: 1024, height: 6
 
 var config = null,
 	pageKey = '',
-	subdir = 'frontend.local',
-	url = 'http://frontend.local/',
-	domain = 'frontend.local',
-	selector = ['form'],
+	subdir = 'dockerhost',
+	url = 'http://dockerhost/',
+	domain = 'dockerhost',
 	hover = '',
 	whitelist = '',
 	blacklist = '',
@@ -97,7 +100,9 @@ casper.options.onResourceRequested = function(C, requestData, request) {
 //		casper.echo('skipped: ' + requestData.url, 'WARNING');
 		request.abort();
 	} else {
-		if (verbose) casper.echo('loading: ' + requestData.url, 'INFO');
+		if (verbose) {
+			casper.echo('loading: ' + requestData.url, 'INFO');
+		}
 	}
 };
 
@@ -128,15 +133,7 @@ function blacklistHit(requestData) {
 }
 
 // evaluated in browser
-function page_getStyles(selector, hover) {
-	var getStyle = function(element, styleProp) {
-		var style = '';
-		if (element.currentStyle)
-			style = element.currentStyle[styleProp];
-		else if (window.getComputedStyle)
-			style = document.defaultView.getComputedStyle(element,null).getPropertyValue(styleProp);
-		return style;
-	};
+function _getStyles(selector, hover) {
 	var getStyles = function(element, pseudo) {
 		var styles = {};
 		var y = document.defaultView.getComputedStyle(element, pseudo);
@@ -157,8 +154,8 @@ function page_getStyles(selector, hover) {
 				name: '',
 				value: '',
 				style: getStyles(element, ':before'),
-				z_childElementCount : 0,
-				z_childElementInfo : []
+				_childElementCount : 0,
+				_childElementInfo : []
 			});
 		}
 		for (var j=0; j<element.childElementCount; j++) {
@@ -173,8 +170,8 @@ function page_getStyles(selector, hover) {
 			value: element.getAttribute('value') || '',
 			textContent: element.textContent.trim().replace(/[ \n\t]+/g, " "),
 			style: getStyles(element, null),
-			z_childElementCount : element.childElementCount,
-			z_childElementInfo : children
+			_childElementCount : element.childElementCount,
+			_childElementInfo : children
 		};
 		if (document.defaultView.getComputedStyle(element,':after').getPropertyValue('content')) {
 			children.push({
@@ -186,8 +183,8 @@ function page_getStyles(selector, hover) {
 				name: '',
 				value: '',
 				style: getStyles(element, ':after'),
-				z_childElementCount : 0,
-				z_childElementInfo : []
+				_childElementCount : 0,
+				_childElementInfo : []
 			});
 		}
 		return elementInfo;
@@ -207,7 +204,7 @@ function page_getStyles(selector, hover) {
 }
 
 // set test class for element
-function _t_setTestClass(selector) {
+function _setTestClass(selector) {
 	document.querySelector(selector || 'body').classList.add('test');
 }
 
@@ -219,7 +216,7 @@ if (uname.length > 0 && pval.length > 0) {
 selectorList.forEach(function(sel) {
 	casper.thenOpen(url, function() {
 		this.echo('searching for "' + sel + '"', 'INFO');
-		casper.evaluate(_t_setTestClass);
+		casper.evaluate(_setTestClass);
 	})
 	.then(function() {
 		if (hover !== '') {
@@ -228,7 +225,7 @@ selectorList.forEach(function(sel) {
 		}
 	})
 	.then(function() {
-		results[sel] = this.evaluate(page_getStyles, sel, hover); // evaluate in browser
+		results[sel] = this.evaluate(_getStyles, sel, hover); // evaluate in browser
 	});
 });
 casper.then(function() {
@@ -264,10 +261,6 @@ casper.then(function() {
 casper.run(function() {
 	this.exit();
 });
-
-function type(obj) {
-	return Object.prototype.toString.call(obj).replace(/\[object (.+)\]/, '$1');
-}
 
 function safeFilename(name) {
 	return name.replace(/[ ?#/:\(\)<>|\\]/g, "_").trim();

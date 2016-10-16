@@ -1,8 +1,10 @@
-//
-// Erzeugen von HTML aus Objekt
-// Array als <ol>, Hash als <dl>
-//
-// (c) Uwe Gerdes, entwicklung@uwegerdes.de
+/*
+ * Erzeugen von HTML aus Objekt
+ * Array als <ol>, Hash als <dl>
+ *
+ * (c) Uwe Gerdes, entwicklung@uwegerdes.de
+ */
+'use strict';
 
 var ind = '\t';
 

@@ -1,20 +1,19 @@
-//
-// Laden von Styledaten von zwei HTML-Seiten vom Browser
-// und Vergleich von HTML-Styles für Regressions- und Back-to-Back-Tests
-//
-// node compare-layouts.js [configfile] [-v] [-r]
-//
-// configfile: config/name.js erwartet, Beispiele in ./config
-// -v: verbose
-// -r: force reload / ignore cache
-//
-// (c) Uwe Gerdes, entwicklung@uwegerdes.de
+/*
+ * Laden von Styledaten von zwei HTML-Seiten vom Browser
+ * und Vergleich von HTML-Styles für Regressions- und Back-to-Back-Tests
+ *
+ * node compare-layouts.js [configfile] [-v] [-r]
+ *
+ * configfile: config/name.js erwartet, Beispiele in ./config
+ * -v: verbose
+ * -r: force reload / ignore cache
+ *
+ * (c) Uwe Gerdes, entwicklung@uwegerdes.de
+ */
+'use strict';
 
 var fs = require('fs'),
-	path = require('path'),
-	mkdirp = require('mkdirp'),
 	exec = require('child_process').exec,
-	ejs = require('ejs'),
 	obj2html = require('./bin/obj2html.js'),
 	styleTree = require('./bin/style-tree.js');
 
@@ -39,13 +38,15 @@ var pages = config.pages;
 var compares = config.compares;
 var pagesLoaded = 0;
 
-if (!fs.existsSync(resultsDir)) fs.mkdirSync(resultsDir);
+if (!fs.existsSync(resultsDir)) {
+	fs.mkdirSync(resultsDir);
+}
 fs.stat(destDir, function(err, stats) {
 	if (!stats) {
 		fs.mkdir(destDir,
 			function (err, data) {
-				if (err)	throw err;
-				if (data)	console.log(data);
+				if (err) { throw err; }
+				if (data) {console.log(data); }
 				console.log('directory "' + destDir + '" created');
 				load();
 			}
@@ -99,7 +100,7 @@ function loadPage(configFile, pageKey, page) {
 			logExecResult('loaded page ' + page.url, error, "", stderr);
 		}
 	);
-	loader.stdout.on('data', function(data) { if (verbose || data.indexOf('element not found') > -1) console.log(pageKey + ': ' + data.trim()); });
+	loader.stdout.on('data', function(data) { if (verbose || data.indexOf('element not found') > -1) {console.log(pageKey + ': ' + data.trim());} });
 	loader.stderr.on('data', function(data) { console.log(pageKey + ' stderr: ' + data.trim()); });
 	loader.on('error', function(err) { console.log(pageKey + ' error: ' + err.trim()); });
 	loader.on('close', function(code) {
@@ -136,14 +137,14 @@ function comparePages() {
 			compare.success = true;
 			compare.compareFilename = destDir + '/' + safeFilename(key) + '_compare.png';
 			compare.compositeFilename = destDir + '/' + safeFilename(key) + '_composite.png';
-			compare.composite_monochromeFilename = destDir + '/' + safeFilename(key) + '_composite_monochrome.png';
+			compare.compositeMonochromeFilename = destDir + '/' + safeFilename(key) + '_composite_monochrome.png';
 			compare.jsonFilename = destDir + '/' + safeFilename(key) + '.json';
 			compare.htmlFilename = destDir + '/' + safeFilename(key) + '.html';
 			exec('compare -metric AE ' + compare.baseFilename1 + '.png ' + compare.baseFilename2 + '.png ' + compare.compareFilename,
 				function (error, stdout, stderr) {
-					if (verbose) logExecResult('compare', null, stdout, stderr.replace(/ @.+/, '').replace(/^0$/, ''));
+					if (verbose) { logExecResult('compare', null, stdout, stderr.replace(/ @.+/, '').replace(/^0$/, '')); }
 					if (stderr == '0') {
-						if (verbose) console.log(compare.compareFilename + ' saved');
+						if (verbose) { console.log(compare.compareFilename + ' saved'); }
 					} else {
 						compare.success = false;
 						success = false;
@@ -153,19 +154,19 @@ function comparePages() {
 						function (error, stdout, stderr) {
 							logExecResult('composite', null, stdout, stderr.replace(/ @.+/, ''));
 							if (stderr.length === 0) {
-								if (verbose) console.log(compare.compositeFilename + ' saved');
+								if (verbose) { console.log(compare.compositeFilename + ' saved'); }
 							} else {
 								compare.compositeFilename = '';
 								compare.success = false;
 								success = false;
 							}
-							exec('composite -compose difference -monochrome ' + compare.baseFilename2 + '.png ' + compare.baseFilename2 + '.png ' + compare.composite_monochromeFilename,
+							exec('composite -compose difference -monochrome ' + compare.baseFilename2 + '.png ' + compare.baseFilename2 + '.png ' + compare.compositeMonochromeFilename,
 								function (error, stdout, stderr) {
 									logExecResult('composite -monochrome', null, stdout, stderr.replace(/ @.+/, ''));
 									if (stderr.length === 0) {
-										if (verbose) console.log(compare.composite_monochromeFilename + ' saved');
+										if (verbose) { console.log(compare.compositeMonochromeFilename + ' saved'); }
 									} else {
-										compare.composite_monochromeFilename = '';
+										compare.compositeMonochromeFilename = '';
 										compare.success = false;
 										success = false;
 									}
@@ -206,13 +207,13 @@ function compareResults(compare) {
 }
 
 function logExecResult(msgStart, error, stdout, stderr) {
-	if (stdout.length > 0) console.log(msgStart + ' stdout: ' + stdout.trim());
-	if (stderr.length > 0) console.log(msgStart + ' stderr: ' + stderr.trim());
-	if (error !== null)	console.log(msgStart + ' error:\n' + JSON.stringify(error, undefined, 4));
+	if (stdout.length > 0) { console.log(msgStart + ' stdout: ' + stdout.trim()); }
+	if (stderr.length > 0) { console.log(msgStart + ' stderr: ' + stderr.trim()); }
+	if (error !== null)	{ console.log(msgStart + ' error:\n' + JSON.stringify(error, undefined, 4)); }
 }
 
 function isCached(subdir, selectorList) {
-	result = true;
+	var result = true;
 	selectorList.forEach(function(selector) {
 		if (chkCacheFile(subdir + '/' + safeFilename(selector) + '.json') === false ||
 			chkCacheFile(subdir + '/' + safeFilename(selector) + '.png') === false ||

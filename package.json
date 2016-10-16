@@ -44,7 +44,6 @@
     "gulp-uglify": "^1.0.2",
     "gulp-util": "^3.0.2",
     "jshint": "^2.9.3",
-    "mkdirp": "^0.5.1",
     "morgan": "^1.7.0",
     "phantomjs-prebuilt": "^2.1.12",
     "phplint": "^1.7.1",
