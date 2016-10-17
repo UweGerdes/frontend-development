@@ -1,0 +1,232 @@
+img {
+	border: 1px dotted #808080;
+}
+
+img:hover {
+	border-color: #ffffff;
+}
+
+ol {
+	clear: both;
+	list-style-type: disc;
+}
+
+li {
+	clear: both;
+}
+
+dl {
+	clear: both;
+	margin: 0px;
+	padding: 3px 0px 3px 5px;
+	width: auto;
+}
+
+dt {
+	clear: both;
+	float: left;
+	height: 20px;
+	width: 280;
+}
+
+dd {
+	float: none;
+	margin: 0px;
+	min-height: 20px;
+}
+
+.styleTree .style {
+	background-color: green;
+	height: 20px;
+	margin-left: 40px;
+	overflow: hidden;
+	padding-left: 20px;
+	width: 0px;
+
+	&:hover {
+		background-color: transparent;
+		height: auto;
+		overflow: visible;
+		padding-left: 0px;
+		width: auto;
+	}
+}
+
+.compareResult {
+	ol {
+		list-style-type: none;
+	}
+
+	li dl:hover {
+		background-color: #ccccff;
+	}
+
+	dd.styleDiff ol {
+		list-style-type: none;
+	}
+
+	ol dd {
+		min-height: 0px;
+	}
+
+	ol dt,
+	ol dd.textContent1,
+	ol dd.tagName2,
+	ol dd.elementId2,
+	ol dd.cssclass2,
+	ol dd.type2,
+	ol dd.name2,
+	ol dd.value2,
+	ol dd.textContent2 {
+		display: none;
+	}
+
+	ol dd.tagName1,
+	ol dd.elementId1,
+	ol dd.cssclass1,
+	ol dd.type1,
+	ol dd.name1,
+	ol dd.value1 {
+		float: left;
+		font-weight: bold;
+		width: auto;
+	}
+
+	ol dd.tagName1 span {
+		display: inline-block;
+		margin: 0px 0px 0px -5px;
+	}
+
+	ol dd.elementId1 span,
+	ol dd.cssclass1 span,
+	ol dd.type1 span,
+	ol dd.name1 span,
+	ol dd.value1 span {
+		display: inline-block;
+	}
+
+	ol dd.elementId1:empty,
+	ol dd.cssclass1:empty,
+	ol dd.type1:empty,
+	ol dd.name1:empty,
+	ol dd.value1:empty {
+		display: none;
+	}
+
+	ol dd.tagName1:before {
+		content: '<';
+	}
+
+	ol dd.elementId1 span:before {
+		content: 'id="';
+		margin-left: 5px;
+	}
+
+	ol dd.elementId1 span:after {
+		content: '"';
+	}
+
+	ol dd.cssclass1 span:before {
+		content: 'class="';
+		margin-left: 5px;
+	}
+
+	ol dd.cssclass1 span:after {
+		content: '"';
+	}
+
+	ol dd.type1 span:before {
+		content: 'type="';
+		margin-left: 5px;
+	}
+
+	ol dd.type1 span:after {
+		content: '"';
+	}
+
+	ol dd.name1 span:before {
+		content: 'name="';
+		margin-left: 5px;
+	}
+
+	ol dd.name1 span:after {
+		content: '"';
+	}
+
+	ol dd.value1 span:before {
+		content: 'value="';
+		margin-left: 5px;
+	}
+
+	ol dd.value1 span:after {
+		content: '">';
+	}
+
+	ol dd.elementId1 span:empty:before,
+	ol dd.elementId1 span:empty:after,
+	ol dd.cssclass1 span:empty:before,
+	ol dd.cssclass1 span:empty:after,
+	ol dd.type1 span:empty:before,
+	ol dd.type1 span:empty:after,
+	ol dd.name1 span:empty:before,
+	ol dd.name1 span:empty:after,
+	ol dd.value1 span:empty:before {
+		content: '';
+		margin: 0px;
+	}
+
+	ol dd.value1 span:empty:after {
+		content: '>';
+	}
+
+	ol dd.ownTextContent,
+	ol dd.errorList {
+		clear: both;
+		float: none;
+		width: auto;
+	}
+
+	ol dd.errorList {
+		color: red;
+	}
+
+	ol dd.error {
+		color: #cc0000;
+		display: none;
+		width: auto;
+	}
+
+	dd.styleDiff ol li dl:hover {
+		background-color: #dddddd;
+	}
+
+	dd.styleDiff ol dd {
+		position: relative;
+	}
+
+	dd.styleDiff ol dd.property {
+		float: left;
+		width: 20%;
+	}
+
+	dd.styleDiff ol dd.style1,
+	dd.styleDiff ol dd.style2 {
+		float: left;
+		width: 40%;
+	}
+
+	dd.styleDiff ol dd.style1:before {
+		content: '';
+	}
+
+	dd.styleDiff ol dd.style1:after {
+		content: '';
+	}
+
+	dd.styleDiff ol dl:after,
+	dd.styleDiff ol dd.style2:after {
+		clear: both;
+		content: '';
+		display: table;
+	}
+}

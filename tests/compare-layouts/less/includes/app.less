@@ -1,0 +1,267 @@
+// Styles for compare-layouts -  special stylings for application pages
+
+@import "../vars.less";
+
+#app {
+	#container {
+		min-width: 1000px;
+		width: 80%;
+		max-width: 1400px;
+		margin: 0 auto @footer_height auto;
+		clear: both;
+
+		.head {
+
+			&:after {
+				content: "";
+				clear: both;
+				display: block;
+			}
+
+			& > h1:first-child {
+				margin-top: 0;
+			}
+		}
+
+		#configs {
+			padding-top: 15px;
+			clear: both;
+		}
+
+		#list {
+
+			h1 {
+				margin-top: 0;
+				padding-left: 1px;
+			}
+
+			width: @list_width;
+			float: left;
+
+			#configs {
+				padding: 15px 0;
+
+				li {
+					list-style: none;
+					padding-left: 1px;
+
+					div.name {
+						float: left;
+						width: 50%;
+						overflow: hidden;
+						margin-right: 8px;
+						height: 2em;
+						font-size: 1.5em;
+
+						a {
+							display: block;
+							text-decoration: none;
+						}
+					}
+
+					&.failed {
+						color: @failed_color;
+					}
+				}
+			}
+		}
+
+		#item {
+			width: 100% - @list_width;
+			float: left;
+
+			#result {
+				clear: both;
+			}
+
+			#started {
+				display: none;
+			}
+			.running #started {
+				display: inline;
+			}
+			#start {
+				display: inline;
+			}
+			.running #start {
+				display: none;
+			}
+			#response {
+				display: block;
+			}
+		}
+	}
+
+	&.runall {
+		#item {
+			.head, #result, #configFile, #configData {
+				display: none;
+			}
+		}
+	}
+
+	#error {
+		h2 {
+			color: #cc0000;
+		}
+	}
+
+	#footer {
+		height: @footer_height;
+	}
+}
+
+body > #result {
+		min-width: 1000px;
+		width: 80%;
+		max-width: 1400px;
+		margin: 0 auto @footer_height auto;
+		clear: both;
+
+}
+
+table#configs {
+	min-width: 400px;
+
+	th {
+		font-size: 1.2em;
+		padding: 5px 0;
+	}
+	td {
+		font-size: 1.2em;
+		padding: 3px 10px 3px 0;
+		color: green;
+	}
+	.failed td {
+		color: red;
+	}
+}
+
+table.results {
+	min-width: 400px;
+
+	th {
+		font-size: 1.2em;
+		padding: 5px 0;
+	}
+	td {
+		padding: 3px 10px 3px 0;
+	}
+}
+
+.buttonContainer {
+	float: left;
+}
+.button {
+	text-decoration: none;
+	display: block;
+	float: left;
+	border: 1px solid grey;
+	border-radius: 4px;
+	padding: 5px 10px;
+	color: #000000;
+	font-size: 1.5em;
+	font-weight: bold;
+	margin-right: 25px;
+	background-color: #ffbb00;
+}
+
+.running #started {
+	display: inline-block;
+	border: 1px solid transparent;
+	padding: 5px 0;
+	font-size: 1.5em;
+	font-weight: bold;
+	margin-right: 20px;
+}
+
+#response {
+	background-color: #eeeeee;
+	white-space: pre;
+	border: 1px solid grey;
+	padding: 3px;
+	margin: 5px 0 10px 0;
+	max-height: 400px;
+	overflow: auto;
+	line-height: 1.4em;
+}
+
+form.params {
+	float: left;
+	padding-top: 7px;
+	padding-right: 30px;
+
+	input[type="checkbox"] {
+		cursor: pointer;
+		width: 18px;
+		height: 18px;
+		float: left;
+	}
+	label.checkbox {
+		cursor: pointer;
+		font-size: 1.5em;
+		display: block;
+		float: left;
+	}
+
+	.running & {
+		display: none;
+	}
+}
+
+#show {
+	#started {
+		display: none;
+	}
+	.running #started {
+		display: inline;
+	}
+	#start {
+		display: inline;
+	}
+	.running #start {
+		display: none;
+	}
+	#response {
+		display: block;
+	}
+}
+
+#list {
+	#reload {
+		display: inline;
+	}
+	.running #reload {
+		display: inline;
+	}
+	#runAll {
+		display: inline;
+	}
+	.running #runAll {
+		display: none;
+	}
+	#configs {
+		display: block;
+	}
+	.running #configs {
+		display: none;
+	}
+}
+
+.compare1 {
+	color: blue;
+}
+.compare2 {
+	color: green;
+}
+
+.success {
+	color: #00BB00;
+}
+.fail {
+	color: #DD0000;
+}
+
+a {
+	color: inherit;
+}

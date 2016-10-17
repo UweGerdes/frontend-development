@@ -76,7 +76,8 @@ gulp.task('phpLint', function () {
 watchFilesFor.lessLintStylish = [
 	path.join(srcDir, 'less', '*.less'),
 	path.join(srcDir, 'less', 'login', '*.less'),
-	path.join(testDir, 'responsive-check', 'less', '**', '*.less')
+	path.join(testDir, 'responsive-check', 'less', '**', '*.less'),
+	path.join(testDir, 'compare-layouts', 'less', '**', '*.less')
 ];
 gulp.task('lessLintStylish', function () {
 	return gulp.src( watchFilesFor.lessLintStylish )
@@ -138,6 +139,30 @@ gulp.task('lessResponsiveCheck', function () {
 		.pipe(gutil.env.type === 'production' ? uglify() : gutil.noop())
 		.pipe(gulp.dest(function(file) { return dest(file.path); }))
 		.pipe(log({ message: 'written: <%= file.path %>', title: 'Gulp lessResponsiveCheck' }))
+		;
+});
+
+watchFilesFor.lessCompareLayouts = [
+	path.join(testDir, 'compare-layouts', 'less', '**', '*.less'),
+	path.join(testDir, 'compare-layouts', 'less', 'app.less')
+];
+gulp.task('lessCompareLayouts', function () {
+	var dest = function(filename) {
+		return path.join(path.dirname(path.dirname(filename)), 'css');
+	};
+	var src = watchFilesFor.lessCompareLayouts.filter(function(el){return el.indexOf('/**/') == -1; });
+	return gulp.src( src )
+		.pipe(lessChanged({
+			getOutputFileName: function(file) {
+				return rename( file, { dirname: dest(file), extname: '.css' } );
+			}
+		}))
+		.pipe(less())
+		.on('error', log.onError({ message:  'Error: <%= error.message %>' , title: 'LESS Error'}))
+		.pipe(autoprefixer('last 3 version', 'safari 5', 'ie 8', 'ie 9', 'ios 6', 'android 4'))
+		.pipe(gutil.env.type === 'production' ? uglify() : gutil.noop())
+		.pipe(gulp.dest(function(file) { return dest(file.path); }))
+		.pipe(log({ message: 'written: <%= file.path %>', title: 'Gulp lessCompareLayouts' }))
 		;
 });
 
@@ -450,6 +475,7 @@ gulp.task('build', function(callback) {
 		'lessLintStylish',
 		'less',
 		'lessResponsiveCheck',
+		'lessCompareLayouts',
 		'lessBootstrap',
 		'jsBootstrap',
 		'graphviz',
