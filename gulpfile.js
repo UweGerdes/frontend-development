@@ -32,6 +32,7 @@ var autoprefixer = require('gulp-autoprefixer'),
 	rename = require('rename'),
 	runSequence = require('run-sequence'),
 	server = require('gulp-develop-server'),
+	server = require('gulp-develop-server'),
 	shell = require('gulp-shell'),
 	uglify = require('gulp-uglify')
 	;
@@ -319,6 +320,26 @@ gulp.task('responsive-check-default', function(callback) {
 		], { force: true } );
 	var loader = exec('node index.js config/default.js',
 		{ cwd: path.join(testDir, 'responsive-check') },
+		function (err, stdout, stderr) {
+			logExecResults(err, stdout, stderr);
+			callback();
+		}
+	);
+	loader.stdout.on('data', function(data) { if(!data.match(/PASS/)) { console.log(data.trim()); } });
+});
+
+watchFilesFor['compare-layouts-default'] = [
+	path.join(testDir, 'compare-layouts', 'config', 'default.js'),
+	path.join(testDir, 'compare-layouts', 'index.js'),
+	path.join(testDir, 'compare-layouts', 'bin', '*.js')
+];
+gulp.task('compare-layouts-default', function(callback) {
+	del( [
+			path.join(testDir, 'compare-layouts', 'results', 'default', '*.png'),
+			path.join(testDir, 'compare-layouts', 'results', 'default', '*.css.json')
+		], { force: true } );
+	var loader = exec('node index.js config/default.js',
+		{ cwd: path.join(testDir, 'compare-layouts') },
 		function (err, stdout, stderr) {
 			logExecResults(err, stdout, stderr);
 			callback();

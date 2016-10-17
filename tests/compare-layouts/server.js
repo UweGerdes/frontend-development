@@ -128,6 +128,7 @@ app.post('/app/:config?/:action?', function(req, res){
 
 // Handle AJAX requests for run configs
 app.get('/run/:config/:verbose?', function(req, res){
+	console.log('starting ' + req.params.config);
 	if (req.params.config == 'all') {
 		configs.forEach(function(config) {
 			runConfigAsync(config, req.params.verbose, res);

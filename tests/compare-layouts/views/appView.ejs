@@ -15,7 +15,7 @@
 		<script language="JavaScript" type="text/javascript"><!--
 			function runAll() {
 				var app = document.getElementById('app');
-				app.className = 'running runall';
+				app.className = 'running runall app';
 				var response = document.getElementById('response');
 				response.innerHTML = "";
 				var verbose = document.params.verbose.checked ? '/verbose' : '';
@@ -29,7 +29,7 @@
 					if (xmlhttp.readyState == 4 && xmlhttp.status == 200){
 						//response.innerHTML = xmlhttp.responseText;
 						if (xmlhttp.responseText.indexOf('starting') != 0) {
-							//main.className = '';
+							//main.className = 'app';
 						}
 					}
 				}
@@ -37,7 +37,7 @@
 			}
 			function run(config) {
 				var main = document.getElementById('app');
-				main.className = 'running';
+				main.className = 'running app';
 				var response = document.getElementById('response');
 				response.innerHTML = "";
 				var verbose = document.params.verbose.checked ? '/verbose' : '';
@@ -51,7 +51,7 @@
 					if (xmlhttp.readyState == 4 && xmlhttp.status == 200){
 						//response.innerHTML = xmlhttp.responseText;
 						if (xmlhttp.responseText.indexOf('starting') != 0) {
-							main.className = '';
+							main.className = 'app';
 						}
 					}
 				}
@@ -59,7 +59,7 @@
 			}
 			function clear(config) {
 				var main = document.getElementById('app');
-				main.className = 'clear';
+				main.className = 'clear app';
 				var response = document.getElementById('response');
 				response.innerHTML = "";
 				var verbose = document.params.verbose.checked ? '/verbose' : '';
@@ -69,66 +69,66 @@
 				xmlhttp.onreadystatechange = function() {
 					if (xmlhttp.readyState == 4 && xmlhttp.status == 200){
 						response.innerHTML = xmlhttp.responseText;
-						main.className = '';
+						main.className = 'app';
 					}
 				}
 				xmlhttp.send();
 			}
 		//--></script>
 	</head>
-	<body id="app" class="<%= action %>">
-		<div id="container">
-			<div id="list"<% if (running.length > 0 ) { %> class="running <% if (running.length > 1 ) { %>runall<% } %>"<% } %>>
+	<body id="app" class="app <%= action %>">
+		<div class="container">
+			<div class="list <% if (running.length > 0 ) { %>running <% if (running.length > 1 ) { %>runall<% } %><% } %>">
 				<h1>compare-layouts Status</h1>
 				<div class="head">
 					<div class="buttonContainer">
-						<a href="/app<% if (config.name) { %>/<%= config.name %><% } %>" id="reload" class="button buttonReload">neu laden</a>
-						<a href="javascript:runAll();" 	id="runAll" class="button buttonStart">alle starten</a>
+						<a href="/app<% if (config.name) { %>/<%= config.name %><% } %>" class="button buttonReload">neu laden</a>
+						<a href="javascript:runAll();" 	class="button buttonStart">alle starten</a>
 					</div>
 				</div>
-				<ul id="configs">
+				<ul class="configs">
 					<% list.forEach(function(config) { %><% include listItem %><% }) %>
 				</ul>
 			</div>
 			<% if (config.error) { %>
-			<div id="error">
+			<div class="error">
 				<h2><%= config.error %></h2>
 			</div>
 			<% } %>
 			<% if (config.name) { %>
-			<div id="item">
+			<div class="item">
 				<div class="head">
 					<h1>Konfiguration: <%= config.name %></h1>
 					<div class="buttonContainer">
-						<a href="/app" id="reload" class="button buttonReload" title="Konfigurations-Details schließen">schließen</a>
-						<span id="started">gestartet</span>
-						<a href="javascript:run('<%= config.name %>');" id="start" class="button buttonStart" title="Konfiguration starten">starten</a>
+						<a href="/app" class="button buttonReload" title="Konfigurations-Details schließen">schließen</a>
+						<span class="started">gestartet</span>
+						<a href="javascript:run('<%= config.name %>');" class="button buttonStart" title="Konfiguration starten">starten</a>
 						<form name="params" method="GET" action="/app/<%= config.name %>" class="params"><label for="verbose" class="checkbox"><input type="checkbox" name="verbose" value="verbose" id="verbose" />verbose</label></form>
-						<a href="/app/<%= config.name %>/edit" id="edit" class="button buttonEdit" title="Konfiguration bearbeiten">bearbeiten</a>
-						<a href="javascript:clear('<%= config.name %>');" id="clear" class="button buttonClear" title="Ergebnis löschen">löschen</a>
+						<a href="/app/<%= config.name %>/edit" class="button buttonEdit" title="Konfiguration bearbeiten">bearbeiten</a>
+						<a href="javascript:clear('<%= config.name %>');" class="button buttonClear" title="Ergebnis löschen">löschen</a>
 					</div>
 				</div>
 				<% if (action == 'edit') { %>
-				<div id="configFile">
+				<div class="configFile">
 					<h2>Konfigurationsdatei config/<%= config.name %>.js bearbeiten</h2>
 					<form name="edit" method="POST" action="/app/<%= config.name %>/edit" class="edit">
 						<textarea name="configfile" class="editor" style="width:95%; height:500px;"><%= config.file %></textarea>
-						<input type="submit" name="submit" value="speichern" class="button">
-						<a href="/app/<%= config.name %>" id="cancel" class="button buttonCancel" title="zurück zur Ansicht">verwerfen</a>
+						<input type="submit" name="submit" value="speichern" class="button buttonSubmit">
+						<a href="/app/<%= config.name %>" class="button buttonCancel" title="zurück zur Ansicht">verwerfen</a>
 					</form>
 				</div>
 				<% } else if (action == 'check') { %>
-					<div id="configFile">
+					<div class="configFile">
 						<h2>Konfigurationsdatei config/<%= config.name %>.js</h2>
 						<pre class="editor"><%= config.file %></pre>
 					</div>
-					<div id="configData">
+					<div class="configData">
 						<h2>Effektive Konfiguration</h2>
 						<pre class="editor">config.data = <%= JSON.stringify(config.data, null, 4) %></pre>
 					</div>
 				<% } else { %>
 				<% if (running.indexOf(config.name) == -1 && config.lastRun != 'Keine Daten') { %>
-				<div id="result">
+				<div class="result">
 					<h2>Testergebnis <%= config.lastRun %></h2>
 					<table class="results">
 						<thead>
@@ -140,19 +140,19 @@
 					</table>
 				</div>
 				<% } %>
-				<div id="logOutput">
+				<div class="logOutput">
 					<h2>Log-Ausgabe</h2>
-					<div id="response"><%- config.logfile %></div>
+					<div id="response" class="response"><%- config.logfile %></div>
 				</div>
-				<div id="resultData">
+				<div class="resultData">
 					<h2>Ergebnisdaten</h2>
 					<pre class="editor">config.result = <%= JSON.stringify(config.result, null, 4) %></pre>
 				</div>
-				<div id="configFile">
+				<div class="configFile">
 					<h2>Konfigurationsdatei config/<%= config.name %>.js</h2>
 					<pre class="editor"><%= config.file %></pre>
 				</div>
-				<div id="configData">
+				<div class="configData">
 					<h2>Effektive Konfiguration</h2>
 					<pre class="editor">config.data = <%= JSON.stringify(config.data, null, 4) %></pre>
 				</div>
@@ -162,13 +162,13 @@
 				<% } %>
 			</div>
 			<% } else { %>
-				<div id="logOutput">
+				<div class="logOutput">
 					<h2>Log-Ausgabe</h2>
-					<div id="response"><%- config.logfile %></div>
+					<div class="response"><%- config.logfile %></div>
 				</div>
 			<% } %>
 		</div>
-		<div id="footer">
+		<div class="footer">
 		</div>
 <% if (typeof livereloadPort != "undefined") { %>
 	<script>document.write('<script src="http://' + (location.host || 'localhost').split(':')[0] + ':<%= livereloadPort %>/livereload.js"></' + 'script>')</script>

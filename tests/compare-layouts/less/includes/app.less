@@ -1,57 +1,56 @@
 // Styles for compare-layouts -  special stylings for application pages
 
-@import "../vars.less";
+@import '../vars';
 
-#app {
-	#container {
+.app {
+	.container {
+		clear: both;
+		margin: 0px auto @footer_height auto;
+		max-width: 1400px;
 		min-width: 1000px;
 		width: 80%;
-		max-width: 1400px;
-		margin: 0 auto @footer_height auto;
-		clear: both;
 
 		.head {
 
 			&:after {
-				content: "";
 				clear: both;
+				content: '';
 				display: block;
 			}
 
 			& > h1:first-child {
-				margin-top: 0;
+				margin-top: 0px;
 			}
 		}
 
-		#configs {
-			padding-top: 15px;
+		.configs {
 			clear: both;
+			padding-top: 15px;
 		}
 
-		#list {
+		.list {
+			float: left;
+			width: @list_width;
 
 			h1 {
-				margin-top: 0;
+				margin-top: 0px;
 				padding-left: 1px;
 			}
 
-			width: @list_width;
-			float: left;
+			.configs {
+				padding: 15px 0px;
 
-			#configs {
-				padding: 15px 0;
-
-				li {
+				.config {
 					list-style: none;
 					padding-left: 1px;
 
-					div.name {
+					.name {
 						float: left;
-						width: 50%;
-						overflow: hidden;
-						margin-right: 8px;
-						height: 2em;
 						font-size: 1.5em;
+						height: 2em;
+						margin-right: 8px;
+						overflow: hidden;
+						width: 50%;
 
 						a {
 							display: block;
@@ -66,142 +65,153 @@
 			}
 		}
 
-		#item {
-			width: 100% - @list_width;
+		.item {
 			float: left;
+			width: 100% - @list_width;
 
-			#result {
+			.result {
 				clear: both;
 			}
 
-			#started {
+			.started {
 				display: none;
 			}
-			.running #started {
+
+			.running .started {
 				display: inline;
 			}
-			#start {
+
+			.start {
 				display: inline;
 			}
-			.running #start {
+
+			.running .start {
 				display: none;
 			}
-			#response {
+
+			.response {
 				display: block;
 			}
 		}
 	}
 
 	&.runall {
-		#item {
-			.head, #result, #configFile, #configData {
+		.item {
+			.head,
+			.result,
+			.configFile,
+			.configData {
 				display: none;
 			}
 		}
 	}
 
-	#error {
+	.error {
 		h2 {
 			color: #cc0000;
 		}
 	}
 
-	#footer {
+	.footer {
 		height: @footer_height;
 	}
 }
 
-body > #result {
+body > .result {
+		clear: both;
+		margin: 0px auto @footer_height auto;
+		max-width: 1400px;
 		min-width: 1000px;
 		width: 80%;
-		max-width: 1400px;
-		margin: 0 auto @footer_height auto;
-		clear: both;
-
 }
 
-table#configs {
+.configs {
 	min-width: 400px;
 
 	th {
 		font-size: 1.2em;
-		padding: 5px 0;
+		padding: 5px 0px;
 	}
+
 	td {
-		font-size: 1.2em;
-		padding: 3px 10px 3px 0;
 		color: green;
+		font-size: 1.2em;
+		padding: 3px 10px 3px 0px;
 	}
+
 	.failed td {
 		color: red;
 	}
 }
 
-table.results {
+.results {
 	min-width: 400px;
 
 	th {
 		font-size: 1.2em;
-		padding: 5px 0;
+		padding: 5px 0px;
 	}
+
 	td {
-		padding: 3px 10px 3px 0;
+		padding: 3px 10px 3px 0px;
 	}
 }
 
 .buttonContainer {
 	float: left;
 }
+
 .button {
-	text-decoration: none;
-	display: block;
-	float: left;
+	background-color: #ffbb00;
 	border: 1px solid grey;
 	border-radius: 4px;
-	padding: 5px 10px;
 	color: #000000;
+	display: block;
+	float: left;
 	font-size: 1.5em;
 	font-weight: bold;
-	margin-right: 25px;
-	background-color: #ffbb00;
+	margin-right: 15px;
+	padding: 5px 10px;
+	text-decoration: none;
 }
 
-.running #started {
-	display: inline-block;
+.running .started {
 	border: 1px solid transparent;
-	padding: 5px 0;
+	display: inline-block;
 	font-size: 1.5em;
 	font-weight: bold;
 	margin-right: 20px;
+	padding: 5px 0px;
 }
 
-#response {
+.response {
 	background-color: #eeeeee;
-	white-space: pre;
 	border: 1px solid grey;
-	padding: 3px;
-	margin: 5px 0 10px 0;
+	line-height: 1.4em;
+	margin: 5px 0px 10px 0px;
 	max-height: 400px;
 	overflow: auto;
-	line-height: 1.4em;
+	padding: 3px;
+	white-space: pre;
 }
 
-form.params {
+.params {
 	float: left;
+	padding-right: 15px;
 	padding-top: 7px;
-	padding-right: 30px;
 
-	input[type="checkbox"] {
+	[type='checkbox'] {
 		cursor: pointer;
-		width: 18px;
-		height: 18px;
 		float: left;
+		height: 18px;
+		width: 18px;
 	}
-	label.checkbox {
+
+	.checkbox {
 		cursor: pointer;
-		font-size: 1.5em;
 		display: block;
 		float: left;
+		font-size: 1.5em;
 	}
 
 	.running & {
@@ -209,41 +219,50 @@ form.params {
 	}
 }
 
-#show {
-	#started {
+.show {
+	.started {
 		display: none;
 	}
-	.running #started {
+
+	.running .started {
 		display: inline;
 	}
-	#start {
+
+	.start {
 		display: inline;
 	}
-	.running #start {
+
+	.running .start {
 		display: none;
 	}
-	#response {
+
+	.response {
 		display: block;
 	}
 }
 
-#list {
-	#reload {
+.list {
+	.reload {
 		display: inline;
 	}
-	.running #reload {
+
+	.running .reload {
 		display: inline;
 	}
-	#runAll {
+
+	.runAll {
 		display: inline;
 	}
-	.running #runAll {
+
+	.running .runAll {
 		display: none;
 	}
-	#configs {
+
+	.configs {
 		display: block;
 	}
-	.running #configs {
+
+	.running .configs {
 		display: none;
 	}
 }
@@ -251,15 +270,17 @@ form.params {
 .compare1 {
 	color: blue;
 }
+
 .compare2 {
 	color: green;
 }
 
 .success {
-	color: #00BB00;
+	color: #00bb00;
 }
+
 .fail {
-	color: #DD0000;
+	color: #dd0000;
 }
 
 a {
