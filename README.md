@@ -72,28 +72,36 @@ $ docker run -it --rm \
 	-p 5383:5383 \
 	--network="$(docker inspect --format='{{.HostConfig.NetworkMode}}' nginx)" \
 	--add-host dockerhost:$(docker inspect --format='{{range .NetworkSettings.Networks}}{{.IPAddress}} {{end}}' nginx) \
-	uwegerdes/gulp-frontend \
-	bash
+	uwegerdes/gulp-frontend
 ```
 
-Inside the running docker container start `bower install` to load more dependencies, they will be in your project directory (you might want to look inside for using the components).
+With the running docker container start `bower install` from another terminal to load more dependencies, they will be installed in your project directory (you might want to look there when using the components).
 
 You will need this step only once, the data is saved in your project and not in the docker container.
 
 ```bash
-$ bower install
+$ docker exec -t gulp-frontend bower install
 ```
 
-Next start `gulp` with an optional task. If no task is given the default task runs `[ 'build', 'watch' ]`, the test tasks are triggered by their config files, you may add more watch files as you like:
+You can also start `gulp` with a task from another terminal:
 
 ```bash
-$ gulp build
-
-$ gulp tests
-
-$ gulp watch
-
-$ gulp
+$ docker exec -t gulp-frontend gulp test-forms-default
+$ docker exec -t gulp-frontend gulp test-forms-default-slimer
+$ docker exec -t gulp-frontend gulp test-forms-login
+$ docker exec -t gulp-frontend gulp test-forms-login-slimer
 ```
 
-Stop `gulp watch` with CTRL-C and exit the container with CTRL-D.
+If you executed `test-forms-login` you might want to have a look in the `mail` container:
+
+```bash
+docker exec -it mail gosu testbox alpine
+```
+
+To ease your live you might want to define an alias:
+
+```bash
+$ alias dockergulp='docker exec -t gulp-frontend gulp'
+```
+
+Stop the container with CTRL-C and exit the container with CTRL-D.

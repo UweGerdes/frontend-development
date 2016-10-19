@@ -251,7 +251,9 @@ $ docker rmi uwegerdes/nginx uwegerdes/php-fpm uwegerdes/mail uwegerdes/mysql uw
 To clean up the docker directories try:
 
 ```bash
+$ docker images --filter "dangling=true" -q --no-trunc
 $ docker rmi $(docker images --filter "dangling=true" -q --no-trunc)
+$ docker volume ls -qf dangling=true
 $ docker volume rm $(docker volume ls -qf dangling=true)
 ```
 
