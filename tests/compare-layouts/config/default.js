@@ -23,13 +23,13 @@ module.exports = {
 			'cache': false
 		},
 		'app-phantomjs': {
-			'url': 'http://dockerhost/app',
+			'url': 'http://dockerhost/login/index.php',
 			'selector': 'body',
 			'engine': phantomjs,
 			'cache': false
 		},
 		'app-slimerjs': {
-			'url': 'http://dockerhost/app',
+			'url': 'http://dockerhost/login/index.php',
 			'selector': 'body',
 			'engine': slimerjs,
 			'cache': false
