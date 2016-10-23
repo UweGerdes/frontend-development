@@ -1,5 +1,5 @@
 /*
- * gulpfile for comparing html page elements
+ * gulpfile for responsive-check
  *
  * $ sudo npm install --global gulp
  * $ cd myProject/build/Gulp
@@ -12,6 +12,7 @@
 'use strict';
 
 var autoprefixer = require('gulp-autoprefixer'),
+	changed = require('gulp-changed'),
 	del = require('del'),
 	exec = require('child_process').exec,
 	fs = require('fs'),
@@ -34,6 +35,7 @@ var autoprefixer = require('gulp-autoprefixer'),
 	;
 
 var testDir = __dirname;
+var bowerDir = path.join(__dirname, '..', '..', 'bower_components');
 var testLogfile = path.join(testDir, 'tests.log');
 var testHtmlLogfile = path.join(testDir, 'tests.html');
 var logMode = 0;
@@ -52,26 +54,26 @@ var log = notify.withReporter(function (options, callback) {
 /*
  * less files lint and style check
  */
-watchFilesFor['compare-layouts-less-lint'] = [
+watchFilesFor['responsive-check-less-lint'] = [
 	path.join(testDir, 'less', '**', '*.less')
 ];
-gulp.task('compare-layouts-less-lint', function () {
-	return gulp.src( watchFilesFor['compare-layouts-less-lint'] )
+gulp.task('responsive-check-less-lint', function () {
+	return gulp.src( watchFilesFor['responsive-check-less-lint'] )
 		.pipe(lesshint())  // enforce style guide
 		.on('error', function (err) {})
 		.pipe(lesshint.reporter())
 		;
 });
 
-watchFilesFor['compare-layouts-less'] = [
+watchFilesFor['responsive-check-less'] = [
 	path.join(testDir, 'less', '**', '*.less'),
 	path.join(testDir, 'less', 'app.less')
 ];
-gulp.task('compare-layouts-less', function () {
+gulp.task('responsive-check-less', function () {
 	var dest = function(filename) {
 		return path.join(path.dirname(path.dirname(filename)), 'css');
 	};
-	var src = watchFilesFor['compare-layouts-less'].filter(function(el){return el.indexOf('/**/') == -1; });
+	var src = watchFilesFor['responsive-check-less'].filter(function(el){return el.indexOf('/**/') == -1; });
 	return gulp.src( src )
 		.pipe(lessChanged({
 			getOutputFileName: function(file) {
@@ -83,39 +85,51 @@ gulp.task('compare-layouts-less', function () {
 		.pipe(autoprefixer('last 3 version', 'safari 5', 'ie 8', 'ie 9', 'ios 6', 'android 4'))
 		.pipe(gutil.env.type === 'production' ? uglify() : gutil.noop())
 		.pipe(gulp.dest(function(file) { return dest(file.path); }))
-		.pipe(log({ message: 'written: <%= file.path %>', title: 'Gulp lessCompareLayouts' }))
+		.pipe(log({ message: 'written: <%= file.path %>', title: 'Gulp responsive-check-less' }))
+		;
+});
+
+watchFilesFor['responsive-check-less-bootstrap'] = [
+	path.join(bowerDir, 'bootstrap', 'less', '**', '*.less')
+];
+gulp.task('responsive-check-less-bootstrap', function () {
+	return gulp.src( [ path.join(bowerDir, 'bootstrap', 'less', 'bootstrap.less') ] )
+		.pipe(changed(path.join(testDir, 'css'), {extension: '.css'}))
+		.pipe(less())
+		.on('error', log.onError({ message:  'Error: <%= error.message %>' , title: 'LESS Error'}))
+		.pipe(autoprefixer('last 3 version', 'safari 5', 'ie 8', 'ie 9', 'ios 6', 'android 4'))
+		.pipe(gutil.env.type === 'production' ? uglify() : gutil.noop())
+		.pipe(gulp.dest(path.join(testDir, 'css')))
+		.pipe(log({ message: 'written: <%= file.path %>', title: 'Gulp responsive-check-less-bootstrap' }))
 		;
 });
 
 /*
  * lint javascript files
  */
-watchFilesFor['compare-layouts-lint'] = [
+watchFilesFor['responsive-check-lint'] = [
 	path.join(testDir, 'package.json'),
 	path.join(testDir, '**', '*.js')
 ];
-gulp.task('compare-layouts-lint', function(callback) {
-	return gulp.src(watchFilesFor['compare-layouts-lint'])
+gulp.task('responsive-check-lint', function(callback) {
+	return gulp.src(watchFilesFor['responsive-check-lint'])
 		.pipe(jshint())
 		.pipe(jshint.reporter('default'))
 		;
 });
 
-/*
- * main task for comparing layouts
- */
-watchFilesFor['compare-layouts-default'] = [
+watchFilesFor['responsive-check-default'] = [
 	path.join(testDir, 'config', 'default.js'),
 	path.join(testDir, 'index.js'),
-	path.join(testDir, 'bin', '*.js')
+	path.join(testDir, 'bin', 'load-page.js')
 ];
-gulp.task('compare-layouts-default', function(callback) {
+gulp.task('responsive-check-default', function(callback) {
 	del( [
 			path.join(testDir, 'results', 'default', '*.png'),
 			path.join(testDir, 'results', 'default', '*.css.json')
 		], { force: true } );
 	var loader = exec('node index.js config/default.js',
-		{ cwd: testDir },
+		{ cwd: path.join(testDir, 'responsive-check') },
 		function (err, stdout, stderr) {
 			logExecResults(err, stdout, stderr);
 			callback();
@@ -187,8 +201,8 @@ gulp.task('logTestResults', function(callback) {
 	callback();
 });
 
-// start compare-layouts server
-gulp.task('server-compare-layouts:start', function() {
+// start responsive-check server
+gulp.task('server-responsive-check:start', function() {
 	server.listen({
 			path: path.join(testDir, 'server.js'),
 			env: { LIVERELOAD_PORT: lifereloadPort, VERBOSE: false },
@@ -196,38 +210,54 @@ gulp.task('server-compare-layouts:start', function() {
 		}
 	);
 });
-gulp.task('server-compare-layouts:stop', function() {
+gulp.task('server-responsive-check:stop', function() {
     server.kill();
 });
-// restart server-compare-layouts if server.js changed
-watchFilesFor['server-compare-layouts'] = [
+// restart server-responsive-check if server.js changed
+watchFilesFor['server-responsive-check'] = [
 	path.join(testDir, 'server.js')
 ];
-gulp.task('server-compare-layouts', function() {
+gulp.task('server-responsive-check', function() {
 	server.changed(function(error) {
 		if( error ) {
-			console.log('compare-layouts server.js restart error: ' + JSON.stringify(error, null, 4));
+			console.log('responsive-check server.js restart error: ' + JSON.stringify(error, null, 4));
 		} else {
-			console.log('compare-layouts server.js restarted');
+			console.log('responsive-check server.js restarted');
 		}
 	});
 });
 /*
  * gulp postmortem task to stop server on termination of gulp
  */
-gulp.task('server-compare-layouts-postMortem', function() {
-	return gulp.src( watchFilesFor['server-compare-layouts'] )
-		.pipe(postMortem({gulp: gulp, tasks: [ 'server-compare-layouts:stop' ]}))
+gulp.task('server-responsive-check-postMortem', function() {
+	return gulp.src( watchFilesFor['server-responsive-check'] )
+		.pipe(postMortem({gulp: gulp, tasks: [ 'server-responsive-check:stop' ]}))
 		;
+});
+
+/*
+ * livereload server and task
+ */
+watchFilesFor.livereload = [
+	path.join(testDir, 'views', '*.ejs'),
+	path.join(testDir, 'css', '*.css'),
+	path.join(testDir, 'results', '**', '*.log')
+];
+gulp.task('livereload', function() {
+	gulp.src(watchFilesFor.livereload)
+		.pipe(changed(path.dirname('<%= file.path %>')))
+//		.pipe(log({ message: 'livereload: <%= file.path %>', title: 'Gulp livereload' }))
+		.pipe(gulpLivereload( { quiet: true } ));
 });
 
 /*
  * run all build tasks
  */
 gulp.task('build', function(callback) {
-	runSequence('compare-layouts-less-lint',
-		'compare-layouts-less',
-		'compare-layouts-lint',
+	runSequence('lessLintStylish',
+		'responsive-check-less',
+		'responsive-check-less-bootstrap',
+		'lint',
 		callback);
 });
 
@@ -255,9 +285,9 @@ gulp.task('watch', function() {
 /*
  * init task: start server
  */
-gulp.task('compare-layouts-init', function(callback) {
-	runSequence('server-compare-layouts:start',
-		'server-compare-layouts-postMortem',
+gulp.task('responsive-check-init', function(callback) {
+	runSequence('server-responsive-check:start',
+		'server-responsive-check-postMortem',
 		callback);
 });
 
@@ -266,9 +296,9 @@ gulp.task('compare-layouts-init', function(callback) {
  */
 gulp.task('default', function(callback) {
 	runSequence('build',
-		'server-compare-layouts:start',
+		'server-responsive-check:start',
 		'watch',
-		'server-compare-layouts-postMortem',
+		'server-responsive-check-postMortem',
 		callback);
 });
 

@@ -31,28 +31,14 @@ var htmlLog = [];
 var watchFilesFor = {};
 
 /*
- * less files lint and style check
- */
-watchFilesFor.lessLintStylish = [
-	path.join(testDir, 'less', '**', '*.less')
-];
-gulp.task('lessLintStylish', function () {
-	return gulp.src( watchFilesFor.lessLintStylish )
-		.pipe(gulpLesshint())  // enforce style guide
-		.on('error', function (err) {})
-		.pipe(gulpLesshint.reporter())
-		;
-});
-
-/*
  * lint javascript files
  */
-watchFilesFor.lint = [
+watchFilesFor['test-forms-lint'] = [
 	path.join(testDir, 'package.json'),
 	path.join(testDir, '**', '*.js')
 ];
-gulp.task('lint', function(callback) {
-	return gulp.src(watchFilesFor.lint)
+gulp.task('test-forms-lint', function(callback) {
+	return gulp.src(watchFilesFor['test-forms-lint'])
 		.pipe(gulpJshint())
 		.pipe(gulpJshint.reporter('default'))
 		;
@@ -190,19 +176,19 @@ gulp.task('logTestResults', function(callback) {
  * run all build tasks
  */
 gulp.task('build', function(callback) {
-	runSequence('lint',
-		'lessLintStylish',
+	runSequence('test-forms-lint',
+		'test-forms-less-lint',
 		callback);
 });
 
 /*
  * run all test tasks
  */
-watchFilesFor.tests = [
+watchFilesFor['test-forms-tests'] = [
 	path.join(testDir, 'index.js'),
 	path.join(testDir, 'config', '*.js')
 ];
-gulp.task('tests', function(callback) {
+gulp.task('test-forms-tests', function(callback) {
 	runSequence('clearTestLog',
 		'test-forms-default',
 //		'test-forms-login',

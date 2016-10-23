@@ -14,7 +14,6 @@
 var autoprefixer = require('gulp-autoprefixer'),
 	changed = require('gulp-changed'),
 	del = require('del'),
-	exec = require('child_process').exec,
 	fs = require('fs'),
 	glob = require('glob'),
 	gulp = require('gulp'),
@@ -27,11 +26,9 @@ var autoprefixer = require('gulp-autoprefixer'),
 	notify = require('gulp-notify'),
 	gulpPhplint = require('gulp-phplint'),
 	path = require('path'),
-	postMortem = require('gulp-postmortem'),
 	os = require('os'),
 	rename = require('rename'),
 	runSequence = require('run-sequence'),
-	server = require('gulp-develop-server'),
 	shell = require('gulp-shell'),
 	uglify = require('gulp-uglify')
 	;
@@ -66,7 +63,17 @@ Object.keys(gulpCompareLayouts.gulp.tasks).forEach(function(key) {
 Object.keys(gulpCompareLayouts.watchFilesFor).forEach(function(key) {
 	watchFilesFor[key] = gulpCompareLayouts.watchFilesFor[key];
 });
-// init server
+
+/*
+ * include responsive-check gulpfile.js
+ */
+var gulpResponsiveCheck = require('./tests/responsive-check/gulpfile.js');
+Object.keys(gulpResponsiveCheck.gulp.tasks).forEach(function(key) {
+	gulp.tasks[key] = gulpResponsiveCheck.gulp.tasks[key];
+});
+Object.keys(gulpResponsiveCheck.watchFilesFor).forEach(function(key) {
+	watchFilesFor[key] = gulpResponsiveCheck.watchFilesFor[key];
+});
 
 /*
  * log only to console, not GUI
@@ -94,8 +101,7 @@ gulp.task('phpLint', function () {
  */
 watchFilesFor.lessLintStylish = [
 	path.join(srcDir, 'less', '*.less'),
-	path.join(srcDir, 'less', 'login', '*.less'),
-	path.join(testDir, 'responsive-check', 'less', '**', '*.less')
+	path.join(srcDir, 'less', 'login', '*.less')
 ];
 gulp.task('lessLintStylish', function () {
 	return gulp.src( watchFilesFor.lessLintStylish )
@@ -136,30 +142,6 @@ gulp.task('less', function () {
 		;
 });
 
-watchFilesFor.lessResponsiveCheck = [
-	path.join(testDir, 'responsive-check', 'less', '**', '*.less'),
-	path.join(testDir, 'responsive-check', 'less', 'app.less')
-];
-gulp.task('lessResponsiveCheck', function () {
-	var dest = function(filename) {
-		return path.join(path.dirname(path.dirname(filename)), 'css');
-	};
-	var src = watchFilesFor.lessResponsiveCheck.filter(function(el){return el.indexOf('/**/') == -1; });
-	return gulp.src( src )
-		.pipe(lessChanged({
-			getOutputFileName: function(file) {
-				return rename( file, { dirname: dest(file), extname: '.css' } );
-			}
-		}))
-		.pipe(less())
-		.on('error', log.onError({ message:  'Error: <%= error.message %>' , title: 'LESS Error'}))
-		.pipe(autoprefixer('last 3 version', 'safari 5', 'ie 8', 'ie 9', 'ios 6', 'android 4'))
-		.pipe(gutil.env.type === 'production' ? uglify() : gutil.noop())
-		.pipe(gulp.dest(function(file) { return dest(file.path); }))
-		.pipe(log({ message: 'written: <%= file.path %>', title: 'Gulp lessResponsiveCheck' }))
-		;
-});
-
 watchFilesFor.lessBootstrap = [
 	path.join(bowerDir, 'bootstrap', 'less', '**', '*.less')
 ];
@@ -171,8 +153,6 @@ gulp.task('lessBootstrap', function () {
 		.pipe(autoprefixer('last 3 version', 'safari 5', 'ie 8', 'ie 9', 'ios 6', 'android 4'))
 		.pipe(gutil.env.type === 'production' ? uglify() : gutil.noop())
 		.pipe(gulp.dest(path.join(destDir, 'css')))
-		.pipe(log({ message: 'written: <%= file.path %>', title: 'Gulp lessBootstrap' }))
-		.pipe(gulp.dest(path.join(testDir, 'responsive-check', 'css')))
 		.pipe(log({ message: 'written: <%= file.path %>', title: 'Gulp lessBootstrap' }))
 		;
 });
@@ -226,8 +206,7 @@ gulp.task('graphviz', function () {
  */
 watchFilesFor.lint = [
 	path.join(gulpDir, 'gulpfile.js'),
-	path.join(gulpDir, '**', 'package.json'),
-	path.join(gulpDir, 'tests', '**', '*.js')
+	path.join(gulpDir, '**', 'package.json')
 ];
 gulp.task('lint', function(callback) {
 	return gulp.src(watchFilesFor.lint)
@@ -236,49 +215,10 @@ gulp.task('lint', function(callback) {
 		;
 });
 
-watchFilesFor['responsive-check-default'] = [
-	path.join(testDir, 'responsive-check', 'config', 'default.js'),
-	path.join(testDir, 'responsive-check', 'index.js'),
-	path.join(testDir, 'responsive-check', 'bin', 'load-page.js')
-];
-gulp.task('responsive-check-default', function(callback) {
-	del( [
-			path.join(testDir, 'responsive-check', 'results', 'default', '*.png'),
-			path.join(testDir, 'responsive-check', 'results', 'default', '*.css.json')
-		], { force: true } );
-	var loader = exec('node index.js config/default.js',
-		{ cwd: path.join(testDir, 'responsive-check') },
-		function (err, stdout, stderr) {
-			logExecResults(err, stdout, stderr);
-			callback();
-		}
-	);
-	loader.stdout.on('data', function(data) { if(!data.match(/PASS/)) { console.log(data.trim()); } });
-});
-
-// helper functions
-var logExecResults = function (err, stdout, stderr) {
-	logTxt (stdout.replace(/\u001b\[[^m]+m/g, '').match(/[^\n]*FAIL [^\n]+/g));
-	logHtml(stdout.replace(/\u001b\[[^m]+m/g, '').match(/[^\n]*FAIL [^0-9][^\n]+/g));
-	if (err) {
-		console.log('error: ' + err.toString());
-	}
-};
-
 var logTxt = function (msg) {
 	if (logMode === 1 && msg){
 		var txtMsg = msg.join('\n');
 		txtLog.push(txtMsg);
-	}
-};
-
-var logHtml = function (msg) {
-	if (logMode === 1 && msg){
-		var htmlMsg = msg.join('<br />')
-						.replace(/FAIL ([^ ]+) ([^ :]+)/, 'FAIL ./results/$1/$22.png')
-						.replace(/([^ ]+\/[^ ]+\.png)/g, '<a href="$1">$1</a>');
-		var errorClass = htmlMsg.indexOf('FAIL') > -1 ? ' class="fail"' : ' class="success"';
-		htmlLog.push('\t<li' + errorClass + '>' + htmlMsg + '</li>');
 	}
 };
 
@@ -319,55 +259,6 @@ gulp.task('logTestResults', function(callback) {
 	callback();
 });
 
-// start responsive-check server
-gulp.task('server-responsive-check:start', function() {
-	server.listen({
-			path: path.join(testDir, 'responsive-check', 'server.js'),
-			env: { LIVERELOAD_PORT: lifereloadPort, VERBOSE: false },
-			cwd: path.join(testDir, 'responsive-check')
-		}
-	);
-});
-gulp.task('server-responsive-check:stop', function() {
-    server.kill();
-});
-// restart server-responsive-check if server.js changed
-watchFilesFor['server-responsive-check'] = [
-	path.join(testDir, 'responsive-check', 'server.js')
-];
-gulp.task('server-responsive-check', function() {
-	server.changed(function(error) {
-		if( error ) {
-			console.log('tests/responsive-check/server.js restart error: ' + JSON.stringify(error, null, 4));
-		} else {
-			console.log('tests/responsive-check/server.js restarted');
-		}
-	});
-});
-/*
- * gulp postmortem task to stop server on termination of gulp
- */
-gulp.task('postMortem', function() {
-	return gulp.src( watchFilesFor['server-responsive-check'] )
-		.pipe(postMortem({gulp: gulp, tasks: [ 'server-responsive-check:stop' ]}))
-		;
-});
-
-/*
- * livereload server and task
- */
-watchFilesFor.livereload = [
-	path.join(testDir, 'responsive-check', 'views', '*.ejs'),
-	path.join(testDir, 'responsive-check', 'css', '*.css'),
-	path.join(testDir, 'responsive-check', 'results', '**', '*.log')
-];
-gulp.task('livereload', function() {
-	gulp.src(watchFilesFor.livereload)
-		.pipe(changed(path.dirname('<%= file.path %>')))
-//		.pipe(log({ message: 'livereload: <%= file.path %>', title: 'Gulp livereload' }))
-		.pipe(gulpLivereload( { quiet: true } ));
-});
-
 /*
  * run all build tasks
  */
@@ -375,7 +266,6 @@ gulp.task('build', function(callback) {
 	runSequence('phpLint',
 		'lessLintStylish',
 		'less',
-		'lessResponsiveCheck',
 		'lessBootstrap',
 		'jsBootstrap',
 		'graphviz',
@@ -387,7 +277,6 @@ gulp.task('build', function(callback) {
  * watch task
  */
 gulp.task('watch', function() {
-console.log('watchFilesFor: ' + Object.keys(watchFilesFor).join(', '));
 	Object.keys(watchFilesFor).forEach(function(task) {
 		watchFilesFor[task].forEach(function(filename) {
 			glob(filename, function(err, files) {
@@ -406,18 +295,15 @@ console.log('watchFilesFor: ' + Object.keys(watchFilesFor).join(', '));
 });
 
 /*
- * default task: run all build tasks and watch
+ * default task: init all build tasks and watch
  */
-gulp.task('default', function(callback) {
+gulp.task('default', ['responsive-check-init', 'compare-layouts-init', 'init'] );
+
+gulp.task('init', function(callback) {
 	runSequence('build',
-		'server-responsive-check:start',
-		'compare-layout-init',
 		'watch',
-		'postMortem',
 		callback);
 });
-
-console.log('tasks: ' + Object.keys(gulp.tasks).join(', '));
 
 function ipv4adresses() {
 	var addresses = [];
