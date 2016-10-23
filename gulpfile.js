@@ -32,7 +32,6 @@ var autoprefixer = require('gulp-autoprefixer'),
 	rename = require('rename'),
 	runSequence = require('run-sequence'),
 	server = require('gulp-develop-server'),
-	server = require('gulp-develop-server'),
 	shell = require('gulp-shell'),
 	uglify = require('gulp-uglify')
 	;
@@ -49,6 +48,13 @@ var txtLog = [];
 var htmlLog = [];
 var watchFilesFor = {};
 var lifereloadPort = process.env.GULP_LIVERELOAD || 5081;
+
+/*
+ * include test-forms gulpfile.js
+ */
+var gulpTestForms = require('./tests/test-forms/gulpfile.js');
+gulp.tasks = gulpTestForms.gulp.tasks;
+watchFilesFor = gulpTestForms.watchFilesFor;
 
 /*
  * log only to console, not GUI
@@ -241,71 +247,6 @@ gulp.task('lint', function(callback) {
 		.pipe(jshint())
 		.pipe(jshint.reporter('default'))
 		;
-});
-
-/*
- * tests
- */
-watchFilesFor['test-forms-default'] = [
-	path.join(testDir, 'test-forms', 'config', 'default.js')
-];
-gulp.task('test-forms-default', function(callback) {
-	del( [
-			path.join(testDir, 'test-forms', 'results', 'default', '*')
-		], { force: true } );
-	var loader = exec('casperjs test test-forms.js --cfg=config/default.js',
-		{ cwd: path.join(testDir, 'test-forms') },
-		function (err, stdout, stderr) {
-			logExecResults(err, stdout, stderr);
-			callback();
-		}
-	);
-	loader.stdout.on('data', function(data) { if(!data.match(/PASS/)) { console.log(data.trim()); } });
-});
-
-gulp.task('test-forms-default-slimer', function(callback) {
-	del( [
-			path.join(testDir, 'test-forms', 'results', 'default-slimerjs', '*')
-		], { force: true } );
-	var loader = exec('xvfb-run -a casperjs --engine=slimerjs test test-forms.js --cfg=config/default.js --dumpDir=./results/default-slimerjs/',
-		{ cwd: path.join(testDir, 'test-forms') },
-		function (err, stdout, stderr) {
-			logExecResults(err, stdout, stderr);
-			callback();
-		}
-	);
-	loader.stdout.on('data', function(data) { if(!data.match(/PASS/)) { console.log(data.trim()); } });
-});
-
-watchFilesFor['test-forms-login'] = [
-	path.join(testDir, 'test-forms', 'config', 'login.js')
-];
-gulp.task('test-forms-login', function(callback) {
-	del( [
-			path.join(testDir, 'test-forms', 'results', 'login', '*')
-		], { force: true } );
-	var loader = exec('casperjs test test-forms.js --cfg=config/login.js',
-		{ cwd: path.join(testDir, 'test-forms') },
-		function (err, stdout, stderr) {
-			logExecResults(err, stdout, stderr);
-			callback();
-		}
-	);
-	loader.stdout.on('data', function(data) { if(!data.match(/PASS/)) { console.log(data.trim()); } });
-});
-
-gulp.task('test-forms-login-slimer', function(callback) {
-	del( [
-			path.join(testDir, 'test-forms', 'results', 'login-slimerjs', '*')
-		], { force: true } );
-	var loader = exec('xvfb-run -a casperjs --engine=slimerjs test test-forms.js --cfg=config/login.js --dumpDir=./results/login-slimerjs/',
-		{ cwd: path.join(testDir, 'test-forms') },
-		function (err, stdout, stderr) {
-			logExecResults(err, stdout, stderr);
-			callback();
-		}
-	);
-	loader.stdout.on('data', function(data) { if(!data.match(/PASS/)) { console.log(data.trim()); } });
 });
 
 watchFilesFor['responsive-check-default'] = [
@@ -550,6 +491,8 @@ gulp.task('default', function(callback) {
 		'postMortem',
 		callback);
 });
+
+console.log('tasks: ' + Object.keys(gulp.tasks).join(', '));
 
 function ipv4adresses() {
 	var addresses = [];
