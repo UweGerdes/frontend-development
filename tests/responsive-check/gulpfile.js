@@ -26,6 +26,7 @@ var autoprefixer = require('gulp-autoprefixer'),
 	gulpLivereload = require('gulp-livereload'),
 	notify = require('gulp-notify'),
 	path = require('path'),
+	postMortem = require('gulp-postmortem'),
 	os = require('os'),
 	rename = require('rename'),
 	runSequence = require('run-sequence'),
@@ -225,6 +226,14 @@ gulp.task('server-responsive-check', function() {
 		}
 	});
 });
+/*
+ * gulp postmortem task to stop server on termination of gulp
+ */
+gulp.task('server-responsive-check-postMortem', function() {
+	return gulp.src( watchFilesFor['server-responsive-check'] )
+		.pipe(postMortem({gulp: gulp, tasks: [ 'server-responsive-check:stop' ]}))
+		;
+});
 
 /*
  * livereload server and task
@@ -278,6 +287,7 @@ gulp.task('watch', function() {
  */
 gulp.task('responsive-check-init', function(callback) {
 	runSequence('server-responsive-check:start',
+		'server-responsive-check-postMortem',
 		callback);
 });
 
@@ -288,6 +298,7 @@ gulp.task('default', function(callback) {
 	runSequence('build',
 		'server-responsive-check:start',
 		'watch',
+		'server-responsive-check-postMortem',
 		callback);
 });
 

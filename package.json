@@ -39,6 +39,7 @@
     "gulp-livereload": "^3.8.1",
     "gulp-notify": "^2.1.0",
     "gulp-phplint": "^0.3.2",
+    "gulp-postmortem": "^1.0.5",
     "gulp-shell": "^0.5.2",
     "gulp-uglify": "^1.0.2",
     "gulp-util": "^3.0.2",
