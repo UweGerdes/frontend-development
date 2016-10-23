@@ -8,7 +8,7 @@ My system is Ubuntu 16.04 - perhaps there are some other steps to be taken on Wi
 
 You may also try this installation in a virtual machine. It worked for me on an Ubuntu 16.04 (I hope all dependencies are included here).
 
-Or build a Docker image using the supplied Dockerfile.
+Or build a Docker image using the Dockerfile in my frontend-development project.
 
 Some other software is required on a blank Ubuntu system:
 
@@ -73,77 +73,4 @@ If you are on a Linux system (Mac might work too) you can switch the execution o
 $ sudo apt-get install xvfb
 ```
 
-The command is commented out in `compare-layouts.js`. Activate it (and deactivate the other command) and restart the server.
-
-## [Docker](http://www.docker.com/) building and useful commands
-
-The application can be containered with Docker.
-
-During developement I've used cache docker to speed up the building of the docker image.
-
-I'm using some firewall settings - make sure the localhost ports 3142 and 3143 are open for Docker (mine works in the subnet 172.17.0.0/24).
-
-### [apt-cacher-ng](https://hub.docker.com/r/sameersbn/apt-cacher-ng/)
-
-On my system had problems with more than 20(?) files - restart the `docker build` below 5 or 6 times, than the cache is filled. Perhaps other apt-cacher-ng dockers might work better.
-
-```bash
-$ sudo mkdir -p /srv/docker/apt-cacher-ng
-$ docker run --name apt-cacher-ng -d --restart=always -p 3142:3142 -v /srv/docker/apt-cacher-ng:/var/cache/apt-cacher-ng sameersbn/apt-cacher-ng
-```
-
-### [npm-proxy-cache](https://hub.docker.com/r/kudoz/npm-proxy-cache/)
-
-```bash
-$ sudo mkdir -p /srv/docker/npm-proxy-cache
-$ docker run --name npm-proxy-cache -d --restart=always -p 3143:8080 -v /srv/docker/npm-proxy-cache:/cache kudoz/npm-proxy-cache
-```
-
-### Build docker image
-
-The `Dockerfile` can be built with the following command (don't forget the '.' at the end of the line):
-
-```bash
-$ docker build -t compare-layouts .
-```
-
-### First start of Docker
-
-```bash
-$ docker run -d \
-    --name compare-layouts-default \
-    compare-layouts
-```
-
-Open 'http://[ip address]:3000/ in your browser.
-
-### Start with config and results in host file system
-
-Create you PROJECTDIR with subdirectories `config` (and have some configuration files there) and `results` and run:
-
-```bash
-$ cd PROJECTDIR
-$ docker run -d \
-    -v $(pwd)/config:/usr/src/app/config \
-    -v $(pwd)/results:/usr/src/app/results \
-    -p 3001:3000 \
-    -e TZ=Europe/Berlin \
-    --name compare-layouts \
-    compare-layouts
-```
-
-Now open 'http://localhost:3001/ in your browser.
-
-### Useful commands
-
-```bash
-$ docker inspect --format='{{range .NetworkSettings.Networks}}{{.IPAddress}} {{end}}' compare-layouts
-$ docker exec -it compare-layouts bash
-$ docker logs -f compare-layouts
-$ docker stop compare-layouts
-$ docker start compare-layouts
-$ docker restart compare-layouts
-```
-
-With `--add-host mydomain.local:192.168.1.18` you can add a local virtual host to the containers `/etc/hosts` file.
-
+The command is built into `compare-layouts.js`.

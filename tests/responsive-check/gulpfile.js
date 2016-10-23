@@ -254,10 +254,10 @@ gulp.task('livereload', function() {
  * run all build tasks
  */
 gulp.task('build', function(callback) {
-	runSequence('lessLintStylish',
+	runSequence('responsive-check-less-lint',
 		'responsive-check-less',
 		'responsive-check-less-bootstrap',
-		'lint',
+		'responsive-check-lint',
 		callback);
 });
 
