@@ -14,23 +14,7 @@ $ export APT_PROXY=http://$(hostname -i):3142
 
 Perhaps open port 3142 in your firewall to allow access from the docker-engine.
 
-Now build the gulp docker image - mind the '.' at the end of the command (meaning use current directory containing `Dockerfile` and other files needed for build). The build-args might be ommitted, the proxy settings assume that your computer `$(hostname -i)` has the proxy servers.
-
-```bash
-$ docker build -t uwegerdes/test-forms \
-	--build-arg NPM_PROXY="--proxy http://$(hostname -i):3143 --https-proxy http://$(hostname -i):3143 --strict-ssl false" \
-	--build-arg NPM_LOGLEVEL="--loglevel warn" \
-	--build-arg GULP_LIVERELOAD="5381" \
-	--build-arg RESPONSIVE_CHECK_HTTP="5382" \
-	--build-arg COMPARE_LAYOUTS_HTTP="5383" \
-	.
-```
-
-Some 8 Minutes and 1.5 GB later...
-
-## Start the gulp container
-
-Run a container from the image just created and connect to your environment (with a running nginx docker container, the hostname `dockerhost` is used in test configs).
+Run a container from the image `uwegerdes/gulp-frontend` and connect to your environment (with a running nginx docker container, the hostname `dockerhost` is used in test configs).
 
 This command removes the container after end - useful if your nginx ip address changes.
 
