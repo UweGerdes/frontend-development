@@ -192,7 +192,7 @@ gulp.task('server-compare-layouts:start', function() {
 	server.listen({
 			path: path.join(testDir, 'server.js'),
 			env: { LIVERELOAD_PORT: lifereloadPort, VERBOSE: false },
-			cwd: path.join(testDir, 'compare-layouts')
+			cwd: testDir
 		}
 	);
 });
@@ -206,16 +206,16 @@ watchFilesFor['server-compare-layouts'] = [
 gulp.task('server-compare-layouts', function() {
 	server.changed(function(error) {
 		if( error ) {
-			console.log('tests/compare-layouts/server.js restart error: ' + JSON.stringify(error, null, 4));
+			console.log('compare-layouts/server.js restart error: ' + JSON.stringify(error, null, 4));
 		} else {
-			console.log('tests/compare-layouts/server.js restarted');
+			console.log('compare-layouts/server.js restarted');
 		}
 	});
 });
 /*
  * gulp postmortem task to stop server on termination of gulp
  */
-gulp.task('postMortem', function() {
+gulp.task('server-compare-postMortem', function() {
 	return gulp.src( watchFilesFor['server-compare-layouts'] )
 		.pipe(postMortem({gulp: gulp, tasks: [ 'server-compare-layouts:stop' ]}))
 		;
@@ -256,9 +256,8 @@ gulp.task('watch', function() {
  * init task: run all build tasks and watch
  */
 gulp.task('compare-layout-init', function(callback) {
-	runSequence('build',
-		'server-compare-layouts:start',
-		'postMortem',
+	runSequence('server-compare-layouts:start',
+		'server-compare-postMortem',
 		callback);
 });
 
@@ -269,7 +268,7 @@ gulp.task('default', function(callback) {
 	runSequence('build',
 		'server-compare-layouts:start',
 		'watch',
-		'postMortem',
+		'server-compare-postMortem',
 		callback);
 });
 

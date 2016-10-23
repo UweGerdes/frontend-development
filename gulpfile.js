@@ -66,7 +66,6 @@ Object.keys(gulpCompareLayouts.gulp.tasks).forEach(function(key) {
 Object.keys(gulpCompareLayouts.watchFilesFor).forEach(function(key) {
 	watchFilesFor[key] = gulpCompareLayouts.watchFilesFor[key];
 });
-console.log('watchFilesFor: ' + Object.keys(watchFilesFor).join(', '));
 // init server
 
 /*
@@ -412,6 +411,7 @@ console.log('watchFilesFor: ' + Object.keys(watchFilesFor).join(', '));
 gulp.task('default', function(callback) {
 	runSequence('build',
 		'server-responsive-check:start',
+		'compare-layout-init',
 		'watch',
 		'postMortem',
 		callback);
