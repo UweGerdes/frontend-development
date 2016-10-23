@@ -57,6 +57,19 @@ gulp.tasks = gulpTestForms.gulp.tasks;
 watchFilesFor = gulpTestForms.watchFilesFor;
 
 /*
+ * include compare-layouts gulpfile.js
+ */
+var gulpCompareLayouts = require('./tests/compare-layouts/gulpfile.js');
+Object.keys(gulpCompareLayouts.gulp.tasks).forEach(function(key) {
+	gulp.tasks[key] = gulpCompareLayouts.gulp.tasks[key];
+});
+Object.keys(gulpCompareLayouts.watchFilesFor).forEach(function(key) {
+	watchFilesFor[key] = gulpCompareLayouts.watchFilesFor[key];
+});
+console.log('watchFilesFor: ' + Object.keys(watchFilesFor).join(', '));
+// init server
+
+/*
  * log only to console, not GUI
  */
 var log = notify.withReporter(function (options, callback) {
@@ -83,8 +96,7 @@ gulp.task('phpLint', function () {
 watchFilesFor.lessLintStylish = [
 	path.join(srcDir, 'less', '*.less'),
 	path.join(srcDir, 'less', 'login', '*.less'),
-	path.join(testDir, 'responsive-check', 'less', '**', '*.less'),
-	path.join(testDir, 'compare-layouts', 'less', '**', '*.less')
+	path.join(testDir, 'responsive-check', 'less', '**', '*.less')
 ];
 gulp.task('lessLintStylish', function () {
 	return gulp.src( watchFilesFor.lessLintStylish )
@@ -146,30 +158,6 @@ gulp.task('lessResponsiveCheck', function () {
 		.pipe(gutil.env.type === 'production' ? uglify() : gutil.noop())
 		.pipe(gulp.dest(function(file) { return dest(file.path); }))
 		.pipe(log({ message: 'written: <%= file.path %>', title: 'Gulp lessResponsiveCheck' }))
-		;
-});
-
-watchFilesFor.lessCompareLayouts = [
-	path.join(testDir, 'compare-layouts', 'less', '**', '*.less'),
-	path.join(testDir, 'compare-layouts', 'less', 'app.less')
-];
-gulp.task('lessCompareLayouts', function () {
-	var dest = function(filename) {
-		return path.join(path.dirname(path.dirname(filename)), 'css');
-	};
-	var src = watchFilesFor.lessCompareLayouts.filter(function(el){return el.indexOf('/**/') == -1; });
-	return gulp.src( src )
-		.pipe(lessChanged({
-			getOutputFileName: function(file) {
-				return rename( file, { dirname: dest(file), extname: '.css' } );
-			}
-		}))
-		.pipe(less())
-		.on('error', log.onError({ message:  'Error: <%= error.message %>' , title: 'LESS Error'}))
-		.pipe(autoprefixer('last 3 version', 'safari 5', 'ie 8', 'ie 9', 'ios 6', 'android 4'))
-		.pipe(gutil.env.type === 'production' ? uglify() : gutil.noop())
-		.pipe(gulp.dest(function(file) { return dest(file.path); }))
-		.pipe(log({ message: 'written: <%= file.path %>', title: 'Gulp lessCompareLayouts' }))
 		;
 });
 
@@ -269,26 +257,6 @@ gulp.task('responsive-check-default', function(callback) {
 	loader.stdout.on('data', function(data) { if(!data.match(/PASS/)) { console.log(data.trim()); } });
 });
 
-watchFilesFor['compare-layouts-default'] = [
-	path.join(testDir, 'compare-layouts', 'config', 'default.js'),
-	path.join(testDir, 'compare-layouts', 'index.js'),
-	path.join(testDir, 'compare-layouts', 'bin', '*.js')
-];
-gulp.task('compare-layouts-default', function(callback) {
-	del( [
-			path.join(testDir, 'compare-layouts', 'results', 'default', '*.png'),
-			path.join(testDir, 'compare-layouts', 'results', 'default', '*.css.json')
-		], { force: true } );
-	var loader = exec('node index.js config/default.js',
-		{ cwd: path.join(testDir, 'compare-layouts') },
-		function (err, stdout, stderr) {
-			logExecResults(err, stdout, stderr);
-			callback();
-		}
-	);
-	loader.stdout.on('data', function(data) { if(!data.match(/PASS/)) { console.log(data.trim()); } });
-});
-
 // helper functions
 var logExecResults = function (err, stdout, stderr) {
 	logTxt (stdout.replace(/\u001b\[[^m]+m/g, '').match(/[^\n]*FAIL [^\n]+/g));
@@ -377,40 +345,12 @@ gulp.task('server-responsive-check', function() {
 		}
 	});
 });
-
-// start compare-layouts server
-gulp.task('server-compare-layouts:start', function() {
-	server.listen({
-			path: path.join(testDir, 'compare-layouts', 'server.js'),
-			env: { LIVERELOAD_PORT: lifereloadPort, VERBOSE: false },
-			cwd: path.join(testDir, 'compare-layouts')
-		}
-	);
-});
-gulp.task('server-compare-layouts:stop', function() {
-    server.kill();
-});
-// restart server-compare-layouts if server.js changed
-watchFilesFor['server-compare-layouts'] = [
-	path.join(testDir, 'compare-layouts', 'server.js')
-];
-gulp.task('server-compare-layouts', function() {
-	server.changed(function(error) {
-		if( error ) {
-			console.log('tests/compare-layouts/server.js restart error: ' + JSON.stringify(error, null, 4));
-		} else {
-			console.log('tests/compare-layouts/server.js restarted');
-		}
-	});
-});
 /*
  * gulp postmortem task to stop server on termination of gulp
  */
 gulp.task('postMortem', function() {
-	return gulp.src(
-		watchFilesFor['server-responsive-check'].concat(
-		watchFilesFor['server-compare-layouts'] ) )
-		.pipe(postMortem({gulp: gulp, tasks: [ 'server-responsive-check:stop', 'server-compare-layouts:stop' ]}))
+	return gulp.src( watchFilesFor['server-responsive-check'] )
+		.pipe(postMortem({gulp: gulp, tasks: [ 'server-responsive-check:stop' ]}))
 		;
 });
 
@@ -437,7 +377,6 @@ gulp.task('build', function(callback) {
 		'lessLintStylish',
 		'less',
 		'lessResponsiveCheck',
-		'lessCompareLayouts',
 		'lessBootstrap',
 		'jsBootstrap',
 		'graphviz',
@@ -446,23 +385,10 @@ gulp.task('build', function(callback) {
 });
 
 /*
- * run all test tasks
- */
-watchFilesFor.tests = [
-	path.join(testDir, 'test-forms', 'test-forms.js'),
-	path.join(destDir, 'login', 'index.php')
-];
-gulp.task('tests', function(callback) {
-	runSequence('clearTestLog',
-		'test-forms-default',
-//		'test-forms-login',
-		callback);
-});
-
-/*
  * watch task
  */
 gulp.task('watch', function() {
+console.log('watchFilesFor: ' + Object.keys(watchFilesFor).join(', '));
 	Object.keys(watchFilesFor).forEach(function(task) {
 		watchFilesFor[task].forEach(function(filename) {
 			glob(filename, function(err, files) {
@@ -486,7 +412,6 @@ gulp.task('watch', function() {
 gulp.task('default', function(callback) {
 	runSequence('build',
 		'server-responsive-check:start',
-		'server-compare-layouts:start',
 		'watch',
 		'postMortem',
 		callback);
