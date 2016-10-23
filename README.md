@@ -59,7 +59,7 @@ Some 8 Minutes and 1.5 GB later...
 
 ## Start the gulp container
 
-Run a container from the image just created and connect to your environment (with the localhost ports of gulp livereload on 5381, responsive-check on 5382 and a running nginx docker container, the hostname `dockerhost` is used in test configs).
+Run a container from the image just created and connect to your environment (with the localhost ports of gulp livereload on 5381, responsive-check on 5382, compare-layouts on 5383 and a running nginx docker container, the hostname `dockerhost` is used in test configs).
 
 This command removes the container after end - useful if your nginx ip address changes.
 
@@ -83,7 +83,11 @@ You will need this step only once, the data is saved in your project and not in 
 $ docker exec -t gulp-frontend bower install
 ```
 
-You can also start `gulp` with a task from another terminal:
+Open `http://localhost:5382` and `http://localhost:5383` in your favorite browser.
+
+You should exit (CTRL-C) and restart the container if you change a `gulpfile.js`.
+
+You can also start `gulp` with a test-forms task from another terminal:
 
 ```bash
 $ docker exec -t gulp-frontend gulp test-forms-default
@@ -103,5 +107,3 @@ To ease your live you might want to define an alias:
 ```bash
 $ alias dockergulp='docker exec -t gulp-frontend gulp'
 ```
-
-Stop the container with CTRL-C and exit the container with CTRL-D.
