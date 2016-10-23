@@ -17,7 +17,6 @@ var del = require('del'),
 	glob = require('glob'),
 	gulp = require('gulp'),
 	gulpJshint = require('gulp-jshint'),
-	gulpLesshint = require('gulp-lesshint'),
 	path = require('path'),
 	runSequence = require('run-sequence')
 	;
@@ -177,7 +176,6 @@ gulp.task('logTestResults', function(callback) {
  */
 gulp.task('build', function(callback) {
 	runSequence('test-forms-lint',
-		'test-forms-less-lint',
 		callback);
 });
 

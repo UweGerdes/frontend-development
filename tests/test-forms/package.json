@@ -20,7 +20,6 @@
     "del": "^1.1.1",
     "gulp": "^3.8.10",
     "gulp-jshint": "^2.0.1",
-    "gulp-lesshint": "^2.0.0",
     "jshint": "^2.9.3",
     "phantomjs-prebuilt": "^2.1.12",
     "run-sequence": "^1.1.5",
