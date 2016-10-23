@@ -239,8 +239,8 @@ gulp.task('graphviz', function () {
  */
 watchFilesFor.lint = [
 	path.join(gulpDir, 'gulpfile.js'),
-	path.join(gulpDir, 'package.json'),
-	path.join(gulpDir, 'tests/**/*.js')
+	path.join(gulpDir, '**', 'package.json'),
+	path.join(gulpDir, 'tests', '**', '*.js')
 ];
 gulp.task('lint', function(callback) {
 	return gulp.src(watchFilesFor.lint)

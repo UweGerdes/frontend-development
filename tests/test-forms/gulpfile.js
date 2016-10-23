@@ -17,11 +17,11 @@ var del = require('del'),
 	glob = require('glob'),
 	gulp = require('gulp'),
 	gulpJshint = require('gulp-jshint'),
+	gulpLesshint = require('gulp-lesshint'),
 	path = require('path'),
 	runSequence = require('run-sequence')
 	;
 
-var gulpDir = __dirname;
 var testDir = __dirname;
 var testLogfile = path.join(testDir, 'tests.log');
 var testHtmlLogfile = path.join(testDir, 'tests.html');
@@ -31,11 +31,25 @@ var htmlLog = [];
 var watchFilesFor = {};
 
 /*
+ * less files lint and style check
+ */
+watchFilesFor.lessLintStylish = [
+	path.join(testDir, 'less', '**', '*.less')
+];
+gulp.task('lessLintStylish', function () {
+	return gulp.src( watchFilesFor.lessLintStylish )
+		.pipe(gulpLesshint())  // enforce style guide
+		.on('error', function (err) {})
+		.pipe(gulpLesshint.reporter())
+		;
+});
+
+/*
  * lint javascript files
  */
 watchFilesFor.lint = [
-	path.join(gulpDir, 'package.json'),
-	path.join(gulpDir, '**/*.js')
+	path.join(testDir, 'package.json'),
+	path.join(testDir, '**', '*.js')
 ];
 gulp.task('lint', function(callback) {
 	return gulp.src(watchFilesFor.lint)
@@ -177,6 +191,7 @@ gulp.task('logTestResults', function(callback) {
  */
 gulp.task('build', function(callback) {
 	runSequence('lint',
+		'lessLintStylish',
 		callback);
 });
 
