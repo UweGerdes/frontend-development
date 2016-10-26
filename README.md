@@ -39,7 +39,7 @@ $ docker-compose up -d
 $ docker ps
 ```
 
-Open [http://localhost:3080/](http://localhost:3080/) in your preferred browser
+About 5 minutes and about 2 GB later open [http://localhost:3080/](http://localhost:3080/) in your preferred browser
 
 ## Create gulp docker image
 
@@ -55,7 +55,7 @@ $ docker build -t uwegerdes/gulp-frontend \
 	.
 ```
 
-Some 8 Minutes and 1.5 GB later...
+Some 8 Minutes and 2 GB later...
 
 ## Start the gulp container
 
@@ -83,6 +83,8 @@ You will need this step only once, the data is saved in your project and not in 
 $ docker exec -t gulp-frontend bower install
 ```
 
+Stop and restart the server after loading the bower components.
+
 Open `http://localhost:5382` and `http://localhost:5383` in your favorite browser.
 
 You should exit (CTRL-C) and restart the container if you change a `gulpfile.js`.
@@ -107,3 +109,18 @@ To ease your live you might want to define an alias:
 ```bash
 $ alias dockergulp='docker exec -t gulp-frontend gulp'
 ```
+
+## Known Problems
+
+The first start of the container might take a while - keep calm, the next start is done within 5 seconds.
+
+The same applies to the first start of tests - just rerun them, if they report an unexpected error.
+
+If your running gulp-frontend container refuses to stop on CTRL-C (one of its servers refuses to stop) you should:
+
+```bash
+$ docker stop gulp-frontend
+$ docker rm gulp-frontend
+```
+
+and run it again.
