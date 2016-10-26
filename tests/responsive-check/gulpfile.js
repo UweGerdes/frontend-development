@@ -286,7 +286,8 @@ gulp.task('watch', function() {
  * init task: start server
  */
 gulp.task('responsive-check-init', function(callback) {
-	runSequence('server-responsive-check:start',
+	runSequence('responsive-check-less',
+		'server-responsive-check:start',
 		'server-responsive-check-postMortem',
 		callback);
 });

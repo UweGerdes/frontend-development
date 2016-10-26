@@ -256,7 +256,8 @@ gulp.task('watch', function() {
  * init task: start server
  */
 gulp.task('compare-layouts-init', function(callback) {
-	runSequence('server-compare-layouts:start',
+	runSequence('compare-layouts-less',
+		'server-compare-layouts:start',
 		'server-compare-layouts-postMortem',
 		callback);
 });
