@@ -36,6 +36,18 @@ $ export APT_PROXY=http://$(hostname -i):3142
 
 Perhaps open port 3142 in your firewall to allow access from the docker-engine.
 
+If you want to have an overview of what's happening in docker you might want to run:
+
+```bash
+$ docker run -d -p 3144:9000 --privileged \
+	--name ui-for-docker \
+	--restart=always \
+	-v /var/run/docker.sock:/var/run/docker.sock \
+	uifd/ui-for-docker
+```
+
+and open [UI for Docker](http://localhost:3144/) with your favourite browser.
+
 Now build and start the servers:
 
 ```bash
