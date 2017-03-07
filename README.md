@@ -23,13 +23,7 @@ Make sure you have at least docker-compose version 1.6.0 to use the version 2 sy
 
 In the root directory of this project you find `docker-compose.yml` to set up and run the server dockers.
 
-If you have an apt-cacher-ng proxy server (I have a [docker](https://github.com/UweGerdes/docker-apt-cacher-ng)) you should run:
-
-```bash
-$ export APT_PROXY=http://$(hostname -i):3142
-```
-
-Perhaps open port 3142 in your firewall to allow access from the docker-engine.
+If you have an apt-cacher-ng proxy server (I have a [docker](https://github.com/UweGerdes/docker-apt-cacher-ng)) you should open port 3142 in your firewall to allow access from the docker-engine (on another network in your PC!): ```sudo ufw allow to any port 3142```.
 
 Now build and start the servers:
 
