@@ -25,14 +25,11 @@ COPY README.md ${NPM_HOME}/
 RUN apt-get update && \
 	apt-get dist-upgrade -y && \
 	apt-get install -y \
-					bzip2 \
 					firefox \
-					git \
 					graphviz \
 					imagemagick \
 					php-cli \
 					python \
-					sudo \
 					xvfb && \
 	curl -s https://deb.nodesource.com/gpgkey/nodesource.gpg.key | apt-key add - && \
 	echo 'deb http://deb.nodesource.com/node_4.x xenial main' > /etc/apt/sources.list.d/nodesource.list && \
@@ -66,9 +63,12 @@ RUN npm ${NPM_LOGLEVEL} ${NPM_PROXY} install && \
 	ln -s ${NODE_PATH}/gulp/bin/gulp.js /usr/local/bin/gulp && \
 	ln -s ${NODE_PATH}/phantomjs-prebuilt/bin/phantomjs /usr/local/bin/phantomjs && \
 	ln -s ${NODE_PATH}/phplint/cli.js /usr/local/bin/phplint && \
-	ln -s ${NODE_PATH}/slimerjs/bin/slimerjs /usr/local/bin/slimerjs
+	ln -s ${NODE_PATH}/slimerjs/src/slimerjs /usr/local/bin/slimerjs && \
+	sed -i -e 's/MaxVersion=50/MaxVersion=52/g' ${NODE_PATH}/slimerjs/src/application.ini
 
 WORKDIR ${APP_DIR}
+
+ENV DISPLAY=:0
 
 EXPOSE ${GULP_LIVERELOAD} ${RESPONSIVE_CHECK_HTTP} ${COMPARE_LAYOUTS_HTTP}
 

@@ -67,7 +67,7 @@ gulp.task('test-forms-default-slimer', function(callback) {
 	del( [
 			path.join(testDir, 'results', 'default-slimerjs', '*')
 		], { force: true } );
-	var loader = exec('xvfb-run -a casperjs --engine=slimerjs test index.js --cfg=config/default.js --dumpDir=./results/default-slimerjs/',
+	var loader = exec('xvfb-run --error-file=/usr/src/app/tests/test-forms/err.log --auto-servernum --server-num=1 -a casperjs --engine=slimerjs test index.js --cfg=config/default.js --dumpDir=./results/default-slimerjs/',
 		{ cwd: testDir },
 		function (err, stdout, stderr) {
 			logExecResults(err, stdout, stderr);
@@ -76,7 +76,7 @@ gulp.task('test-forms-default-slimer', function(callback) {
 	);
 	loader.stdout.on('data', function(data) { if(!data.match(/PASS/)) { console.log(data.trim()); } });
 });
-
+//
 watchFilesFor['test-forms-login'] = [
 	path.join(testDir, 'config', 'login.js')
 ];
