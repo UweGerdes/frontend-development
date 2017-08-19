@@ -13,10 +13,12 @@ The gulp tasks in this project are integrated in the gulpfile.js of my frontend-
 You can start `gulp` with a task from another terminal:
 
 ```bash
-$ docker exec -t gulp-frontend gulp test-forms-default
-$ docker exec -t gulp-frontend gulp test-forms-default-slimer
-$ docker exec -t gulp-frontend gulp test-forms-login
-$ docker exec -t gulp-frontend gulp test-forms-login-slimer
+$ docker exec -it gulp-frontend bash
+node@xxx:/usr/src/app$ cd tests/test-forms
+node@xxx:/usr/src/app$ gulp test-forms-default
+node@xxx:/usr/src/app$ gulp test-forms-default-slimer
+node@xxx:/usr/src/app$ gulp test-forms-login
+node@xxx:/usr/src/app$ gulp test-forms-login-slimer
 ```
 
 ## Run gulp docker image
