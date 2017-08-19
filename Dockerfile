@@ -64,7 +64,7 @@ RUN npm ${NPM_LOGLEVEL} ${NPM_PROXY} install && \
 	ln -s ${NODE_PATH}/phantomjs-prebuilt/bin/phantomjs /usr/local/bin/phantomjs && \
 	ln -s ${NODE_PATH}/phplint/cli.js /usr/local/bin/phplint && \
 	ln -s ${NODE_PATH}/slimerjs/src/slimerjs /usr/local/bin/slimerjs && \
-	sed -i -e 's/MaxVersion=50/MaxVersion=52/g' ${NODE_PATH}/slimerjs/src/application.ini
+	sed -i -e 's/MaxVersion=5./MaxVersion=55/g' ${NODE_PATH}/slimerjs/src/application.ini
 
 WORKDIR ${APP_DIR}
 
