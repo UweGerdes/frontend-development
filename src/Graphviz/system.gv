@@ -13,7 +13,7 @@ digraph Frontend {
 		label = "Projekt | <htdocs> /htdocs | <src> /src | <build> /gulpfile.js | <tests> /tests"
 	];
 	"Sources" [
-		label = "<Sources> Sources | <Less> /less | <JavaScript> /js | <Graphviz> /graphviz"
+		label = "<Sources> Sources | <Less> /less | <JavaScript> /js | <Graphviz> /graphviz | <Images> /img"
 	];
 	"Tests" [
 		label = "<Tests> Tests | <CasperJS> CasperJS | <Selenium> Selenium | Mocha / Chai"
