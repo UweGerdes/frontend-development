@@ -21,7 +21,7 @@ Perhaps some other packages might be useful: ```bzip2 curl make openssh-client s
 Install [Node.js](https://nodejs.org/en/) (my version is 4.4.7, don't use the version from Ubuntu repositories if it is still below 4.x) and use `npm` to install [PhantomJS](http://phantomjs.org), [CasperJS](http://phantomjs.org) and [SlimerJS](https://slimerjs.org):
 
 ```bash
-$ sudo npm install -g phantomjs@1.9.19 casperjs slimerjs
+$ sudo npm install -g phantomjs-prebuilt casperjs slimerjs
 ```
 
 The above version number for phantomjs is the npm installer version - it installs PhantomJS 1.9.8.
