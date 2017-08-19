@@ -17,7 +17,7 @@
   },
   "main": "server.js",
   "scripts": {
-    "start": "node server.js"
+    "start": "gulp"
   },
   "files": [
     "compare-layouts.js",
