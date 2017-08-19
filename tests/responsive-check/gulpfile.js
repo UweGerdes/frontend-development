@@ -129,7 +129,7 @@ gulp.task('responsive-check-default', function(callback) {
 			path.join(testDir, 'results', 'default', '*.css.json')
 		], { force: true } );
 	var loader = exec('node index.js config/default.js',
-		{ cwd: path.join(testDir, 'responsive-check') },
+		{ cwd: testDir },
 		function (err, stdout, stderr) {
 			logExecResults(err, stdout, stderr);
 			callback();
