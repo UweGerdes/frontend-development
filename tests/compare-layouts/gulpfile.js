@@ -112,7 +112,7 @@ watchFilesFor['compare-layouts-default'] = [
 gulp.task('compare-layouts-default', function(callback) {
 	del( [
 			path.join(testDir, 'results', 'default', '*.png'),
-			path.join(testDir, 'results', 'default', '*.css.json')
+			path.join(testDir, 'results', 'default', '*.json')
 		], { force: true } );
 	var loader = exec('node index.js config/default.js',
 		{ cwd: testDir },

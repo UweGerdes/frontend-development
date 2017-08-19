@@ -57,6 +57,10 @@
     "url": "https://github.com/uwegerdes/frontend-development"
   },
   "scripts": {
-    "start": "gulp"
+    "start": "gulp",
+    "compare-layouts": "cd tests/compare-layouts && gulp",
+    "responsive-check": "cd tests/responsive-check && gulp",
+    "test-forms": "cd tests/test-forms && gulp",
+    "tests": "cd tests/compare-layouts && gulp compare-layouts-default && cd ../responsive-check && gulp responsive-check-default && cd ../test-forms && gulp test-forms-tests"
   }
 }

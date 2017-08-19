@@ -77,8 +77,6 @@ Next start `gulp` with an optional task. If no task is given the default task ru
 ```bash
 $ gulp build
 
-$ gulp tests
-
 $ gulp watch
 
 $ gulp
@@ -96,6 +94,16 @@ If you started gulp-frontend without `--rm` you may restart and attach to the co
 
 ```bash
 $ docker start --attach -i gulp-frontend
+```
+
+## Tests
+
+You can start the tests in a running container - change a file (a test config) in the respective directory to see gulp working:
+
+```bash
+$ npm run compare-layouts
+$ npm run responsive-check
+$ npm run test-forms
 ```
 
 To install or update node modules use the following commands:
