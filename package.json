@@ -1,7 +1,7 @@
 {
   "name": "frontend-development",
   "description": "Gulp and other packages for frontend development and testing",
-  "version": "1.9.1",
+  "version": "1.10.0",
   "keywords": [
     "gulp",
     "frontend",
@@ -19,8 +19,6 @@
   },
   "devDependencies": {
     "body-parser": "^1.17.2",
-    "bower": "^1.8.0",
-    "casperjs": "^1.1.4",
     "dateformat": "^2.0.0",
     "del": "^3.0.0",
     "ejs": "^2.5.6",
@@ -28,7 +26,6 @@
     "express": "^4.15.3",
     "fs-tools": "^0.3.0",
     "glob": "^7.1.2",
-    "gulp": "^3.9.1",
     "gulp-autoprefixer": "^4.0.0",
     "gulp-changed": "^3.1.0",
     "gulp-develop-server": "^0.5.2",
@@ -46,11 +43,8 @@
     "jshint": "^2.9.5",
     "morgan": "^1.8.2",
     "npm-check-updates": "^2.12.1",
-    "phantomjs-prebuilt": "^2.1.14",
-    "phplint": "^1.7.4",
     "rename": "^1.0.4",
-    "run-sequence": "^2.0.0",
-    "slimerjs": "^0.10.3"
+    "run-sequence": "^2.0.0"
   },
   "repository": {
     "type": "git",
@@ -61,6 +55,6 @@
     "compare-layouts": "cd tests/compare-layouts && gulp",
     "responsive-check": "cd tests/responsive-check && gulp",
     "test-forms": "cd tests/test-forms && gulp",
-    "tests": "cd tests/compare-layouts && gulp compare-layouts-default && cd ../responsive-check && gulp responsive-check-default && cd ../test-forms && gulp test-forms-tests"
+    "test": "cd tests/compare-layouts && gulp compare-layouts-default && cd ../responsive-check && gulp responsive-check-default && cd ../test-forms && gulp test-forms-tests"
   }
 }

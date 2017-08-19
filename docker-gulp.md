@@ -36,10 +36,9 @@ Now build the docker image - mind the '.' at the end of the command (meaning use
 
 ```bash
 $ docker build -t uwegerdes/gulp-frontend \
-	--build-arg NPM_PROXY="--proxy http://$(hostname -i):3143 --https-proxy http://$(hostname -i):3143 --strict-ssl false" \
-	--build-arg NPM_LOGLEVEL="--loglevel warn" \
 	--build-arg GULP_LIVERELOAD="5381" \
 	--build-arg RESPONSIVE_CHECK_HTTP="5382" \
+	--build-arg COMPARE_LAYOUTS_HTTP="5383" \
 	.
 ```
 
@@ -54,7 +53,7 @@ This command removes the container after end - useful if your nginx ip address c
 ```bash
 $ docker run -it --rm \
 	--name gulp-frontend \
-	-v $(pwd):/usr/src/app \
+	-v $(pwd):/home/node/app \
 	-p 5381:5381 \
 	-p 5382:5382 \
 	-p 5383:5383 \
@@ -80,6 +79,14 @@ $ gulp build
 $ gulp watch
 
 $ gulp
+```
+
+There are some sub-projects with a gulp:
+
+```bash
+$ cd ~/app/tests/compare-layouts && gulp
+$ cd ~/app/tests/responsive-check && gulp
+$ cd ~/app/tests/test-forms && gulp
 ```
 
 Stop `gulp watch` with CTRL-C and exit the container with CTRL-D.
@@ -110,16 +117,16 @@ To install or update node modules use the following commands:
 
 ```bash
 $ cd ${HOME} && \
-	cp ${APP_DIR}/package.json . && \
+	cp ${APP_HOME}/package.json . && \
 	npm ${NPM_LOGLEVEL} ${NPM_PROXY} --save-dev install node_module && \
-	cp package.json ${APP_DIR}/ && \
-	cd ${APP_DIR}
+	cp package.json ${APP_HOME}/ && \
+	cd ${APP_HOME}
 
 $ cd ${HOME} && \
-	cp ${APP_DIR}/package.json . && \
+	cp ${APP_HOME}/package.json . && \
 	npm ${NPM_LOGLEVEL} ${NPM_PROXY} update && \
 	cp package.json ../app/ && \
-	cd ${APP_DIR}
+	cd ${APP_HOME}
 ```
 
 The cp commands make shure that `npm` uses the projects `package.json`. Because `npm` hard replaces `package.json` it cannot use a soft link inside the container.

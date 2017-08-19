@@ -2,6 +2,12 @@
 
 ## latest
 
+1.10.0
+rebase Dockerfile to uwegerdes/nodejs
+
+1.9.1
+added tests to package.json
+
 1.6.1
 Enhancements for docker-compose.yml, updated docs
 

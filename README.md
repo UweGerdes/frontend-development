@@ -41,8 +41,6 @@ Now build the gulp docker image - mind the '.' at the end of the command (meanin
 
 ```bash
 $ docker build -t uwegerdes/gulp-frontend \
-	--build-arg NPM_PROXY="--proxy http://$(hostname -i):3143 --https-proxy http://$(hostname -i):3143 --strict-ssl false" \
-	--build-arg NPM_LOGLEVEL="--loglevel warn" \
 	--build-arg GULP_LIVERELOAD="5381" \
 	--build-arg RESPONSIVE_CHECK_HTTP="5382" \
 	--build-arg COMPARE_LAYOUTS_HTTP="5383" \
@@ -60,7 +58,7 @@ This command removes the container after end - useful if your nginx ip address c
 ```bash
 $ docker run -it --rm \
 	--name gulp-frontend \
-	-v $(pwd):/usr/src/app \
+	-v $(pwd):/home/node/app \
 	-p 5381:5381 \
 	-p 5382:5382 \
 	-p 5383:5383 \
