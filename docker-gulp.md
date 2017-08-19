@@ -113,7 +113,7 @@ $ npm run responsive-check
 $ npm run test-forms
 ```
 
-To install or update node modules use the following commands:
+To install node modules use the following commands:
 
 ```bash
 $ cd ${HOME} && \
@@ -121,16 +121,12 @@ $ cd ${HOME} && \
 	npm ${NPM_LOGLEVEL} ${NPM_PROXY} --save-dev install node_module && \
 	cp package.json ${APP_HOME}/ && \
 	cd ${APP_HOME}
-
-$ cd ${HOME} && \
-	cp ${APP_HOME}/package.json . && \
-	npm ${NPM_LOGLEVEL} ${NPM_PROXY} update && \
-	cp package.json ../app/ && \
-	cd ${APP_HOME}
 ```
 
-The cp commands make shure that `npm` uses the projects `package.json`. Because `npm` hard replaces `package.json` it cannot use a soft link inside the container.
+The cp commands make sure that `npm` uses the projects `package.json`. Because `npm` hard replaces `package.json` it cannot use a soft link inside the container.
 
 You can also run this container in another project which uses gulp. Make sure to `npm update` to get additional project dependencies installed in the container.
 
 If you think of removing a container after installing some node modules and want to run it later and *must* call the update command above inside the new container to reinstall the modules. Or you can `docker build` the image with the full featured `package.json`.
+
+Rebuild the image if container is deleted - the node_modules are gone too.
