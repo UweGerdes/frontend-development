@@ -21,6 +21,7 @@ var autoprefixer = require('gulp-autoprefixer'),
   iconfont = require('gulp-iconfont'),
   iconfontCss = require('gulp-iconfont-css'),
   iconfontTemplate = require('gulp-iconfont-template'),
+  gulpIgnore = require('gulp-ignore'),
   imagemin = require('gulp-imagemin'),
   jshint = require('gulp-jshint'),
   lessChanged = require('gulp-less-changed'),
@@ -29,7 +30,6 @@ var autoprefixer = require('gulp-autoprefixer'),
   gulpLivereload = require('gulp-livereload'),
   notify = require('gulp-notify'),
   gulpPhplint = require('gulp-phplint'),
-  replace = require('gulp-replace'),
   path = require('path'),
   os = require('os'),
   rename = require('rename'),
@@ -247,11 +247,6 @@ gulp.task('iconfont', function(){
       targetPath: path.join('..', '..', '..', 'src', 'less', 'iconfont.less'), // must be relative to the path used in gulp.dest()
       fontPath: 'fonts/'
     }))
-    .pipe(iconfontTemplate({
-      fontName: fontName,
-      path: path.join(srcDir, 'iconfont', 'template.html'),
-      targetPath: 'iconfont.html',
-    }))
     .pipe(iconfont({
       fontName: fontName,
       fontHeight: 1001,
@@ -271,22 +266,31 @@ gulp.task('iconfont', function(){
 });
 
 /*
- * compile iconfont less for icons.html
+ * make iconfont
  */
-watchFilesFor['iconfont-less'] = [
-  path.join(srcDir, 'less', 'iconfont.less')
+watchFilesFor['iconfont-preview'] = [
+  path.join(srcDir, 'iconfont', '*.svg'),
+  path.join(srcDir, 'iconfont', 'template.*')
 ];
-gulp.task('iconfont-less', function() {
-  gulp.src(watchFilesFor['iconfont-less'])
-    .pipe(changed(path.join(destDir, 'css', 'fonts'), {extension: '.css'}))
-    .pipe(less())
-    .on('error', log.onError({ message:  'Error: <%= error.message %>' , title: 'LESS Error'}))
-    .pipe(replace(/fonts\/iconfont/g, 'iconfont'))
-    .pipe(autoprefixer('last 3 version', 'safari 5', 'ie 8', 'ie 9', 'ios 6', 'android 4'))
-    .pipe(gutil.env.type === 'production' ? uglify() : gutil.noop())
-    .pipe(gulp.dest(path.join(destDir, 'css', 'fonts')))
-    .pipe(log({ message: 'written: <%= file.path %>', title: 'Gulp iconfont-less' }))
-  ;
+gulp.task('iconfont-preview', function(){
+  var fontName = 'iconfont';
+  var destDirFont = path.join(destDir, 'css', 'fonts');
+  gulp.src(watchFilesFor['iconfont-preview'][0])
+    .pipe(iconfontCss({
+      fontName: fontName,
+      path: path.join(srcDir, 'iconfont', 'template.css'),
+      targetPath: path.join('iconfont.css'), // must be relative to the path used in gulp.dest()
+      fontPath: 'fonts/'
+    }))
+    .pipe(iconfontTemplate({
+      fontName: fontName,
+      path: path.join(srcDir, 'iconfont', 'template.html'),
+      targetPath: 'iconfont.html',
+    }))
+    .pipe(gulpIgnore.exclude('*.svg'))
+    .pipe(gulp.dest(destDirFont))
+    .pipe(log({ message: 'saved: <%= file.path %>', title: 'Gulp iconfont-preview' }))
+    ;
 });
 
 /*
@@ -359,7 +363,7 @@ gulp.task('build', function(callback) {
     'graphviz',
     'imagemin',
     'iconfont',
-    'iconfont-less',
+    'iconfont-preview',
     'jshint',
     callback);
 });

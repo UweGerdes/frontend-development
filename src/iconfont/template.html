@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-<title>Examples</title>
+<title><%=fontName%> preview page</title>
 <meta name="description" content="">
 <meta name="keywords" content="">
 <link href="" rel="stylesheet">
@@ -82,7 +82,7 @@ i{
 </style>
 </head>
 <body>
-
+<h1><%=fontName%> preview page</h1>
 <ul class="icon-show-type clearfix">
 	<li>
 		<label onclick="showIconType(0)">
@@ -145,7 +145,7 @@ Demo
 </div>
 <hr/>
 <ul id="icon-list" class="class-name">
-<% _.each(glyphs, function(glyph) { if (!glyph.fileName.match(/^.+\.less$/)) { %>
+<% _.each(glyphs, function(glyph) { if (!glyph.fileName.match(/^.+\.(less|css)$/)) { %>
 <li class="class-name-demo">
     <i class="<%= cssClass %> <%= cssClass %>-<%= glyph.fileName.replace(/uE[^-]+-/, '') %>"></i>
     <pre><%= cssClass %>-<%= glyph.fileName.replace(/uE[^-]+-/, '') %></pre>

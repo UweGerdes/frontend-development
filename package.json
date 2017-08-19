@@ -1,7 +1,7 @@
 {
   "name": "frontend-development",
   "description": "Gulp and other packages for frontend development and testing",
-  "version": "1.10.1",
+  "version": "1.10.2",
   "keywords": [
     "gulp",
     "frontend",
@@ -32,6 +32,7 @@
     "gulp-iconfont": "^9.0.0",
     "gulp-iconfont-css": "^2.1.0",
     "gulp-iconfont-template": "0.0.3",
+    "gulp-ignore": "^2.0.2",
     "gulp-imagemin": "^3.3.0",
     "gulp-jshint": "^2.0.4",
     "gulp-less": "^3.3.2",
@@ -41,7 +42,6 @@
     "gulp-notify": "^3.0.0",
     "gulp-phplint": "^0.3.4",
     "gulp-postmortem": "^1.0.5",
-    "gulp-replace": "^0.6.1",
     "gulp-shell": "^0.6.3",
     "gulp-uglify": "^3.0.0",
     "gulp-util": "^3.0.8",
