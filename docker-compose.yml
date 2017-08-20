@@ -8,8 +8,6 @@ services:
         - TZ
     image: uwegerdes/baseimage
     container_name: baseimage
-    environment:
-      - TZ
 
   data:
     build:
@@ -26,8 +24,8 @@ services:
         - MYSQL_ROOT_PASSWORD=123456
     image: uwegerdes/mysql
     container_name: mysql
-    environment:
-      - MYSQL_ROOT_PASSWORD=123456
+    volumes:
+      - ./src/mysql:/entrypoint-initdb.d
 
   mail:
     build:
