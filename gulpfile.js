@@ -114,7 +114,6 @@ gulp.task('lesshint', function () {
  * includes (path with **) filtered, change check by gulp-less-changed
  */
 watchFilesFor.less = [
-  path.join(srcDir, 'less', '**', '*.less'),
   path.join(srcDir, 'less', '*.less'),
   path.join(srcDir, 'less', 'login', '*.less')
 ];
@@ -230,8 +229,7 @@ gulp.task('imagemin', () => {
  * make iconfont
  */
 watchFilesFor.iconfont = [
-  path.join(srcDir, 'iconfont', '*.svg'),
-  path.join(srcDir, 'iconfont', 'template.*')
+  path.join(srcDir, 'iconfont', '*.svg')
 ];
 gulp.task('iconfont', function(){
   var fontName = 'iconfont';
@@ -240,7 +238,7 @@ gulp.task('iconfont', function(){
     .pipe(iconfontCss({
       fontName: fontName,
       path: path.join(srcDir, 'iconfont', 'template.less'),
-      targetPath: path.join('..', '..', '..', 'src', 'less', 'iconfont.less'), // must be relative to the path used in gulp.dest()
+      targetPath: path.join('..', '..', '..', 'src', 'less', 'fonts', 'iconfont.less'), // must be relative to the path used in gulp.dest()
       fontPath: 'fonts/'
     }))
     .pipe(iconfont({
@@ -265,8 +263,7 @@ gulp.task('iconfont', function(){
  * make iconfont preview
  */
 watchFilesFor['iconfont-preview'] = [
-  path.join(srcDir, 'iconfont', '*.svg'),
-  path.join(srcDir, 'iconfont', 'template.*')
+  path.join(srcDir, 'iconfont', '*.svg')
 ];
 gulp.task('iconfont-preview', function(){
   var fontName = 'iconfont';
@@ -275,13 +272,13 @@ gulp.task('iconfont-preview', function(){
     .pipe(iconfontCss({
       fontName: fontName,
       path: path.join(srcDir, 'iconfont', 'template.css'),
-      targetPath: path.join('iconfont.css'), // must be relative to the path used in gulp.dest()
+      targetPath: fontName + '.css',
       fontPath: 'fonts/'
     }))
     .pipe(iconfontTemplate({
       fontName: fontName,
       path: path.join(srcDir, 'iconfont', 'template.html'),
-      targetPath: 'iconfont.html',
+      targetPath: fontName + '.html',
     }))
     .pipe(gulpIgnore.exclude('*.svg'))
     .pipe(gulp.dest(destDirFont))
