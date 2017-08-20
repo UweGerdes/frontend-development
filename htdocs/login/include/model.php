@@ -15,11 +15,11 @@ function check_login() {
 	$result['lastLoginText'] = "";
 	$result['sessionCookie'] = "";
 	$result['messages'] = array();
-	if ($_COOKIE && $_COOKIE["sessionId"] && $_GET && array_key_exists("logout", $_GET) && $_GET["logout"] == "true") {
+	if ($_COOKIE && array_key_exists("sessionId", $_COOKIE) && $_GET && array_key_exists("logout", $_GET) && $_GET["logout"] == "true") {
 		$result['messages'] = log_out_user($_COOKIE["sessionId"]);
 		$result['sessionCookie'] = "";
 		setcookie("sessionId", $result['sessionCookie'], time());
-	} else if ($_COOKIE && $_COOKIE["sessionId"]) {
+	} else if ($_COOKIE && array_key_exists("sessionId", $_COOKIE)) {
 		$result = check_user_login($result, $_COOKIE["sessionId"]);
 	}
 	if (!$result['loginOk'] && $_POST && $_POST['Username'] != "" && $_POST['Password'] != "") {
