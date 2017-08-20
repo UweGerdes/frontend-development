@@ -234,8 +234,7 @@ watchFilesFor.iconfont = [
 gulp.task('iconfont', function(){
   var fontName = 'iconfont';
   var destDirFont = path.join(destDir, 'css', 'fonts');
-  gulp.src(watchFilesFor.iconfont[0])
-    .pipe(changed(destDirFont, {transformPath: destDirFont => path.join(path.dirname(destDirFont), fontName + '.ttf')}))
+  gulp.src(watchFilesFor.iconfont)
     .pipe(iconfontCss({
       fontName: fontName,
       path: path.join(srcDir, 'iconfont', 'template.less'),
@@ -269,8 +268,7 @@ watchFilesFor['iconfont-preview'] = [
 gulp.task('iconfont-preview', function(){
   var fontName = 'iconfont';
   var destDirFont = path.join(destDir, 'css', 'fonts');
-  gulp.src(watchFilesFor['iconfont-preview'][0])
-    .pipe(changed(destDirFont, {transformPath: destDirFont => path.join(path.dirname(destDirFont), fontName + '.html')}))
+  gulp.src(watchFilesFor['iconfont-preview'])
     .pipe(iconfontCss({
       fontName: fontName,
       path: path.join(srcDir, 'iconfont', 'template.css'),
