@@ -13,7 +13,6 @@
 
 var autoprefixer = require('gulp-autoprefixer'),
   changed = require('gulp-changed'),
-  del = require('del'),
   fs = require('fs'),
   glob = require('glob'),
   gulp = require('gulp'),
@@ -42,12 +41,6 @@ var gulpDir = __dirname;
 var srcDir = path.join(__dirname, 'src');
 var bowerDir = path.join(__dirname, 'bower_components');
 var destDir = path.join(__dirname, 'htdocs');
-var testDir = path.join(__dirname, 'tests');
-var testLogfile = path.join(testDir, 'tests.log');
-var testHtmlLogfile = path.join(testDir, 'tests.html');
-var logMode = 0;
-var txtLog = [];
-var htmlLog = [];
 var watchFilesFor = {};
 var lifereloadPort = process.env.GULP_LIVERELOAD || 5081;
 
@@ -147,6 +140,9 @@ gulp.task('less', function () {
     ;
 });
 
+/*
+ * compiling bootstrap less
+ */
 watchFilesFor.lessBootstrap = [
   path.join(bowerDir, 'bootstrap', 'less', '**', '*.less')
 ];
@@ -162,7 +158,7 @@ gulp.task('lessBootstrap', function () {
     ;
 });
 
-/**
+/*
  * Copy the basic js files to js/vendor
  */
 watchFilesFor.jsBootstrap = [
@@ -197,8 +193,8 @@ gulp.task('graphviz', function () {
     .pipe(shell('dot -T' + destFormat + ' "<%= file.path %>" -o "<%= rename(file.path) %>"', {
       templateData: {
         rename: function (s) {
-              return s.replace(/^.+\/([^\/]+)\.gv$/, dest + '/$1' + '.' + destFormat);
-            }
+          return s.replace(/^.+\/([^\/]+)\.gv$/, dest + '/$1' + '.' + destFormat);
+        }
       }
     }))
     .on('error', log.onError({ message:  'Error: <%= error.message %>' , title: 'Graphviz Error'}))
@@ -266,7 +262,7 @@ gulp.task('iconfont', function(){
 });
 
 /*
- * make iconfont
+ * make iconfont preview
  */
 watchFilesFor['iconfont-preview'] = [
   path.join(srcDir, 'iconfont', '*.svg'),
@@ -305,50 +301,6 @@ gulp.task('jshint', function(callback) {
     .pipe(jshint())
     .pipe(jshint.reporter('default'))
     ;
-});
-
-var logTxt = function (msg) {
-  if (logMode === 1 && msg){
-    var txtMsg = msg.join('\n');
-    txtLog.push(txtMsg);
-  }
-};
-
-var writeTxtLog = function () {
-  if (txtLog.length > 0) {
-    fs.writeFileSync(testLogfile, txtLog.join('\n') + '\n');
-  }
-};
-
-var writeHtmlLog = function () {
-  if (htmlLog.length > 0) {
-    var html = '<!DOCTYPE html>\n<html>\n<head>\n<meta charset="utf-8" />\n' +
-        '<title>Testergebnisse</title>\n' +
-        '<link href="compare-layouts/css/index.css" rel="stylesheet" />\n' +
-        '</head>\n<body><h1>Testergebnisse</h1>\n<ul>\n';
-    html += htmlLog.join('\n');
-    html += '</ul>\n</body>\n</html>';
-    fs.writeFileSync(testHtmlLogfile, html);
-  }
-};
-
-gulp.task('clearTestLog', function() {
-  del([ testLogfile, testHtmlLogfile ], { force: true });
-  logMode = 1;
-});
-
-gulp.task('logTestResults', function(callback) {
-  if (txtLog.length > 0) {
-    console.log('######################## TEST RESULTS ########################');
-    console.log(txtLog.join('\n'));
-  } else {
-    console.log('######################## TEST SUCCESS ########################');
-    logTxt (['SUCCESS gulp tests']);
-  }
-  writeTxtLog();
-  writeHtmlLog();
-  logMode = 0;
-  callback();
 });
 
 /*
@@ -390,15 +342,18 @@ gulp.task('watch', function() {
 });
 
 /*
- * default task: init all build tasks and watch
+ * init with build and watch
  */
-gulp.task('default', ['compare-layouts-init', 'responsive-check-init', 'init'] );
-
 gulp.task('init', function(callback) {
   runSequence('build',
     'watch',
     callback);
 });
+
+/*
+ * default task: init all build tasks and watch
+ */
+gulp.task('default', ['compare-layouts-init', 'responsive-check-init', 'init'] );
 
 function ipv4adresses() {
   var addresses = [];
