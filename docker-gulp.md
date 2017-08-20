@@ -40,6 +40,8 @@ Some Minutes and 2.5 GB later...
 
 Now build the docker image - mind the '.' at the end of the command (meaning use current directory containing `Dockerfile` and other files needed for build). The build-args might be ommitted, the proxy settings assume that your computer `$(hostname -i)` has the proxy servers.
 
+If you have npm-proxy-cache running please make sure you build uwegerdes/nodejs with parameters before this:
+
 ```bash
 $ docker build -t uwegerdes/gulp-frontend \
 	--build-arg GULP_LIVERELOAD="5381" \
