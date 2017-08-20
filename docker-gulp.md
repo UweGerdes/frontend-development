@@ -24,11 +24,17 @@ $ sudo chmod a+w /srv/docker/npm-proxy-cache
 $ docker run --name npm-proxy-cache -d --restart=always -p 3143:8080 -v /srv/docker/npm-proxy-cache:/cache kudoz/npm-proxy-cache
 ```
 
-## Create application server dockers
+## Build and run application server dockers
 
 Build the dockers in the `docker-compose.yml` - the servers are needed for tests.
 
-Some 8 Minutes and 1.5 GB later...
+```bash
+$ export APT_PROXY=http://$(hostname -i):3142 && \
+  export TZ=Europe/Berlin && \
+  docker-compose up
+```
+
+Some Minutes and 2.5 GB later...
 
 ## Create gulp docker image
 
@@ -42,7 +48,7 @@ $ docker build -t uwegerdes/gulp-frontend \
 	.
 ```
 
-Some 8 Minutes and 1.5 GB later...
+Some Minutes and 1.5 GB later...
 
 ## Start the gulp container
 
@@ -104,6 +110,17 @@ $ docker start --attach -i gulp-frontend
 ```
 
 ## Tests
+
+Start the self tests with:
+
+```bash
+$ docker run -it --rm \
+	-v $(pwd):/home/node/app \
+	--network="$(docker inspect --format='{{.HostConfig.NetworkMode}}' nginx)" \
+	--add-host dockerhost:$(docker inspect --format='{{range .NetworkSettings.Networks}}{{.IPAddress}} {{end}}' nginx) \
+	uwegerdes/gulp-frontend \
+	npm test
+```
 
 You can start the tests in a running container - change a file (a test config) in the respective directory to see gulp working:
 
