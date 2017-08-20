@@ -33,14 +33,20 @@ RUN apt-get update && \
 COPY package.json ${NODE_HOME}/
 
 RUN chown -R ${USER_NAME}:${USER_NAME} ${NODE_HOME}/package.json && \
+	npm -g config set user node && \
 	npm ${NPM_LOGLEVEL} ${NPM_PROXY} install -g \
 				bower \
 				casperjs \
 				gulp \
+				marked \
+				node-gyp \
+				npm-check-updates \
 				phantomjs-prebuilt \
 				phplint \
-				slimerjs && \
-	sed -i -e "s/MaxVersion=5.\.\*/MaxVersion=55.*/" /usr/lib/node_modules/slimerjs/src/application.ini && \
+				slimerjs \
+				ttf2woff2 \
+				varstream && \
+	sed -i -e "s/MaxVersion=52.\*/MaxVersion=55.*/" /usr/lib/node_modules/slimerjs/src/application.ini && \
 	npm cache clean
 
 WORKDIR ${NODE_HOME}
