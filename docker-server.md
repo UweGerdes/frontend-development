@@ -186,6 +186,10 @@ Alpine is a simple mail client, if you started test-forms-login from the Gulp Do
 
 Hit CTRL-C to stop the tail command and CTRL-D to exit the bash.
 
+If you use the application with testbox@mail.local the mails will be there. Other mails will be deferred by postfix (/var/spool/postfix/deferred/).
+
+It is not recommended to connect postfix with a smtp server - this is a development and testing environment!
+
 ### php-fpm
 
 Now let's run a php-fpm container:
