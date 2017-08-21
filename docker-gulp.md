@@ -50,7 +50,7 @@ $ docker build -t uwegerdes/gulp-frontend \
 	.
 ```
 
-Some Minutes and 1.5 GB later...
+Some Minutes and 1.1 GB later...
 
 ## Start the gulp container
 
