@@ -17,6 +17,8 @@ var fs = require('fs'),
 	obj2html = require('./bin/obj2html.js'),
 	styleTree = require('./bin/style-tree.js');
 
+var timeout = 10000;
+
 var configFile = 'config/default.js',
 	config = null;
 
@@ -94,7 +96,7 @@ function loadPage(configFile, pageKey, page) {
 		}
 	}
 	console.log('starting: ' + cmd + ' ' + args.join(' '));
-	var loader = exec(cmd + ' ' + args.join(' '),
+	var loader = exec(cmd + ' ' + args.join(' '), { timeout: timeout },
 		function (error, stdout, stderr) {
 			logExecResult('loaded page ' + page.url, error, "", stderr);
 		}
