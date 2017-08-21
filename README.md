@@ -1,4 +1,4 @@
-# frontend-development
+# frontend-development [![Build Status](https://travis-ci.org/UweGerdes/frontend-development.svg?branch=master)](https://travis-ci.org/UweGerdes/frontend-development)
 
 Frontend Development and Testing with gulp, nginx, php, mysql, mail, casperjs and docker.
 
