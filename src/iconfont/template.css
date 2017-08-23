@@ -12,7 +12,6 @@
 	font-family: "<%= fontName %>";
 	-webkit-font-smoothing: antialiased;
 	-moz-osx-font-smoothing: grayscale;
-	font-size: 50px;
 	font-style: normal;
 	font-variant: normal;
 	font-weight: normal;
