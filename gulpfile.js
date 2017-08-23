@@ -179,8 +179,8 @@ watchFilesFor.graphviz = [
   path.join(srcDir, 'Graphviz', '*.gv')
 ];
 gulp.task('graphviz', function () {
-  var dest = path.join(srcDir, 'img', 'gv');
-  var destFormat = 'png';
+  var destPng = path.join(srcDir, 'img', 'gv');
+  var destMap = path.join(destDir, 'img', 'gv');
   if (!fs.existsSync(path.join(srcDir, 'img'))) {
     fs.mkdirSync(path.join(srcDir, 'img'));
   }
@@ -188,15 +188,19 @@ gulp.task('graphviz', function () {
     fs.mkdirSync(path.join(srcDir, 'img', 'gv'));
   }
   return gulp.src(watchFilesFor.graphviz, {read: false})
-    .pipe(changed(dest, {extension: '.' + destFormat}))
-    .pipe(shell('dot -T' + destFormat + ' "<%= file.path %>" -o "<%= rename(file.path) %>"', {
+    .pipe(changed(destPng, {extension: '.png'}))
+    .pipe(shell('dot <%= params(file.path) %> "<%= file.path %>"', {
       templateData: {
-        rename: function (s) {
-          return s.replace(/^.+\/([^\/]+)\.gv$/, dest + '/$1' + '.' + destFormat);
+        params: (s) => {
+          let m = '';
+          if (s.indexOf('docker') >= 0) {
+            m = '-Tcmapx -o "' + s.replace(/^.+\/([^\/]+)\.gv$/, destMap + '/$1.map') + '" ';
+          }
+          return m + '-Tpng -o "' + s.replace(/^.+\/([^\/]+)\.gv$/, destPng + '/$1.png') + '"';
         }
       }
     }))
-    .on('error', log.onError({ message:  'Error: <%= error.message %>' , title: 'Graphviz Error'}))
+    .on('error', log.onError({ message:  'Error: <%= error.message %>', title: 'Graphviz Error'}))
     .pipe(log({ message: 'processed: <%= file.path %>', title: 'Gulp graphviz' }))
     ;
 });
@@ -205,7 +209,7 @@ gulp.task('graphviz', function () {
  * prepare images
  */
 watchFilesFor.imagemin = [
-  path.join(srcDir, 'img', '**', '*')
+  path.join(srcDir, 'img', '**', '*.png')
 ];
 gulp.task('imagemin', () => {
   const IMAGE_OPTION = [
@@ -229,7 +233,8 @@ gulp.task('imagemin', () => {
  * make iconfont
  */
 watchFilesFor.iconfont = [
-  path.join(srcDir, 'iconfont', '*.svg')
+  path.join(srcDir, 'iconfont', '*.svg'),
+  path.join(srcDir, 'iconfont', 'template.*')
 ];
 gulp.task('iconfont', ['iconfont-preview'], function(){
   var fontName = 'iconfont';
@@ -269,12 +274,6 @@ gulp.task('iconfont-preview', function(){
   var fontName = 'iconfont';
   var destDirFont = path.join(destDir, 'css', 'fonts');
   gulp.src(watchFilesFor['iconfont-preview'])
-    .pipe(iconfontCss({
-      fontName: fontName,
-      path: path.join(srcDir, 'iconfont', 'template.css'),
-      targetPath: fontName + '.css',
-      fontPath: 'fonts/'
-    }))
     .pipe(iconfontTemplate({
       fontName: fontName,
       path: path.join(srcDir, 'iconfont', 'template.html'),
