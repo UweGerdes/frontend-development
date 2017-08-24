@@ -33,9 +33,6 @@ ul li {
 i {
     font-style: normal;
 }
-.icon {
-    font-size: 50px;
-}
 .iconText {
     background-color: #ddd;
     font-size: 50px;
@@ -56,12 +53,15 @@ i {
     border-style: solid;
     border-width: 1px;
 }
-#icon-list li:hover .icon {
+#icon-list li:hover i {
     background-color: #fff;
     border-color: #aaa;
 }
 .class-name .class-name-demo {
     display: block;
+}
+.class-name .class-name-demo i {
+    font-size: 50px;
 }
 .clearfix:after {
     content:".";
@@ -70,7 +70,8 @@ i {
     clear:both;
     visibility:hidden
 }
-.<%= cssClass %>:before {
+.<%= fontName %><% _.each(glyphs, function(glyph) { %>,
+.<%= fontName %>-<%= glyph.fileName %>:before<% }); %> {
     font-family: "<%= fontName %>";
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
@@ -82,15 +83,16 @@ i {
     text-transform: none;
 }
 <% _.each(glyphs, function(glyph) { %>
-.<%= cssClass %>-<%= glyph.fileName %>:before {
+.<%= fontName %>-<%= glyph.fileName %>:before {
     content: "\<%= glyph.codePoint %>";
 }
 <% }); %>
 </style>
 <script language="JavaScript">
-function setDemoIcon(name) {
-    document.getElementById('demo-icon').className = 'icon ' + name;
+function setDemoIcon(name, codePoint) {
+    document.getElementById('demo-icon').className = name;
     document.getElementById('demo-icon-class').innerText = name;
+    document.getElementById('demo-icon-codePoint').innerText = '&#x' + codePoint + ';';
 }
 </script>
 </head>
@@ -99,16 +101,17 @@ function setDemoIcon(name) {
 <hr/>
 <div id="icon-demo" class="class-name clearfix">
     <div class="class-name-demo">
-        <span class="iconText">Icon in <i id="demo-icon" class="<%= cssClass %> <%= cssClass %>-<%= glyphs[0].fileName.replace(/uE[^-]+-/, '') %>"></i> string.</span>
-        <pre>&lt;i class="<%= cssClass %> <span id="demo-icon-class"><%= cssClass %>-<%= glyphs[0].fileName.replace(/uE[^-]+-/, '') %></span>"&gt;&lt;/i&gt;</pre>
+        <span class="iconText">Icon in <i id="demo-icon" class="<%= fontName %>-<%= glyphs[0].fileName.replace(/uE[^-]+-/, '') %>"></i> string.</span>
+        <pre>&lt;i class="<span id="demo-icon-class"><%= fontName %>-<%= glyphs[0].fileName.replace(/uE[^-]+-/, '') %></span>"&gt;&lt;/i&gt;</pre>
+        <pre>&lt;i class="<%= fontName %>"&gt;<span id="demo-icon-codePoint">&amp;#x<%= glyphs[0].codePoint %>;</span>&lt;/i&gt;</pre>
     </div>
 </div>
 <hr/>
 <ul id="icon-list" class="class-name">
 <% _.each(glyphs, function(glyph) { if (!glyph.fileName.match(/^.+\.(less|css)$/)) { %>
-<li class="class-name-demo" onClick="setDemoIcon('<%= cssClass %>-<%= glyph.fileName.replace(/uE[^-]+-/, '') %>')">
-    <i class="<%= cssClass %> <%= cssClass %>-<%= glyph.fileName.replace(/uE[^-]+-/, '') %>"></i>
-    <pre><%= cssClass %>-<%= glyph.fileName.replace(/uE[^-]+-/, '') %></pre>
+<li class="class-name-demo" onClick="setDemoIcon('<%= fontName %>-<%= glyph.fileName.replace(/uE[^-]+-/, '') %>', '<%= glyph.codePoint %>')">
+    <i class="<%= fontName %>-<%= glyph.fileName.replace(/uE[^-]+-/, '') %>"></i>
+    <pre><%= fontName %>-<%= glyph.fileName.replace(/uE[^-]+-/, '') %></pre>
     <pre>\<%= glyph.codePoint %></pre>
     <pre>&amp;#<%=+('0x' + glyph.codePoint).toString(10)%>;</pre>
 </li>

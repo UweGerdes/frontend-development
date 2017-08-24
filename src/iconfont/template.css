@@ -8,10 +8,11 @@
 		url('<%= fontName %>.svg#<%= fontName %>') format('svg');
 }
 
-.<%= cssClass %>:before {
-	font-family: "<%= fontName %>";
+.<%= fontName %><% _.each(glyphs, function(glyph) { %>,
+.<%= fontName %>-<%= glyph.fileName %>:before<% }); %> {
 	-webkit-font-smoothing: antialiased;
 	-moz-osx-font-smoothing: grayscale;
+	font-family: "<%= fontName %>";
 	font-style: normal;
 	font-variant: normal;
 	font-weight: normal;
@@ -21,7 +22,7 @@
 }
 
 <% _.each(glyphs, function(glyph) { %>
-.<%= cssClass %>-<%= glyph.fileName %>:before {
+.<%= fontName %>-<%= glyph.fileName %>:before {
 	content: "\<%= glyph.codePoint %>";
 }
 <% }); %>

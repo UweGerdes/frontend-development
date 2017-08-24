@@ -9,7 +9,7 @@
 		url('<%= fontPath %><%= fontName %>.svg#<%= fontName %>') format('svg');
 }
 
-.<%= cssClass%>-base-pseudo {
+.<%= fontName %> {
 	-moz-osx-font-smoothing: grayscale;
 	-webkit-font-smoothing: antialiased;
 	font-family: '<%= fontName %>';
@@ -21,21 +21,21 @@
 	text-transform: none;
 }
 
-.<%= cssClass%>-char(@filename) {
+.<%= fontName %>-char(@filename) {
 	<% _.each(glyphs, function(glyph) { %>@<%= glyph.fileName %>: '\<%= glyph.codePoint %>';
 	<% }); %>content: @@filename;
 }
 
-.<%= cssClass%>(@filename, @insert: before) {
+.<%= fontName %>(@filename, @insert: before) {
 	@pseudo-selector: ~':@{insert}';
 
 	&@{pseudo-selector} {
-		&:extend(.<%= cssClass%>-base-pseudo);
-		.<%= cssClass%>-char(@filename);
+		&:extend(.<%= fontName %>);
+		.<%= fontName %>-char(@filename);
 	}
 }
 <% _.each(glyphs, function(glyph) { %>
-.<%= cssClass%>-<%= glyph.fileName %> {
-	.<%= cssClass%>(<%= glyph.fileName %>);
+.<%= fontName %>-<%= glyph.fileName %> {
+	.<%= fontName %>(<%= glyph.fileName %>);
 }
 <% }); %>
