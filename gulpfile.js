@@ -233,17 +233,24 @@ gulp.task('imagemin', () => {
  * make iconfont
  */
 watchFilesFor.iconfont = [
-  path.join(srcDir, 'iconfont', '*.svg'),
   path.join(srcDir, 'iconfont', 'template.*')
 ];
-gulp.task('iconfont', ['iconfont-preview'], function(){
+gulp.task('iconfont', function(callback) {
+  runSequence('iconfont-build',
+    'iconfont-preview',
+    callback);
+});
+watchFilesFor['iconfont-build'] = [
+  path.join(srcDir, 'iconfont', '*.svg')
+];
+gulp.task('iconfont-build', function(){
   var fontName = 'iconfont';
   var destDirFont = path.join(destDir, 'css', 'fonts');
-  gulp.src(watchFilesFor.iconfont)
+  gulp.src(watchFilesFor['iconfont-build'])
     .pipe(iconfontCss({
       fontName: fontName,
       path: path.join(srcDir, 'iconfont', 'template.less'),
-      targetPath: path.join('..', '..', '..', 'src', 'less', 'fonts', 'iconfont.less'), // must be relative to the path used in gulp.dest()
+      targetPath: path.join('..', '..', '..', 'src', 'less', 'iconfont.less'), // must be relative to the path used in gulp.dest()
       fontPath: 'fonts/'
     }))
     .pipe(iconfont({

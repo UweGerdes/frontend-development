@@ -10,6 +10,11 @@ if [ ! -f "${APP_HOME}/htdocs/css/bootstrap.css" ]; then
 	gulp build
 fi
 
+if [ ! -f "${APP_HOME}/htdocs/css/fonts/iconfont.ttf" ]; then
+	echo "initial building iconfont"
+	gulp iconfont
+fi
+
 if [ -d "${APP_HOME}/tests/compare-layouts" -a ! -f "${APP_HOME}/tests/compare-layouts/css/app.css" ]; then
 	echo "initial building tests/compare-layouts"
 	cd "${APP_HOME}/tests/compare-layouts/"
