@@ -187,6 +187,12 @@ gulp.task('graphviz', function () {
   if (!fs.existsSync(path.join(srcDir, 'img', 'gv'))) {
     fs.mkdirSync(path.join(srcDir, 'img', 'gv'));
   }
+  if (!fs.existsSync(path.join(destDir, 'img'))) {
+    fs.mkdirSync(path.join(destDir, 'img'));
+  }
+  if (!fs.existsSync(path.join(destDir, 'img', 'gv'))) {
+    fs.mkdirSync(path.join(destDir, 'img', 'gv'));
+  }
   return gulp.src(watchFilesFor.graphviz, {read: false})
     .pipe(changed(destPng, {extension: '.png'}))
     .pipe(shell('dot <%= params(file.path) %> "<%= file.path %>"', {

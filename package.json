@@ -1,7 +1,7 @@
 {
   "name": "frontend-development",
   "description": "Gulp and other packages for frontend development and testing",
-  "version": "1.10.5",
+  "version": "1.10.6",
   "keywords": [
     "gulp",
     "frontend",

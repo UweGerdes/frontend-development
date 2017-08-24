@@ -2,6 +2,12 @@
 
 ## latest
 
+1.10.6
+gulp task for iconfont generation with preview page
+
+1.10.5
+graphviz generates map file, first travis build
+
 1.10.0
 rebase Dockerfile to uwegerdes/nodejs
 

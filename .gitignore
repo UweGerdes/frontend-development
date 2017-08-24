@@ -4,7 +4,7 @@
 /htdocs/img/gv/
 /htdocs/login/css/
 /src/img/gv/
-/src/less/fonts
+/src/less/iconfont.less
 /tests/test-forms/err.log
 /tests/tests.log
 /tests/tests.html

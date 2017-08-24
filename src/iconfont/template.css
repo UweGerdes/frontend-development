@@ -20,7 +20,6 @@
 	text-decoration: none;
 	text-transform: none;
 }
-
 <% _.each(glyphs, function(glyph) { %>
 .<%= fontName %>-<%= glyph.fileName %>:before {
 	content: "\<%= glyph.codePoint %>";

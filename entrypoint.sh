@@ -5,14 +5,14 @@ if [ ! -d "${APP_HOME}/bower_components" ]; then
 	bower install
 fi
 
-if [ ! -f "${APP_HOME}/htdocs/css/bootstrap.css" ]; then
-	echo "initial building frontend-development"
-	gulp build
-fi
-
 if [ ! -f "${APP_HOME}/htdocs/css/fonts/iconfont.ttf" ]; then
 	echo "initial building iconfont"
 	gulp iconfont
+fi
+
+if [ ! -f "${APP_HOME}/htdocs/css/bootstrap.css" ]; then
+	echo "initial building frontend-development"
+	gulp build
 fi
 
 if [ -d "${APP_HOME}/tests/compare-layouts" -a ! -f "${APP_HOME}/tests/compare-layouts/css/app.css" ]; then
