@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<title>Frontend-Entwicklung und Test</title>
+	<meta name="author" content="Uwe Gerdes, entwicklung@uwegerdes.de">
+	<meta name="copyright" content="Uwe Gerdes, ELWoMS Systems GmbH">
+	<!-- Bootstrap core CSS -->
+	<link rel="stylesheet" href="/css/bootstrap.css" />
+	<link rel="stylesheet" href="./css/layout.css" />
+	<link rel="stylesheet" href="./css/print.css" media="print" />
+</head>
+<body class="index">
+	<div class="container" role="main">
+		<div class="jumbotron">
+			<h1>Frontend-Entwicklung und Test</h1>
+			<h2 class="hidden" style="color: #cc0000;">Please generate missing files with bower install and gulp build!</h2>
+		</div>
+		<div class="content">
+			<p>Ziel dieses Projekts ist der Aufbau einer Internetseite mit einem Überblick über meine Tools zu Frontend-Entwicklung und Test.</p>
+			<p>Anhand eines kleinen Beispiel-Backends sollen Techniken für die Entwicklung von HTML-Frontends und Testtechniken mit einigen häufig genutzen Frameworks demonstriert werden.</p>
+			<p>Es wird auf der Basis einer Windows- bzw. Ubuntu-Installation der gesamte Aufbau eines funktionsfähigen Systems vorgestellt.</p>
+			<p>Die Anleitung ist gerichtet an informationstechnisch versierte Ein-, Auf- und Quereinsteiger.</p>
+
+			<h2>Systembeschreibung</h2>
+			<p>Auf der Internetseite läuft das Beispiel-System aus Webserver mit PHP/MySQL, PHP-Templates, CSS-Styling mit LESS, Bootstrap und anderen aufgebaut ist.</p>
+			<p>Das Beispielsystem nutzt Formularverarbeitung, MySQL, E-Mail-Versand und -Empfang.</p>
+
+			<h3>Systemstruktur</h3>
+			<p><img src="./img/gv/system.png" alt="Image generated from ../src/Graphviz/system.gv" title="System overview" /></p>
+
+			<h3>Docker-Server</h3>
+			<p><img src="./img/gv/docker.png" alt="Image generated from ../src/Graphviz/docker.gv" title="Docker overview" USEMAP="#Docker" /></p>
+<?php
+include 'img/gv/docker.map';
+?>
+			<h2>Demos</h2>
+			<p>Beispiele zu verschiedenen Techniken für die Web-Entwicklung und Tests dazu.</p>
+			<p><a href="/login/index.php">Login</a>: mit Registrierung, E-Mail mit Bestätigungslink, Datenänderung, Löschen</p>
+			<p><a href="/css/iconfont.html">Iconfont</a>: Erzeugen von Iconfont-Dateien aus svg Icons mit <a href="/css/iconfont.html">Preview-Page</a></p>
+
+			<h2>Feedback</h2>
+			<p>Für Fragen, Anregungen, Fehler oder anders bitte folgende Adressen verwenden:</p>
+			<p><a href="mailto:entwicklung@uwegerdes.de?Subject=Feedback+frontend-development">entwicklung@uwegerdes.de</a></p>
+			<p>Oder <a href="https://github.com/UweGerdes/frontend-development/issues" target="_blank">Issues reporten</a>.</p>
+			<p>Oder Clone, verbessern und Pull request erstellen.</p>
+			<h4>Danke!</h4>
+		</div>
+	</div>
+	<div class="footer">
+		<span class="copyright">&copy; 2016 by <a href="mailto:entwicklung@uwegerdes.de">Uwe Gerdes</a></span>
+	</div>
+</body>
+</html>
