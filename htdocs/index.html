@@ -15,6 +15,7 @@
 		<div class="jumbotron">
 			<h1>Frontend-Entwicklung und Test</h1>
 			<h2 class="hidden" style="color: #cc0000;">Please generate missing files with bower install and gulp build!</h2>
+			<h2 id="defaultRouteError" class="hidden" style="color: #cc0000;">This is /index.html - check web server configuration to use /index.php</h2>
 		</div>
 		<div class="content">
 			<p>Ziel dieses Projekts ist der Aufbau einer Internetseite mit einem Überblick über meine Tools zu Frontend-Entwicklung und Test.</p>
@@ -48,5 +49,10 @@
 	<div class="footer">
 		<span class="copyright">&copy; 2016 by <a href="mailto:entwicklung@uwegerdes.de">Uwe Gerdes</a></span>
 	</div>
+<script language="JavaScript">
+	if (window.location.pathname == '/') {
+		document.getElementById('defaultRouteError').className = '';
+	}
+</script>
 </body>
 </html>
