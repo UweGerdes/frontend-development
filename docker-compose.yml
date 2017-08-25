@@ -54,3 +54,5 @@ services:
     volumes_from:
       - data
       - php-fpm
+    volumes:
+      - ./src/nginx/sites-available:/etc/nginx/sites-available

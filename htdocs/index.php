@@ -36,7 +36,7 @@ include 'img/gv/docker.map';
 ?>
 			<h2>Demos</h2>
 			<p>Beispiele zu verschiedenen Techniken für die Web-Entwicklung und Tests dazu.</p>
-			<p><a href="/login/index.php">Login</a>: mit Registrierung, E-Mail mit Bestätigungslink, Datenänderung, Löschen</p>
+			<p><a href="/login/">Login</a>: mit Registrierung, E-Mail mit Bestätigungslink, Datenänderung, Löschen</p>
 			<p><a href="/css/iconfont.html">Iconfont</a>: Erzeugen von Iconfont-Dateien aus svg Icons mit <a href="/css/iconfont.html">Preview-Page</a></p>
 
 			<h2>Feedback</h2>

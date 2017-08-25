@@ -2,6 +2,9 @@
 
 ## latest
 
+1.10.7
+adding nginx default config with /login/ route to /login/index.php
+
 1.10.6
 gulp task for iconfont generation with preview page
 

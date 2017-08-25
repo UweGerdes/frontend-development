@@ -1,0 +1,31 @@
+server {
+    listen 80;
+    server_name localhost;
+    error_log  /var/log/nginx/error.log;
+    access_log /var/log/nginx/access.log;
+    root /var/www/htdocs;
+    index index.php index.html;
+
+    location ~ /login/(include|templates).* {
+        deny all;
+        return 403;
+    }
+
+    location / {
+        try_files $uri $uri/ =404;
+    }
+
+    location /login {
+        try_files $uri @redirect;
+    }
+    location @redirect {
+        if ($uri ~* ^(.+)/$) { rewrite ^ $uri/index.php last; }
+        return 404;
+    }
+
+    location ~ [^/]\.php(/|$) {
+        include snippets/fastcgi-php.conf;
+        #fastcgi_pass php-fpm:9000;
+        fastcgi_pass unix:/run/php/php-fpm.sock;
+    }
+}
