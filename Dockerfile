@@ -18,6 +18,10 @@ ENV GULP_LIVERELOAD ${GULP_LIVERELOAD}
 ENV RESPONSIVE_CHECK_HTTP ${RESPONSIVE_CHECK_HTTP}
 ENV COMPARE_LAYOUTS_HTTP ${COMPARE_LAYOUTS_HTTP}
 
+COPY package.json ${NODE_HOME}/
+
+WORKDIR ${NODE_HOME}
+
 RUN apt-get update && \
 	apt-get dist-upgrade -y && \
 	apt-get install -y \
@@ -28,17 +32,10 @@ RUN apt-get update && \
 					python \
 					xvfb && \
 	apt-get clean && \
-	rm -rf /var/lib/apt/lists/*
-
-COPY entrypoint.sh /usr/local/bin/
-RUN chmod 755 /usr/local/bin/entrypoint.sh
-ENTRYPOINT ["/usr/local/bin/entrypoint.sh"]
-
-COPY package.json ${NODE_HOME}/
-
-RUN chown -R ${USER_NAME}:${USER_NAME} ${NODE_HOME}/package.json && \
-	npm -g config set user node && \
-	npm ${NPM_LOGLEVEL} ${NPM_PROXY} install -g \
+	rm -rf /var/lib/apt/lists/* && \
+	chown -R ${USER_NAME}:${USER_NAME} ${NODE_HOME}/package.json && \
+	npm -g config set user ${USER_NAME} && \
+	npm install -g \
 				bower \
 				casperjs \
 				gulp \
@@ -50,14 +47,15 @@ RUN chown -R ${USER_NAME}:${USER_NAME} ${NODE_HOME}/package.json && \
 				slimerjs \
 				ttf2woff2 \
 				varstream && \
-	sed -i -e "s/MaxVersion=52.\*/MaxVersion=55.*/" /usr/lib/node_modules/slimerjs/src/application.ini && \
+	sed -i -e "s/MaxVersion=52.\*/MaxVersion=$(firefox --version | grep -Po '(?<= )\d+').*/" \
+				/usr/lib/node_modules/slimerjs/src/application.ini && \
+	npm install && \
+	chown -R ${USER_NAME}:${USER_NAME} ${NODE_HOME} && \
 	npm cache clean
 
-WORKDIR ${NODE_HOME}
-
-RUN npm ${NPM_LOGLEVEL} ${NPM_PROXY} install && \
-	chown -R node:node ${NODE_HOME} && \
-	npm cache clean
+COPY entrypoint.sh /usr/local/bin/
+RUN chmod 755 /usr/local/bin/entrypoint.sh
+ENTRYPOINT ["/usr/local/bin/entrypoint.sh"]
 
 COPY . ${APP_HOME}
 
