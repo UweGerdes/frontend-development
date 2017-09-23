@@ -29,7 +29,6 @@ RUN apt-get update && \
 					graphviz \
 					imagemagick \
 					php-cli \
-					python \
 					xvfb && \
 	apt-get clean && \
 	rm -rf /var/lib/apt/lists/* && \
