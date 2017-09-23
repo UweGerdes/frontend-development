@@ -200,7 +200,8 @@ gulp.task('graphviz', function () {
         params: (s) => {
           let m = '';
           if (s.indexOf('docker') >= 0) {
-            m = '-Tcmapx -o "' + s.replace(/^.+\/([^\/]+)\.gv$/, destMap + '/$1.map') + '" ';
+            m = '-Tcmapx -o "' + s.replace(/^.+\/([^\/]+)\.gv$/, destMap + '/$1.map') + '" ' +
+                '-Tsvg -o "' + s.replace(/^.+\/([^\/]+)\.gv$/, destMap + '/$1.svg') + '" ';
           }
           return m + '-Tpng -o "' + s.replace(/^.+\/([^\/]+)\.gv$/, destPng + '/$1.png') + '"';
         }
