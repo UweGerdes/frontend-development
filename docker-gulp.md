@@ -1,6 +1,6 @@
 # Dockerfile for frontend development and testing environment with GulpJS, PhantomJS, CasperJS, SlimerJS
 
-## Docker uwegerdes/gulp-frontend
+## Docker uwegerdes/frontend-development
 
 Install [Docker](https://www.docker.com/).
 
@@ -43,12 +43,12 @@ Now build the docker image - mind the '.' at the end of the command (meaning use
 If you have npm-proxy-cache running please make sure you build uwegerdes/nodejs with parameters before this:
 
 ```bash
-$ docker build -t uwegerdes/gulp-frontend \
+$ docker build -t uwegerdes/frontend-development \
 	--build-arg GULP_LIVERELOAD="5381" \
 	--build-arg RESPONSIVE_CHECK_HTTP="5382" \
 	--build-arg COMPARE_LAYOUTS_HTTP="5383" \
 	.
-```
+``` 18:29
 
 Some Minutes and 1.1 GB later...
 
@@ -60,14 +60,14 @@ This command removes the container after end - useful if your nginx ip address c
 
 ```bash
 $ docker run -it --rm \
-	--name gulp-frontend \
+	--name frontend-development \
 	-v $(pwd):/home/node/app \
 	-p 5381:5381 \
 	-p 5382:5382 \
 	-p 5383:5383 \
 	--network="$(docker inspect --format='{{.HostConfig.NetworkMode}}' nginx)" \
 	--add-host dockerhost:$(docker inspect --format='{{range .NetworkSettings.Networks}}{{.IPAddress}} {{end}}' nginx) \
-	uwegerdes/gulp-frontend \
+	uwegerdes/frontend-development \
 	bash
 ```
 
@@ -102,13 +102,13 @@ Stop `gulp watch` with CTRL-C and exit the container with CTRL-D.
 To have a second terminal connected to the gulp container (perhaps start tasks that are not triggered by watch):
 
 ```bash
-$ docker exec -it gulp-frontend bash
+$ docker exec -it frontend-development bash
 ```
 
-If you started gulp-frontend without `--rm` you may restart and attach to the container (just hit RETURN to get a prompt):
+If you started frontend-development without `--rm` you may restart and attach to the container (just hit RETURN to get a prompt):
 
 ```bash
-$ docker start --attach -i gulp-frontend
+$ docker start -ai frontend-development
 ```
 
 ## Tests
@@ -120,7 +120,7 @@ $ docker run -it --rm \
 	-v $(pwd):/home/node/app \
 	--network="$(docker inspect --format='{{.HostConfig.NetworkMode}}' nginx)" \
 	--add-host dockerhost:$(docker inspect --format='{{range .NetworkSettings.Networks}}{{.IPAddress}} {{end}}' nginx) \
-	uwegerdes/gulp-frontend \
+	uwegerdes/frontend-development \
 	npm test
 ```
 
@@ -137,7 +137,7 @@ To install node modules use the following commands:
 ```bash
 $ cd ${HOME} && \
 	cp ${APP_HOME}/package.json . && \
-	npm ${NPM_LOGLEVEL} ${NPM_PROXY} --save-dev install node_module && \
+	npm install --save-dev node_module && \
 	cp package.json ${APP_HOME}/ && \
 	cd ${APP_HOME}
 ```
