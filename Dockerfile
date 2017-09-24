@@ -41,7 +41,6 @@ RUN apt-get update && \
 				marked \
 				node-gyp \
 				npm-check-updates \
-				phantomjs-prebuilt \
 				phplint \
 				slimerjs \
 				ttf2woff2 \
@@ -58,7 +57,14 @@ ENTRYPOINT ["/usr/local/bin/entrypoint.sh"]
 
 COPY . ${APP_HOME}
 
-RUN chown -R ${USER_NAME}:${USER_NAME} ${APP_HOME}
+RUN chown -R ${USER_NAME}:${USER_NAME} ${APP_HOME} && \
+	if [ -f "${APP_HOME}/src/phantomjs/bin/phantomjs" ] ; then \
+		cp "${APP_HOME}/src/phantomjs/bin/phantomjs" "/usr/local/bin/phantomjs" ; \
+		chmod 755 "/usr/local/bin/phantomjs" ; \
+	else \
+		npm install -g \
+				phantomjs-prebuilt ; \
+	fi
 
 WORKDIR ${APP_HOME}
 
