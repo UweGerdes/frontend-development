@@ -5,6 +5,7 @@
 /htdocs/login/css/
 /src/img/gv/
 /src/less/iconfont.less
+/src/phantomjs/
 /tests/test-forms/err.log
 /tests/tests.log
 /tests/tests.html

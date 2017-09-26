@@ -40,6 +40,8 @@ Some Minutes and 2.5 GB later...
 
 Now build the docker image - mind the '.' at the end of the command (meaning use current directory containing `Dockerfile` and other files needed for build). The build-args might be ommitted, the proxy settings assume that your computer `$(hostname -i)` has the proxy servers.
 
+If the docker should run on an arm based system please build phantomjs first (see my docker for that) and copy the resulting `bin/phantomjs` to `./src/phantomjs/bin/phantomjs`.
+
 If you have npm-proxy-cache running please make sure you build uwegerdes/nodejs with parameters before this:
 
 ```bash
@@ -48,7 +50,7 @@ $ docker build -t uwegerdes/frontend-development \
 	--build-arg RESPONSIVE_CHECK_HTTP="5382" \
 	--build-arg COMPARE_LAYOUTS_HTTP="5383" \
 	.
-``` 18:29
+```
 
 Some Minutes and 1.1 GB later...
 
