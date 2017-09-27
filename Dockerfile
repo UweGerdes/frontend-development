@@ -58,6 +58,8 @@ ENTRYPOINT ["/usr/local/bin/entrypoint.sh"]
 
 COPY . ${APP_HOME}
 
+RUN chown -R ${USER_NAME}:${USER_NAME} ${APP_HOME}
+
 WORKDIR ${APP_HOME}
 
 USER ${USER_NAME}
@@ -67,3 +69,4 @@ VOLUME [ "${APP_HOME}" ]
 EXPOSE ${GULP_LIVERELOAD} ${RESPONSIVE_CHECK_HTTP} ${COMPARE_LAYOUTS_HTTP}
 
 CMD [ "npm", "start" ]
+
