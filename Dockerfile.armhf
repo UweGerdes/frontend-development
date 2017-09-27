@@ -61,6 +61,7 @@ RUN apt-get update && \
 	sed -i -e "s/MaxVersion=52.\*/MaxVersion=$(firefox --version | grep -Po '(?<= )\d+').*/" \
 				/usr/lib/node_modules/slimerjs/src/application.ini && \
 	npm install && \
+	npm remove ttf2woff2 && \
 	mkdir -p ${NODE_HOME}/node_modules/gifsicle/vendor/ && \
 	ln -s /usr/bin/gifsicle ${NODE_HOME}/node_modules/gifsicle/vendor/gifsicle && \
 	mkdir -p ${NODE_HOME}/node_modules/optipng-bin/vendor/ && \
@@ -81,7 +82,8 @@ RUN chown -R ${USER_NAME}:${USER_NAME} ${APP_HOME} && \
 		cp "${APP_HOME}/build/phantomjs/bin/phantomjs" "/usr/local/bin/phantomjs" ; \
 		chmod 755 "/usr/local/bin/phantomjs" ; \
 	else \
-		echo "${BINPATH}/phantomjs/bin/phantomjs not found - please compile it and supply it to docker build" ; \
+		echo "ERROR ${BINPATH}/phantomjs/bin/phantomjs not found - please compile it and supply it to docker build" ; \
+		exit 1 ; \
 	fi
 
 RUN chown -R ${USER_NAME}:${USER_NAME} ${APP_HOME}
