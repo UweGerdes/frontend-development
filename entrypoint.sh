@@ -1,5 +1,10 @@
 #!/bin/bash
 
+if [ ! -w "${APP_HOME}/" ]; then
+	echo "ERROR: ${APP_HOME}/ cannot write"
+	exit 1
+fi
+
 if [ ! -d "${APP_HOME}/bower_components" ]; then
 	echo "initial loading frontend dependencies"
 	bower install
