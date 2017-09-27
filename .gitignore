@@ -1,4 +1,8 @@
 # gitignore for frontend-development project
+
+# build files
+/build/
+
 # generated files
 /htdocs/css/
 /htdocs/img/gv/
@@ -14,3 +18,4 @@
 bower_components/
 node_modules/
 vendor/
+

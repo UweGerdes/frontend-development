@@ -1,0 +1,98 @@
+#
+# Dockerfile for compare-layouts
+#
+# docker build -t uwegerdes/gulp-frontend -f Dockerfile.armhf .
+
+FROM uwegerdes/nodejs
+
+MAINTAINER Uwe Gerdes <entwicklung@uwegerdes.de>
+
+ARG GULP_LIVERELOAD='5381'
+ARG RESPONSIVE_CHECK_HTTP='5382'
+ARG COMPARE_LAYOUTS_HTTP='5383'
+
+ENV NODE_ENV development
+ENV HOME ${NODE_HOME}
+ENV APP_HOME ${NODE_HOME}/app
+ENV GULP_LIVERELOAD ${GULP_LIVERELOAD}
+ENV RESPONSIVE_CHECK_HTTP ${RESPONSIVE_CHECK_HTTP}
+ENV COMPARE_LAYOUTS_HTTP ${COMPARE_LAYOUTS_HTTP}
+
+COPY package.json ${NODE_HOME}/
+
+WORKDIR ${NODE_HOME}
+
+RUN apt-get update && \
+	apt-get dist-upgrade -y && \
+	apt-get install -y \
+					firefox \
+					gifsicle \
+					graphviz \
+					imagemagick \
+					optipng \
+					php-cli \
+					python \
+					xvfb && \
+	apt-get clean && \
+	rm -rf /var/lib/apt/lists/* && \
+	mkdir /tmp/install-libjpeg/ && \
+	cd /tmp/install-libjpeg/ && \
+	wget http://www.ijg.org/files/jpegsrc.v9b.tar.gz && \
+	tar xvfz jpegsrc.v9b.tar.gz && \
+	cd jpeg-9b && \
+	./configure --enable-shared --prefix=$CONFIGURE_PREFIX && \
+	make && \
+	make install && \
+	rm -R /tmp/install-libjpeg && \
+	cd ${NODE_HOME} && \
+	chown -R ${USER_NAME}:${USER_NAME} ${NODE_HOME}/package.json && \
+	npm -g config set user ${USER_NAME} && \
+	npm install -g \
+				bower \
+				casperjs \
+				gulp \
+				marked \
+				node-gyp \
+				npm-check-updates \
+				phplint \
+				slimerjs \
+				ttf2woff2 \
+				varstream && \
+	sed -i -e "s/MaxVersion=52.\*/MaxVersion=$(firefox --version | grep -Po '(?<= )\d+').*/" \
+				/usr/lib/node_modules/slimerjs/src/application.ini && \
+	npm install && \
+	mkdir -p ${NODE_HOME}/node_modules/gifsicle/vendor/ && \
+	ln -s /usr/bin/gifsicle ${NODE_HOME}/node_modules/gifsicle/vendor/gifsicle && \
+	mkdir -p ${NODE_HOME}/node_modules/optipng-bin/vendor/ && \
+	ln -s /usr/bin/optipng ${NODE_HOME}/node_modules/optipng-bin/vendor/optipng && \
+	mkdir -p ${NODE_HOME}/node_modules/jpegtran-bin/vendor/ && \
+	ln -s /bin/jpegtran ${NODE_HOME}/node_modules/jpegtran-bin/vendor/jpegtran && \
+	chown -R ${USER_NAME}:${USER_NAME} ${NODE_HOME} && \
+	npm cache clean
+
+COPY entrypoint.sh /usr/local/bin/
+RUN chmod 755 /usr/local/bin/entrypoint.sh
+ENTRYPOINT ["/usr/local/bin/entrypoint.sh"]
+
+COPY . ${APP_HOME}
+
+RUN chown -R ${USER_NAME}:${USER_NAME} ${APP_HOME} && \
+	if [ -f "${APP_HOME}/build/phantomjs/bin/phantomjs" ] ; then \
+		cp "${APP_HOME}/build/phantomjs/bin/phantomjs" "/usr/local/bin/phantomjs" ; \
+		chmod 755 "/usr/local/bin/phantomjs" ; \
+	else \
+		echo "${BINPATH}/phantomjs/bin/phantomjs not found - please compile it and supply it to docker build" ; \
+	fi
+
+RUN chown -R ${USER_NAME}:${USER_NAME} ${APP_HOME}
+
+WORKDIR ${APP_HOME}
+
+USER ${USER_NAME}
+
+VOLUME [ "${APP_HOME}" ]
+
+EXPOSE ${GULP_LIVERELOAD} ${RESPONSIVE_CHECK_HTTP} ${COMPARE_LAYOUTS_HTTP}
+
+CMD [ "npm", "start" ]
+
