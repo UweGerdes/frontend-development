@@ -2,6 +2,9 @@
 
 ## latest
 
+1.10.8
+added Dockerfile.armhf with some special installations for arm based systems
+
 1.10.7
 adding nginx default config with /login/ route to /login/index.php
 
