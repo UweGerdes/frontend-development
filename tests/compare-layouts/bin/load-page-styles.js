@@ -5,7 +5,7 @@
  * casperjs load-page-styles.js --configFile="../config/default.js" --pageKey="google-form-phantomjs"
  *
  * additional argument to overwrite config settings:
- * --url=http://www.google.de --selector="form" --subdir=google-form --hover="#submit" --blacklist="adserv,doubleclick" --whitelist="trustedhostname.de"
+ * --url=https://www.google.de --selector="form" --subdir=google-form --hover="#submit" --blacklist="adserv,doubleclick" --whitelist="trustedhostname.de"
  *
  * (c) Uwe Gerdes, entwicklung@uwegerdes.de
  */
@@ -13,7 +13,7 @@
 
 /* globals document, XPathResult */
 
-var casper = require('casper').create( { viewportSize : { width: 1024, height: 640 } } ),
+var casper = require('casper').create(),
 	x = require('casper').selectXPath,
 	fs = require('fs');
 
@@ -22,13 +22,16 @@ var config = null,
 	subdir = 'dockerhost',
 	url = 'http://dockerhost/',
 	domain = 'dockerhost',
+	viewports = {
+		'Tablet Portrait': { width:  768, height: 1024 }
+	},
 	hover = '',
 	whitelist = '',
 	blacklist = '',
 	uname = '',
-	pval = '';
-
-var verbose = false;
+	pval = '',
+	timeout = 20000,
+	showExternalUrls = false;
 
 var results = {};
 
@@ -65,12 +68,20 @@ if (casper.cli.options.configFile && casper.cli.options.pageKey) {
 	} else {
 		throw("FAIL: pageKey not found: " + pageKey);
 	}
+	if (config.widths && config.widths.length > 0) {
+		widths = config.widths;
+	}
+	if (config.viewports) {
+		viewports = config.viewports;
+	}
 	if (config.blacklist && config.blacklist.length > 0) {
 		blacklist = config.blacklist;
 	}
 	if (config.whitelist && config.whitelist.length > 0) {
 		whitelist = config.whitelist;
 	}
+} else {
+	throw("FAIL: configFile and pageKey have to be provided");
 }
 casper.echo('loading: ' + url + ', selector: "' + selectorList.join(',') + (hover !== '' ? '", hover:"' + hover : '' ) + '", saving in "' + subdir + '"', 'INFO');
 try {
@@ -97,13 +108,24 @@ casper.on('http.status.404', function(resource) {
 // block external resources
 casper.options.onResourceRequested = function(C, requestData, request) {
 	if ( requestData.url.match(/https?:\/\//) && ( ! whitelistOk(requestData) || blacklistHit(requestData) ) ) {
-//		casper.echo('skipped: ' + requestData.url, 'WARNING');
+		if (showExternalUrls) {
+			casper.echo('skipped: ' + requestData.url, 'WARNING');
+		}
 		request.abort();
 	} else {
-		if (verbose) {
+		if (showExternalUrls) {
 			casper.echo('loading: ' + requestData.url, 'INFO');
 		}
 	}
+};
+
+casper.options.timeout = timeout;
+casper.options.onTimeout = function (timeout) {
+	casper.echo('TIMEOUT ' + timeout + 'ms without answer from server', 'ERROR');
+};
+//casper.options.waitTimeout = timeout;
+casper.options.onLoadError = function () {
+	casper.echo('LOAD ERROR', 'ERROR');
 };
 
 function whitelistOk(requestData) {
@@ -111,7 +133,7 @@ function whitelistOk(requestData) {
 	if (requestData.url.indexOf(domain) > -1) {
 		result = true;
 	} else {
-		whitelist.split(/,/).forEach(function(whitedomain){
+		whitelist.split(/,\s*/).forEach(function(whitedomain){
 			if (requestData.url.indexOf(whitedomain) > -1) {
 				result = true;
 			}
@@ -123,7 +145,7 @@ function whitelistOk(requestData) {
 function blacklistHit(requestData) {
 	var result = false;
 	if (blacklist.length > 0) {
-		blacklist.split(/,/).forEach(function(blackdomain){
+		blacklist.split(/,\s*/).forEach(function(blackdomain){
 			if (requestData.url.indexOf(blackdomain) > -1) {
 				result = true;
 			}
@@ -209,6 +231,7 @@ function _setTestClass(selector) {
 }
 
 casper.start();
+
 if (uname.length > 0 && pval.length > 0) {
 	casper.setHttpAuth(uname, pval);
 }
@@ -263,5 +286,5 @@ casper.run(function() {
 });
 
 function safeFilename(name) {
-	return name.replace(/[ ?#/:\(\)<>|\\]/g, "_").trim();
+	return name.replace(/[ .?#/:\(\)<>|\\]/g, "_").trim();
 }
