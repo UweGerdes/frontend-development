@@ -2,6 +2,9 @@
 
 ## latest
 
+1.11.0
+using git repository for slimerjs master branch - this should run with latest firefox version
+
 1.10.9
 tests: added exit code to gulpfile.js, throw directory creation error in index.js
 

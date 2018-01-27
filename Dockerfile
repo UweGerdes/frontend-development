@@ -45,11 +45,10 @@ RUN apt-get update && \
 				npm-check-updates \
 				phantomjs-prebuilt \
 				phplint \
-				slimerjs \
 				ttf2woff2 \
 				varstream && \
-	sed -i -e "s/MaxVersion=52.\*/MaxVersion=$(firefox --version | grep -Po '(?<= )\d+').*/" \
-				/usr/lib/node_modules/slimerjs/src/application.ini && \
+	npm install -g git+https://github.com/laurentj/slimerjs.git && \
+	sudo ln -s /usr/lib/node_modules/slimerjs/src/slimerjs slimerjs && \
 	npm install && \
 	chown -R ${USER_NAME}:${USER_NAME} ${NODE_HOME} && \
 	npm cache clean
