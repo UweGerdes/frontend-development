@@ -30,7 +30,6 @@ if (!fs.existsSync(resultsDir)) {
 	fs.mkdirSync(resultsDir);
 }
 fs.stat(destDir, function(err, stats) {
-	if (err) { throw err; }
 	if (!stats) {
 		fs.mkdir(destDir,
 			function (err, data) {
