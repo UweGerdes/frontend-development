@@ -53,10 +53,10 @@ Some 8 Minutes and 2 GB later...
 
 Run a container from the image just created and connect to your environment (with the localhost ports of gulp livereload on 5381, responsive-check on 5382, compare-layouts on 5383 and a running nginx docker container, the hostname `dockerhost` is used in test configs).
 
-This command removes the container after end - useful if your nginx ip address changes.
+Removes the container after if your nginx ip address changes.
 
 ```bash
-$ docker run -it --rm \
+$ docker run -it \
 	--name gulp-frontend \
 	-v $(pwd):/home/node/app \
 	-p 5381:5381 \
@@ -64,7 +64,7 @@ $ docker run -it --rm \
 	-p 5383:5383 \
 	--network="$(docker inspect --format='{{.HostConfig.NetworkMode}}' nginx)" \
 	--add-host dockerhost:$(docker inspect --format='{{range .NetworkSettings.Networks}}{{.IPAddress}} {{end}}' nginx) \
-	uwegerdes/gulp-frontend
+	uwegerdes/gulp-frontend bash
 ```
 
 With the running docker container start `bower install` from another terminal to load more dependencies, they will be installed in your project directory (you might want to look there when using the components).
@@ -75,9 +75,13 @@ You will need this step only once, the data is saved in your project and not in 
 $ docker exec -t gulp-frontend bower install
 ```
 
-Stop and restart the server after loading the bower components.
+Stop (CTRL-D) and restart the server with:
 
-Open `http://localhost:5382` and `http://localhost:5383` in your favorite browser.
+```bash
+$ docker start -ai gulp-frontend
+```
+
+When gulp (and the test servers) is started inside the container, open `http://localhost:5382` and `http://localhost:5383` in your favorite browser.
 
 You should exit (CTRL-C) and restart the container if you change a `gulpfile.js`.
 
