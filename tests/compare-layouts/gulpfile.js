@@ -41,6 +41,7 @@ var txtLog = [];
 var htmlLog = [];
 var watchFilesFor = {};
 var lifereloadPort = process.env.GULP_LIVERELOAD || 5081;
+var exitCode = 0;
 
 /*
  * log only to console, not GUI
@@ -129,7 +130,8 @@ var logExecResults = function (err, stdout, stderr) {
 	logTxt (stdout.replace(/\u001b\[[^m]+m/g, '').match(/[^\n]*FAIL [^\n]+/g));
 	logHtml(stdout.replace(/\u001b\[[^m]+m/g, '').match(/[^\n]*FAIL [^0-9][^\n]+/g));
 	if (err) {
-		console.log('error: ' + err.toString());
+		console.log(err.toString());
+		exitCode = 1;
 	}
 };
 
@@ -272,6 +274,10 @@ gulp.task('default', function(callback) {
 		'server-compare-layouts-postMortem',
 		callback);
 });
+
+process.on('exit', function () {
+	process.exit(exitCode);
+})
 
 function ipv4adresses() {
 	var addresses = [];

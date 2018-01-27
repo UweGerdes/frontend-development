@@ -70,7 +70,7 @@ if (casper.cli.options.cfg) {
 		casper.echo('Executing: "' + fs.absolute(fs.workingDirectory + '/' + path) + '"', 'INFO');
 		testData = require(fs.absolute(fs.workingDirectory + '/' + path));
 	} else {
-		casper.echo('ERROR: file not found: "' + fs.absolute(fs.workingDirectory + '/' + path) + '"');
+		throw('ERROR: file not found: "' + fs.absolute(fs.workingDirectory + '/' + path) + '"');
 	}
 } else {
 	casper.echo('Executing default: "' + fs.absolute(fs.workingDirectory + '/config/my_test.js') + '"', 'INFO');
@@ -79,7 +79,7 @@ if (casper.cli.options.cfg) {
 if (typeof(casper.cli.options.dumpDir) !== 'undefined') {
 	testData.dumpDir = casper.cli.options.dumpDir;
 }
-if (testData) {
+if (testData && testData.testCases) {
 	fs.makeTree(testData.dumpDir);
 	if (testData.viewportSize) {
 		casper.options.viewportSize = testData.viewportSize;
@@ -175,7 +175,7 @@ if (testData) {
 		});
 	});
 } else {
-	casper.test.done();
+	throw('ERROR: no test data found in "' + fs.absolute(fs.workingDirectory + '/' + path) + '"');
 }
 
 function trace2string(trace) {
