@@ -2,6 +2,9 @@
 
 ## latest
 
+1.10.9
+tests: added exit code to gulpfile.js, throw directory creation error in index.js
+
 1.10.8
 added Dockerfile.armhf with some special installations for arm based systems
 
