@@ -40,7 +40,7 @@ About 5 minutes and about 2 GB later open [http://localhost:3080/](http://localh
 Now build the gulp docker image - mind the '.' at the end of the command (meaning use current directory containing `Dockerfile` and other files needed for build). The build-args might be ommitted, the proxy settings assume that your computer `$(hostname -i)` has the proxy servers.
 
 ```bash
-$ docker build -t uwegerdes/gulp-frontend \
+$ docker build -t uwegerdes/frontend-development \
 	--build-arg GULP_LIVERELOAD="5381" \
 	--build-arg RESPONSIVE_CHECK_HTTP="5382" \
 	--build-arg COMPARE_LAYOUTS_HTTP="5383" \
@@ -57,14 +57,14 @@ Removes the container after if your nginx ip address changes.
 
 ```bash
 $ docker run -it \
-	--name gulp-frontend \
+	--name frontend-development \
 	-v $(pwd):/home/node/app \
 	-p 5381:5381 \
 	-p 5382:5382 \
 	-p 5383:5383 \
 	--network="$(docker inspect --format='{{.HostConfig.NetworkMode}}' nginx)" \
 	--add-host dockerhost:$(docker inspect --format='{{range .NetworkSettings.Networks}}{{.IPAddress}} {{end}}' nginx) \
-	uwegerdes/gulp-frontend bash
+	uwegerdes/frontend-development bash
 ```
 
 With the running docker container start `bower install` from another terminal to load more dependencies, they will be installed in your project directory (you might want to look there when using the components).
@@ -72,13 +72,13 @@ With the running docker container start `bower install` from another terminal to
 You will need this step only once, the data is saved in your project and not in the docker container.
 
 ```bash
-$ docker exec -t gulp-frontend bower install
+$ docker exec -t frontend-development bower install
 ```
 
 Stop (CTRL-D) and restart the server with:
 
 ```bash
-$ docker start -ai gulp-frontend
+$ docker start -ai frontend-development
 ```
 
 When gulp (and the test servers) is started inside the container, open `http://localhost:5382` and `http://localhost:5383` in your favorite browser.
@@ -88,10 +88,10 @@ You should exit (CTRL-C) and restart the container if you change a `gulpfile.js`
 You can also start `gulp` with a test-forms task from another terminal:
 
 ```bash
-$ docker exec -t gulp-frontend gulp test-forms-default
-$ docker exec -t gulp-frontend gulp test-forms-default-slimer
-$ docker exec -t gulp-frontend gulp test-forms-login
-$ docker exec -t gulp-frontend gulp test-forms-login-slimer
+$ docker exec -t frontend-development gulp test-forms-default
+$ docker exec -t frontend-development gulp test-forms-default-slimer
+$ docker exec -t frontend-development gulp test-forms-login
+$ docker exec -t frontend-development gulp test-forms-login-slimer
 ```
 
 If you executed `test-forms-login` you might want to have a look in the `mail` container:
@@ -103,7 +103,7 @@ docker exec -it mail gosu testbox alpine
 To ease your live you might want to define an alias:
 
 ```bash
-$ alias dockergulp='docker exec -t gulp-frontend gulp'
+$ alias dockergulp='docker exec -t frontend-development gulp'
 ```
 
 ## Known Problems
@@ -112,11 +112,11 @@ The first start of the container might take a while - keep calm, the next start 
 
 The same applies to the first start of tests - just rerun them, if they report an unexpected error.
 
-If your running gulp-frontend container refuses to stop on CTRL-C (one of its servers refuses to stop) you should:
+If your running frontend-development container refuses to stop on CTRL-C (one of its servers refuses to stop) you should:
 
 ```bash
-$ docker stop gulp-frontend
-$ docker rm gulp-frontend
+$ docker stop frontend-development
+$ docker rm frontend-development
 ```
 
 and run it again.
