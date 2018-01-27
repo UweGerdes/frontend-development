@@ -277,7 +277,7 @@ gulp.task('default', function(callback) {
 
 process.on('exit', function () {
 	process.exit(exitCode);
-})
+});
 
 function ipv4adresses() {
 	var addresses = [];

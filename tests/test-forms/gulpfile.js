@@ -225,7 +225,7 @@ gulp.task('default', function(callback) {
 
 process.on('exit', function () {
 	process.exit(exitCode);
-})
+});
 
 module.exports = {
 	gulp: gulp,
