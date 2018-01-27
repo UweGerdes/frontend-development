@@ -48,7 +48,6 @@ RUN apt-get update && \
 				ttf2woff2 \
 				varstream && \
 	npm install -g git+https://github.com/laurentj/slimerjs.git && \
-	sudo ln -s /usr/lib/node_modules/slimerjs/src/slimerjs slimerjs && \
 	npm install && \
 	chown -R ${USER_NAME}:${USER_NAME} ${NODE_HOME} && \
 	npm cache clean
