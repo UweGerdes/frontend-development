@@ -45,9 +45,10 @@ RUN apt-get update && \
 				npm-check-updates \
 				phantomjs-prebuilt \
 				phplint \
-				ttf2woff2 \
 				varstream && \
 	npm install -g git+https://github.com/laurentj/slimerjs.git && \
+	export NODE_TLS_REJECT_UNAUTHORIZED=0 && \
+	npm install -g ttf2woff2 && \
 	npm install && \
 	chown -R ${USER_NAME}:${USER_NAME} ${NODE_HOME} && \
 	npm cache clean
