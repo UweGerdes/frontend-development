@@ -68,9 +68,6 @@ if (casper.cli.options.configFile && casper.cli.options.pageKey) {
 	} else {
 		throw("FAIL: pageKey not found: " + pageKey);
 	}
-	if (config.widths && config.widths.length > 0) {
-		widths = config.widths;
-	}
 	if (config.viewports) {
 		viewports = config.viewports;
 	}
