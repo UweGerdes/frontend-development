@@ -1,7 +1,7 @@
 # gitignore for frontend-development project
 
 # build files
-/build/
+/build/phantomjs
 
 # generated files
 /htdocs/css/

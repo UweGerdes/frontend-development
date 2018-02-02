@@ -53,7 +53,7 @@ RUN apt-get update && \
 	chown -R ${USER_NAME}:${USER_NAME} ${NODE_HOME} && \
 	npm cache clean
 
-COPY entrypoint.sh /usr/local/bin/
+COPY build/entrypoint.sh /usr/local/bin/
 RUN chmod 755 /usr/local/bin/entrypoint.sh
 ENTRYPOINT ["/usr/local/bin/entrypoint.sh"]
 

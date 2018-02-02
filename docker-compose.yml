@@ -25,7 +25,7 @@ services:
     image: uwegerdes/mysql
     container_name: mysql
     volumes:
-      - ./src/mysql:/entrypoint-initdb.d
+      - ./build/mysql:/entrypoint-initdb.d
 
   mail:
     build:
@@ -55,4 +55,5 @@ services:
       - data
       - php-fpm
     volumes:
-      - ./src/nginx/sites-available:/etc/nginx/sites-available
+      - ./build/nginx/sites-available:/etc/nginx/sites-available
+

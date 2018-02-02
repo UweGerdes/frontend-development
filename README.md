@@ -49,6 +49,21 @@ $ docker build -t uwegerdes/frontend-development \
 
 Some 8 Minutes and 2 GB later...
 
+## Building and running on Raspberry Pi 3
+
+If you want to run this on a Raspberry Pi 3 you have to prebuild your own phantomjs (see my docker-build-phantomjs-arm32v7). Copy the resulting bin/phantomjs to ./build/bin/phantomjs and it will be used when running the build command (see below). Compiling phantomjs will take some hours.
+
+You should also build the uwegerdes/baseimage before `docker-compose up -d` and uwegerdes/nodejs image before running the following command:
+
+```bash
+$ docker build -t uwegerdes/frontend-development \
+	--build-arg GULP_LIVERELOAD="5381" \
+	--build-arg RESPONSIVE_CHECK_HTTP="5382" \
+	--build-arg COMPARE_LAYOUTS_HTTP="5383" \
+	-f Dockerfile.arm32v7
+	.
+```
+
 ## Start the gulp container
 
 Run a container from the image just created and connect to your environment (with the localhost ports of gulp livereload on 5381, responsive-check on 5382, compare-layouts on 5383 and a running nginx docker container, the hostname `dockerhost` is used in test configs).

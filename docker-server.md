@@ -4,7 +4,7 @@ You could run the sample php application on you pc: install a web server, MySQL-
 
 Or install Docker on your computer and use the scripts here to generate the docker images and containers. Less effort - more diskspace and downloading time. And new inspiration for your development workflow.
 
-## Quick start
+## Quick overview
 
 - Install the newest [Docker](https://www.docker.com/) version and docker-compose (see below). Read the docs, there might be a bit more configuration required.
 - Create a project directory: `mkdir ~/projects/sample-frontend-projects` and `cd ~/projects/sample-frontend-projects`.
@@ -14,7 +14,6 @@ Or install Docker on your computer and use the scripts here to generate the dock
 - Drink coffee.
 - Open [http://localhost:3080](http://localhost:3080) in your favorite browser.
 - Build and and run the `Dockerfile` in the project directory to have a lot of useful Gulp tasks (see `docker-gulp.md`).
-- Run at least `bower install` and `gulp build` in the Gulp container to generate some files.
 
 You may edit the code in the subdirectories and see how the Docker containers do their work.
 
@@ -147,6 +146,7 @@ Now run your mysql server in background:
 ```bash
 $ docker run -d \
 	-e 'MYSQL_ROOT_PASSWORD=123456' \
+	-v $(pwd)/build/mysql:/entrypoint-initdb.d
 	--name mysql \
 	uwegerdes/mysql
 ```
@@ -223,15 +223,15 @@ $ docker run -d \
 	-p 3080:80 \
 	--volumes-from data \
 	--volumes-from php-fpm \
+	-v $(pwd)/build/nginx/sites-available:/etc/nginx/sites-available
 	--name nginx \
 	uwegerdes/nginx
 ```
 
-To use different configuration add the following lines
+To use different configuration add the following line
 
 ```bash
-	-v $(pwd)/nginx/nginx.conf:/etc/nginx/nginx.conf \
-	-v $(pwd)/nginx/sites-enabled/default:/etc/nginx/sites-enabled/default \
+	-v $(pwd)/nginx/nginx.conf:/etc/nginx/nginx.conf
 ```
 
 Useful commands:
