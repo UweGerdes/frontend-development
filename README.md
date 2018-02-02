@@ -60,9 +60,11 @@ $ docker build -t uwegerdes/frontend-development \
 	--build-arg GULP_LIVERELOAD="5381" \
 	--build-arg RESPONSIVE_CHECK_HTTP="5382" \
 	--build-arg COMPARE_LAYOUTS_HTTP="5383" \
-	-f Dockerfile.arm32v7
+	-f Dockerfile.arm32v7 \
 	.
 ```
+
+The build will take about 30 minutes because some packages have to be compiled.
 
 ## Start the gulp container
 
@@ -71,7 +73,14 @@ Run a container from the image just created and connect to your environment (wit
 Removes the container after if your nginx ip address changes.
 
 ```bash
+$ XSOCK=/tmp/.X11-unix
+$ XAUTH=/tmp/.docker.xauth
+$ xauth nlist :0 | sed -e 's/^..../ffff/' | xauth -f $XAUTH nmerge -
 $ docker run -it \
+	-v $XSOCK:$XSOCK \
+	-v $XAUTH:$XAUTH \
+	-e XAUTHORITY=$XAUTH \
+	-e DISPLAY=$DISPLAY \
 	--name frontend-development \
 	-v $(pwd):/home/node/app \
 	-p 5381:5381 \

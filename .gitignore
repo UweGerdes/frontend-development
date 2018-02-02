@@ -1,4 +1,4 @@
-# gitignore for frontend-development project
+# gitignore for frontend-development
 
 # build files
 /build/phantomjs
@@ -7,9 +7,9 @@
 /htdocs/css/
 /htdocs/img/gv/
 /htdocs/login/css/
+/htdocs/js/vendor/
 /src/img/gv/
 /src/less/iconfont.less
-/src/phantomjs/
 /tests/test-forms/err.log
 /tests/tests.log
 /tests/tests.html
