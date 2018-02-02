@@ -55,19 +55,11 @@ RUN apt-get update && \
 				node-gyp \
 				npm-check-updates \
 				phplint \
-				slimerjs \
-				ttf2woff2 \
 				varstream && \
-	sed -i -e "s/MaxVersion=52.\*/MaxVersion=$(firefox --version | grep -Po '(?<= )\d+').*/" \
-				/usr/lib/node_modules/slimerjs/src/application.ini && \
+	npm install -g git+https://github.com/laurentj/slimerjs.git && \
+	export NODE_TLS_REJECT_UNAUTHORIZED=0 && \
+	npm install -g ttf2woff2 && \
 	npm install && \
-	npm remove ttf2woff2 && \
-	mkdir -p ${NODE_HOME}/node_modules/gifsicle/vendor/ && \
-	ln -s /usr/bin/gifsicle ${NODE_HOME}/node_modules/gifsicle/vendor/gifsicle && \
-	mkdir -p ${NODE_HOME}/node_modules/optipng-bin/vendor/ && \
-	ln -s /usr/bin/optipng ${NODE_HOME}/node_modules/optipng-bin/vendor/optipng && \
-	mkdir -p ${NODE_HOME}/node_modules/jpegtran-bin/vendor/ && \
-	ln -s /bin/jpegtran ${NODE_HOME}/node_modules/jpegtran-bin/vendor/jpegtran && \
 	chown -R ${USER_NAME}:${USER_NAME} ${NODE_HOME} && \
 	npm cache clean
 
@@ -82,8 +74,7 @@ RUN chown -R ${USER_NAME}:${USER_NAME} ${APP_HOME} && \
 		cp "${APP_HOME}/build/phantomjs/bin/phantomjs" "/usr/local/bin/phantomjs" ; \
 		chmod 755 "/usr/local/bin/phantomjs" ; \
 	else \
-		echo "ERROR ${BINPATH}/phantomjs/bin/phantomjs not found - please compile it and supply it to docker build" ; \
-		exit 1 ; \
+		echo "ERROR ${APP_HOME}/build/phantomjs/bin/phantomjs not found - please compile it and copy phantomjs to /usr/local/bin/phantomjs" ; \
 	fi
 
 RUN chown -R ${USER_NAME}:${USER_NAME} ${APP_HOME}
