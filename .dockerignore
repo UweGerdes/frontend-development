@@ -1,15 +1,18 @@
 # dockerignore for frontend-development
-.git/
-bower_components/
+.git
+bower_components
 
 # generated files
-htdocs/css/
-htdocs/img/gv/
-htdocs/login/css/
-htdocs/js/vendor/
-src/img/gv/
+htdocs/css
+htdocs/img/gv
+htdocs/login/css
+htdocs/js/vendor
+src/img/gv
 src/less/iconfont.less
-tests/compare-layouts/results/
-tests/responsive-check/results/
-tests/test-forms/results/
+tests/compare-layouts/results
+tests/responsive-check/results
+tests/test-forms/results
+
+# on crash
+core
 
