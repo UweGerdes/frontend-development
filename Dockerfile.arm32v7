@@ -24,6 +24,8 @@ COPY . ${APP_HOME}
 
 COPY package.json ${NODE_HOME}/
 
+WORKDIR ${NODE_HOME}
+
 RUN apt-get update && \
 	apt-get dist-upgrade -y && \
 	apt-get install -y \
@@ -36,7 +38,8 @@ RUN apt-get update && \
 					optipng \
 					php-cli \
 					python \
-					xvfb && \
+					xvfb \
+					zlib1g-dev && \
 	apt-get clean && \
 	rm -rf /var/lib/apt/lists/* && \
 	npm -g config set user ${USER_NAME} && \
@@ -50,10 +53,9 @@ RUN apt-get update && \
 				phplint \
 				varstream && \
 	npm install -g git+https://github.com/laurentj/slimerjs.git && \
-	chown -R ${USER_NAME}:${USER_NAME} ${NODE_HOME} && \
 	export NODE_TLS_REJECT_UNAUTHORIZED=0 && \
 	npm install -g ttf2woff2 && \
-	npm cache clean && \
+	chown -R ${USER_NAME}:${USER_NAME} ${NODE_HOME} && \
 	if [ -f "${APP_HOME}/build/phantomjs/bin/phantomjs" ] ; then \
 		cp "${APP_HOME}/build/phantomjs/bin/phantomjs" "/usr/local/bin/phantomjs" ; \
 		chmod 755 "/usr/local/bin/phantomjs" ; \
@@ -65,13 +67,10 @@ COPY build/entrypoint.sh /usr/local/bin/
 RUN chmod 755 /usr/local/bin/entrypoint.sh
 ENTRYPOINT ["/usr/local/bin/entrypoint.sh"]
 
-WORKDIR ${NODE_HOME}
-
 USER ${USER_NAME}
 
 RUN export NODE_TLS_REJECT_UNAUTHORIZED=0 && \
-	npm install && \
-	npm cache clean
+	npm install
 
 WORKDIR ${APP_HOME}
 
