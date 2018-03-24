@@ -140,6 +140,16 @@ if (testData && testData.testCases) {
 				});
 			}
 
+			if (testCase.waitForSelector) {
+				casper.then(function() {
+					casper.waitForSelector({type: 'xpath', path: testCase.waitForSelector });
+				});
+			} else {
+				casper.then(function() {
+					casper.wait(100);
+				});
+			}
+
 			casper.then(function() {
 				fs.write(testData.dumpDir + testCase.name + '2.html', casper.getHTML(), 0);
 				casper.capture(testData.dumpDir + testCase.name + '2.png', undefined, { format: 'png' });

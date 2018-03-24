@@ -43,6 +43,7 @@ module.exports = {
 			],
 			submit: '//*[@type="submit"]',
 			alerts: [],
+			waitForSelector: '//*[@id="loginError"]',
 			title2: 'Bitte anmelden',
 			elements: {
 				'//*[@id="headline"]': 'Anmelden',
@@ -67,6 +68,7 @@ module.exports = {
 			],
 			submit: '//*[@type="submit"]',
 			alerts: [],
+			waitForSelector: '//*[@id="loginError"]',
 			title2: 'Bitte anmelden',
 			elements: {
 				'//*[@id="headline"]': 'Anmelden',
