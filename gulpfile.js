@@ -228,9 +228,10 @@ gulp.task('imagemin', () => {
   if (!fs.existsSync(path.join(destDir, 'img'))) {
     fs.mkdirSync(path.join(destDir, 'img'));
   }
-  gulp.src(watchFilesFor.imagemin)
+  return gulp.src(watchFilesFor.imagemin)
     .pipe(changed(path.join(destDir, 'img')))
     .pipe(imagemin(IMAGE_OPTION))
+    .on('error', log.onError({ message:  'Error: <%= error.message %>', title: 'Imagemin Error'}))
     .pipe(gulp.dest(path.join(destDir, 'img')))
     .pipe(log({ message: 'saved: <%= file.path %>', title: 'Gulp images' }))
   ;
