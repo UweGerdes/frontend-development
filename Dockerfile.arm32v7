@@ -31,11 +31,8 @@ RUN apt-get update && \
 	apt-get install -y \
 					dh-autoreconf \
 					firefox \
-					gifsicle \
 					graphviz \
 					imagemagick \
-					libjpeg9 \
-					optipng \
 					php-cli \
 					python \
 					xvfb \

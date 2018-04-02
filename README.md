@@ -53,7 +53,7 @@ Some 8 Minutes and 2 GB later...
 
 If you want to run this on a Raspberry Pi 3 you have to prebuild your own phantomjs (see my docker-build-phantomjs-arm32v7). Copy the resulting bin/phantomjs to ./build/bin/phantomjs and it will be used when running the build command (see below). Compiling phantomjs will take some hours.
 
-You should also build the uwegerdes/baseimage before `docker-compose up -d` and uwegerdes/nodejs image before running the following command:
+You should also build the https://github.com/uwegerdes/baseimage-arm32v7 as uwegerdes/baseimage before `docker-compose up -d` and uwegerdes/nodejs image before running the following command:
 
 ```bash
 $ docker build -t uwegerdes/frontend-development \
@@ -73,14 +73,7 @@ Run a container from the image just created and connect to your environment (wit
 Removes the container after if your nginx ip address changes.
 
 ```bash
-$ XSOCK=/tmp/.X11-unix
-$ XAUTH=/tmp/.docker.xauth
-$ xauth nlist :0 | sed -e 's/^..../ffff/' | xauth -f $XAUTH nmerge -
-$ docker run -it \
-	-v $XSOCK:$XSOCK \
-	-v $XAUTH:$XAUTH \
-	-e XAUTHORITY=$XAUTH \
-	-e DISPLAY=$DISPLAY \
+$ docker run -it --rm \
 	--name frontend-development \
 	-v $(pwd):/home/node/app \
 	-p 5381:5381 \
@@ -89,14 +82,6 @@ $ docker run -it \
 	--network="$(docker inspect --format='{{.HostConfig.NetworkMode}}' nginx)" \
 	--add-host dockerhost:$(docker inspect --format='{{range .NetworkSettings.Networks}}{{.IPAddress}} {{end}}' nginx) \
 	uwegerdes/frontend-development bash
-```
-
-With the running docker container start `bower install` from another terminal to load more dependencies, they will be installed in your project directory (you might want to look there when using the components).
-
-You will need this step only once, the data is saved in your project and not in the docker container.
-
-```bash
-$ docker exec -t frontend-development bower install
 ```
 
 Stop (CTRL-D) and restart the server with:
