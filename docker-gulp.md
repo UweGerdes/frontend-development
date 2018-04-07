@@ -8,12 +8,18 @@ During development I've used cache docker to speed up the building of the docker
 
 I'm using some firewall settings on my local system. Make sure the localhost port 3142 and 3143 are open for docker server (mine works in the subnet 172.17.0.0/24), in the commands you find $(hostname -i) which should echo your local ip address.
 
-### [apt-cacher-ng](https://hub.docker.com/r/sameersbn/apt-cacher-ng/)
+### [apt-cacher-ng](https://hub.docker.com/r/uwegerdes/apt-cacher-ng/)
 
 ```bash
 $ sudo mkdir -p /srv/docker/apt-cacher-ng
 $ sudo chmod a+w /srv/docker/apt-cacher-ng
-$ docker run --name apt-cacher-ng -d --restart=always -p 3142:3142 -v /srv/docker/apt-cacher-ng:/var/cache/apt-cacher-ng sameersbn/apt-cacher-ng
+$ docker run -d \
+	--restart=always \
+	--name apt-cacher-ng \
+	--hostname apt-cacher-ng \
+	-p 3142:3142 \
+	-v /srv/docker/apt-cacher-ng:/var/cache/apt-cacher-ng \
+	uwegerdes/apt-cacher-ng
 ```
 
 ### [npm-proxy-cache](https://hub.docker.com/r/folha/npm-proxy-cache/)
@@ -21,7 +27,13 @@ $ docker run --name apt-cacher-ng -d --restart=always -p 3142:3142 -v /srv/docke
 ```bash
 $ sudo mkdir -p /srv/docker/npm-proxy-cache
 $ sudo chmod a+w /srv/docker/npm-proxy-cache
-$ docker run --name npm-proxy-cache -d --net=host --restart=always -p 3143:8080 -v /srv/docker/npm-proxy-cache:/cache folha/npm-proxy-cache
+$ docker run -d \
+	--name npm-proxy-cache \
+	--net=host \
+	--restart=always \
+	-p 3143:8080 \
+	-v /srv/docker/npm-proxy-cache:/cache \
+	folha/npm-proxy-cache
 ```
 
 ## Build and run application server dockers
