@@ -174,8 +174,13 @@ function comparePages() {
 									compareResults(compare);
 									pagesLoading.splice(pagesLoading.indexOf(key), 1);
 									if (pagesLoading.length === 0) {
-										fs.writeFile(destDir + '/' + 'index.json', JSON.stringify(results, null, 4), 0);
-										console.log((success ? "SUCCESS" : "FAIL") + ' compare-layouts/' + destDir + '/index.json');
+										fs.writeFile(destDir + '/' + 'index.json', JSON.stringify(results, null, 4), (err) => {
+											if (err) {
+												console.log('ERROR: ' + err);
+											} else {
+												console.log((success ? "SUCCESS" : "FAIL") + ' compare-layouts/' + destDir + '/index.json');
+											}
+										});
 									}
 								}
 							);
@@ -198,9 +203,14 @@ function compareResults(compare) {
 		var styleTree1 = styleTree(JSON.parse(fs.readFileSync(destDir + '/' + compare.page1 + '/' + safeFilename(selector1) + '.json')));
 		var styleTree2 = styleTree(JSON.parse(fs.readFileSync(destDir + '/' + compare.page2 + '/' + safeFilename(selector2) + '.json')));
 		var compareResult = styleTree1.compareTo(styleTree2, compare.compare);
-        compare.resultHtml = obj2html.toHtml(compareResult);
-		fs.writeFile(compare.jsonFilename, JSON.stringify(compareResult, undefined, 4), 0);
-		console.log(compare.jsonFilename + ' saved');
+		compare.resultHtml = obj2html.toHtml(compareResult);
+		fs.writeFile(compare.jsonFilename, JSON.stringify(compareResult, undefined, 4), (err) => {
+			if (err) {
+				console.log('ERROR: ' + err);
+			} else {
+				console.log(compare.jsonFilename + ' saved');
+			}
+		});
 		return true;
 	} else {
 		return false;
