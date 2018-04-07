@@ -21,6 +21,27 @@ To install the servers please clone [my github repo](https://github.com/UweGerde
 
 Make sure you have at least docker-compose version 1.6.0 to use the version 2 syntax of `docker-compose.yml`. On Linux you have to follow the instructions on [https://docs.docker.com/compose/install/](https://docs.docker.com/compose/install/). On Windows or Mac the Docker setup should have done this.
 
+On Raspberry Pi 3 the following worked for me (2018.01.28), using cache dockers on another system in my network:
+
+```bash
+$ COMPOSE_VERSION="1.18.0"
+$ git clone https://github.com/docker/compose
+$ cd compose
+$ git checkout ${COMPOSE_VERSION}
+$ docker build -t docker/compose:${COMPOSE_VERSION} -f Dockerfile.armhf .
+$ sudo curl -L --fail https://github.com/docker/compose/releases/download/${COMPOSE_VERSION}/run.sh -o /usr/local/bin/docker-compose
+$ sudo chmod +x /usr/local/bin/docker-compose
+$ docker build -t uwegerdes/baseimage \
+	--build-arg APT_PROXY="http://192.168.1.18:3142" \
+	--build-arg TZ="Europe/Berlin" \
+	--build-arg TERM="${TERM}" \
+	https://github.com/UweGerdes/docker-baseimage-arm32v7.git
+$ docker build -t uwegerdes/nodejs \
+	--build-arg NPM_PROXY="http://192.168.1.18:3143" \
+	--build-arg NPM_LOGLEVEL="warn" \
+	https://github.com/UweGerdes/docker-nodejs.git
+```
+
 In the root directory of this project you find `docker-compose.yml` to set up and run the server dockers.
 
 If you have an apt-cacher-ng proxy server (I have a [docker](https://github.com/UweGerdes/docker-apt-cacher-ng)) you should open port 3142 in your firewall to allow access from the docker-engine (on another network in your PC!): ```sudo ufw allow to any port 3142```.
@@ -28,7 +49,6 @@ If you have an apt-cacher-ng proxy server (I have a [docker](https://github.com/
 Now build and start the servers:
 
 ```bash
-$ export TZ=Europe/Berlin
 $ docker-compose up -d
 $ docker ps
 ```
