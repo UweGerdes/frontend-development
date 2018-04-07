@@ -3,7 +3,7 @@
 #
 # docker build -t uwegerdes/gulp-frontend .
 
-FROM uwegerdes/nodejs
+FROM uwegerdes/nodejs:8.x
 
 MAINTAINER Uwe Gerdes <entwicklung@uwegerdes.de>
 
