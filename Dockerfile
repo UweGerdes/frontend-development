@@ -34,7 +34,6 @@ RUN apt-get update && \
 					xvfb && \
 	apt-get clean && \
 	rm -rf /var/lib/apt/lists/* && \
-	chown -R ${USER_NAME}:${USER_NAME} ${NODE_HOME}/package.json && \
 	npm -g config set user ${USER_NAME} && \
 	npm install -g \
 				bower \
@@ -43,15 +42,14 @@ RUN apt-get update && \
 				marked \
 				node-gyp \
 				npm-check-updates \
-				phantomjs-prebuilt \
 				phplint \
 				varstream && \
 	npm install -g git+https://github.com/laurentj/slimerjs.git && \
+	chown -R ${USER_NAME}:${USER_NAME} ${NODE_HOME}/package.json && \
 	export NODE_TLS_REJECT_UNAUTHORIZED=0 && \
 	npm install -g ttf2woff2 && \
 	npm install && \
-	chown -R ${USER_NAME}:${USER_NAME} ${NODE_HOME} && \
-	npm cache clean
+	chown -R ${USER_NAME}:${USER_NAME} ${NODE_HOME}
 
 COPY entrypoint.sh /usr/local/bin/
 RUN chmod 755 /usr/local/bin/entrypoint.sh
