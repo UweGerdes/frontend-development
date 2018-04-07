@@ -16,12 +16,12 @@ $ sudo chmod a+w /srv/docker/apt-cacher-ng
 $ docker run --name apt-cacher-ng -d --restart=always -p 3142:3142 -v /srv/docker/apt-cacher-ng:/var/cache/apt-cacher-ng sameersbn/apt-cacher-ng
 ```
 
-### [npm-proxy-cache](https://hub.docker.com/r/kudoz/npm-proxy-cache/)
+### [npm-proxy-cache](https://hub.docker.com/r/folha/npm-proxy-cache/)
 
 ```bash
 $ sudo mkdir -p /srv/docker/npm-proxy-cache
 $ sudo chmod a+w /srv/docker/npm-proxy-cache
-$ docker run --name npm-proxy-cache -d --restart=always -p 3143:8080 -v /srv/docker/npm-proxy-cache:/cache kudoz/npm-proxy-cache
+$ docker run --name npm-proxy-cache -d --net=host --restart=always -p 3143:8080 -v /srv/docker/npm-proxy-cache:/cache folha/npm-proxy-cache
 ```
 
 ## Build and run application server dockers
