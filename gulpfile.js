@@ -1,11 +1,5 @@
 /*
- * gulpfile for project Frontend
- *
- * $ sudo npm install --global gulp
- * $ cd myProject/build/Gulp
- * $ npm install
- *
- * edit /node_modules/gulp-less/index.js:68 : replace 'done' with 'then'
+ * gulpfile for project frontend-development
  *
  * (c) Uwe Gerdes, entwicklung@uwegerdes.de
  */

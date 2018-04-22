@@ -1,8 +1,5 @@
 # gitignore for frontend-development project
 
-# build files
-/build/
-
 # generated files
 /htdocs/css/
 /htdocs/img/gv/
@@ -11,8 +8,8 @@
 /src/less/iconfont.less
 /src/phantomjs/
 /tests/test-forms/err.log
-/tests/tests.log
-/tests/tests.html
+/tests/*/tests.log
+/tests/*/tests.html
 
 # general ignores
 bower_components/

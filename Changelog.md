@@ -2,6 +2,8 @@
 
 ## latest
 
+1.12.1 refactoring
+
 1.12.0
 rebasing on NodeJS 8.x
 

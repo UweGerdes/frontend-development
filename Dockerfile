@@ -1,9 +1,9 @@
 #
-# Dockerfile for compare-layouts
+# Dockerfile for frontend-development
 #
-# docker build -t uwegerdes/gulp-frontend .
+# docker build -t uwegerdes/frontend-development .
 
-FROM uwegerdes/nodejs:8.x
+FROM uwegerdes/nodejs
 
 MAINTAINER Uwe Gerdes <entwicklung@uwegerdes.de>
 
@@ -11,9 +11,6 @@ ARG GULP_LIVERELOAD='5381'
 ARG RESPONSIVE_CHECK_HTTP='5382'
 ARG COMPARE_LAYOUTS_HTTP='5383'
 
-ENV NODE_ENV development
-ENV HOME ${NODE_HOME}
-ENV APP_HOME ${NODE_HOME}/app
 ENV GULP_LIVERELOAD ${GULP_LIVERELOAD}
 ENV RESPONSIVE_CHECK_HTTP ${RESPONSIVE_CHECK_HTTP}
 ENV COMPARE_LAYOUTS_HTTP ${COMPARE_LAYOUTS_HTTP}
@@ -34,20 +31,15 @@ RUN apt-get update && \
 					xvfb && \
 	apt-get clean && \
 	rm -rf /var/lib/apt/lists/* && \
-	npm -g config set user ${USER_NAME} && \
 	npm install -g \
 				bower \
 				casperjs \
 				gulp \
 				marked \
 				node-gyp \
-				npm-check-updates \
-				phplint \
-				varstream && \
+				phplint && \
 	npm install -g git+https://github.com/laurentj/slimerjs.git && \
-	chown -R ${USER_NAME}:${USER_NAME} ${NODE_HOME}/package.json && \
 	export NODE_TLS_REJECT_UNAUTHORIZED=0 && \
-	npm install -g ttf2woff2 && \
 	npm install && \
 	chown -R ${USER_NAME}:${USER_NAME} ${NODE_HOME}
 
@@ -68,4 +60,3 @@ VOLUME [ "${APP_HOME}" ]
 EXPOSE ${GULP_LIVERELOAD} ${RESPONSIVE_CHECK_HTTP} ${COMPARE_LAYOUTS_HTTP}
 
 CMD [ "npm", "start" ]
-
