@@ -14,7 +14,6 @@ Or install Docker on your computer and use the scripts here to generate the dock
 - Drink coffee.
 - Open [http://localhost:3080](http://localhost:3080) in your favorite browser.
 - Build and and run the `Dockerfile` in the project directory to have a lot of useful Gulp tasks (see `docker-gulp.md`).
-- Run at least `bower install` and `gulp build` in the Gulp container to generate some files.
 
 You may edit the code in the subdirectories and see how the Docker containers do their work.
 
@@ -70,7 +69,7 @@ You need [Docker](https://www.docker.com/) installed on your System - see the do
 
 Then you will need some docker images and containers for the different tasks. `docker-compose up -d` will do the work for you. In this document you find the detailed setup if you want to learn more about Docker.
 
-The docker images are built once (or again if you like - its only a single command). The build requires a lot of files downloaded from the internet so make sure your internet connection has enough bandwidth. Some 500 MB will be downloaded. And more than 5GB free disk space is recommended. But it's worth it!
+The docker images are built once (or again if you like - its only a single command). The build requires a lot of files downloaded from the internet so make sure your internet connection has enough bandwidth. More than 5GB free disk space is recommended. But it's worth it!
 
 With an image a container can be started, some parameters connect the containers with each other and your system (e.g. mount files or directories of your file system into the container, connect ip ports from the container to ports on you localhost).
 
@@ -87,7 +86,7 @@ You might want to save some download time when playing around with docker, a cac
 ```bash
 $ sudo mkdir -p /srv/docker/apt-cacher-ng
 $ sudo chmod a+w /srv/docker/apt-cacher-ng
-$ docker run --name apt-cacher-ng -d --restart=always -p 3142:3142 -v /srv/docker/apt-cacher-ng:/var/cache/apt-cacher-ng sameersbn/apt-cacher-ng
+$ docker run --name apt-cacher-ng -d --restart=always -p 3142:3142 -v /srv/docker/apt-cacher-ng:/var/cache/apt-cacher-ng uwegerdes/apt-cacher-ng
 ```
 
 The APT_PROXY argument for the baseimage must be an ip address that is known in the docker server - it knows nothing of your hostfile but you can use the ip of your system (not `127.0.0.1`, try `$(hostname -i)`) or the ip of the running apt-cacher-ng container. This ip might change on your system if containers are started in different order, see `$(docker inspect --format='{{range .NetworkSettings.Networks}}{{.IPAddress}} {{end}}' apt-cacher-ng)`.
@@ -152,6 +151,8 @@ $ docker run -d \
 ```
 
 The mysql container exposes port 3306 but we don't expose it on the host system. The php-fpm container get's a direct link.
+
+You may want to supply a directory with sql scripts to be executed on first run with `-v $(pwd)/src/mysql:/entrypoint-initdb.d`.
 
 To keep the database on your host you could add `-v /srv/docker/mysql:/var/lib/mysql` to the run command.
 
