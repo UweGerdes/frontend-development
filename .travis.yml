@@ -21,4 +21,4 @@ before_install:
   - docker build -t uwegerdes/frontend-development .
 
 script:
-  - docker run --rm --network="$(docker inspect --format='{{.HostConfig.NetworkMode}}' nginx)" --add-host dockerhost:$(docker inspect --format='{{range .NetworkSettings.Networks}}{{.IPAddress}} {{end}}' nginx) -v $(docker inspect -f '{{ (index .Mounts 0).Source }}' data):/home/node/app/htdocs uwegerdes/frontend-development npm test
+  - docker run --rm --network="$(docker inspect --format='{{.HostConfig.NetworkMode}}' nginx)" --add-host dockerhost:$(docker inspect --format='{{range .NetworkSettings.Networks}}{{.IPAddress}} {{end}}' nginx) uwegerdes/frontend-development npm test
