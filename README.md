@@ -15,6 +15,29 @@ To run the application you have to install and configure:
 
 Well - install [Docker](https://www.docker.com/) (please read the installation guide carefully, on Linux don't forget to add yourself to the docker group).
 
+## Raspberry Pi
+
+On Raspberry Pi 3 the following worked for me (2018.01.28), using cache dockers on another system in my network:
+
+```bash
+$ COMPOSE_VERSION="1.18.0"
+$ git clone https://github.com/docker/compose
+$ cd compose
+$ git checkout ${COMPOSE_VERSION}
+$ docker build -t docker/compose:${COMPOSE_VERSION} -f Dockerfile.armhf .
+$ sudo curl -L --fail https://github.com/docker/compose/releases/download/${COMPOSE_VERSION}/run.sh -o /usr/local/bin/docker-compose
+$ sudo chmod +x /usr/local/bin/docker-compose
+$ docker build -t uwegerdes/baseimage \
+	--build-arg APT_PROXY="http://192.168.1.18:3142" \
+	--build-arg TZ="Europe/Berlin" \
+	--build-arg TERM="${TERM}" \
+	https://github.com/UweGerdes/docker-baseimage-arm32v7.git
+$ docker build -t uwegerdes/nodejs \
+	--build-arg NPM_PROXY="http://192.168.1.18:3143" \
+	--build-arg NPM_LOGLEVEL="warn" \
+	https://github.com/UweGerdes/docker-nodejs.git
+```
+
 ## docker-compose.yml
 
 To install the servers please clone [my github repo](https://github.com/UweGerdes/frontend-development) and use `docker-compose` to fire them up.
