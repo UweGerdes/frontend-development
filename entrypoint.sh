@@ -24,6 +24,7 @@ fi
 
 if [ ! -f "${APP_HOME}/htdocs/css/fonts/iconfont.ttf" ]; then
 	echo "initial building iconfont"
+  mkdir -p ${APP_HOME}/htdocs/css
 	gulp iconfont
 fi
 
