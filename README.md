@@ -87,14 +87,6 @@ $ docker run -it \
 	uwegerdes/frontend-development bash
 ```
 
-With the running docker container start `bower install` from another terminal to load more dependencies, they will be installed in your project directory (you might want to look there when using the components).
-
-You will need this step only once, the data is saved in your project and not in the docker container.
-
-```bash
-$ docker exec -t frontend-development bower install
-```
-
 Stop (CTRL-D) and restart the server with:
 
 ```bash
