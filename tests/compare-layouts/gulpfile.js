@@ -260,7 +260,6 @@ gulp.task('watch', function() {
 gulp.task('compare-layouts-init', function(callback) {
 	runSequence('compare-layouts-less',
 		'server-compare-layouts:start',
-		'server-compare-layouts-postMortem',
 		callback);
 });
 
@@ -271,7 +270,6 @@ gulp.task('default', function(callback) {
 	runSequence('build',
 		'server-compare-layouts:start',
 		'watch',
-		'server-compare-layouts-postMortem',
 		callback);
 });
 

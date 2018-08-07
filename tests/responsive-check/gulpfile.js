@@ -290,7 +290,6 @@ gulp.task('watch', function() {
 gulp.task('responsive-check-init', function(callback) {
 	runSequence('responsive-check-less',
 		'server-responsive-check:start',
-		'server-responsive-check-postMortem',
 		callback);
 });
 
@@ -301,7 +300,6 @@ gulp.task('default', function(callback) {
 	runSequence('build',
 		'server-responsive-check:start',
 		'watch',
-		'server-responsive-check-postMortem',
 		callback);
 });
 
