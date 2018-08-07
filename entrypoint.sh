@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# fix for installation failures on nodejs 8.11.1
+# fix for installation failures on nodejs 8.11.1 (perhaps proxy problem)
 export PATH=$PATH:/home/node/bin
 if ! [ -x "$(command -v phantomjs)" ]; then
 	echo "initial install phantomjs"
