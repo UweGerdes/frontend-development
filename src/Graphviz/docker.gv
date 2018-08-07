@@ -6,17 +6,17 @@ digraph Docker {
 	edge [
 	];
 
-	"PHP-FPM Server" [
-		label = "{ <PHP-Server> PHP-FPM Server | <php-fpm> php-fpm }"
-		tooltip = "PHP-FPM Server @GitHub"
-		URL = "https://github.com/UweGerdes/docker-php-fpm"
-		rank = "min"
-	];
-
 	"HTTP Server" [
 		label = "{ <Webserver> HTTP Server | <nginx> nginx }"
 		tooltip = "HTTP Server @GitHub"
 		URL = "https://github.com/UweGerdes/docker-nginx"
+		rank = "min"
+	];
+
+	"PHP-FPM Server" [
+		label = "{ <PHP-Server> PHP-FPM Server | <php-fpm> php-fpm }"
+		tooltip = "PHP-FPM Server @GitHub"
+		URL = "https://github.com/UweGerdes/docker-php-fpm"
 		rank = "min"
 	];
 
@@ -44,7 +44,12 @@ digraph Docker {
 	];
 
 	"Browser" [
-		label = "Browser / Gulp"
+		label = "Browser"
+		shape = "ellipse"
+	];
+
+	"Tests" [
+		label = "Tests"
 		shape = "ellipse"
 	];
 
@@ -60,5 +65,6 @@ digraph Docker {
 		"PHP-FPM Server":"php-fpm" -> "Database-Server" [color=green, label="mysql:3306"];
 	}
 	"Browser" -> "HTTP Server" [color=green, label="localhost:3080\nnginx:80"];
+	"Tests" -> "HTTP Server" [color=green];
 	"Data Container":"htdocs" -> "File System" [color=black];
 }
