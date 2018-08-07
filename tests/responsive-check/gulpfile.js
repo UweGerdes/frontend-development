@@ -26,7 +26,6 @@ var autoprefixer = require('gulp-autoprefixer'),
 	gulpLivereload = require('gulp-livereload'),
 	notify = require('gulp-notify'),
 	path = require('path'),
-	postMortem = require('gulp-postmortem'),
 	os = require('os'),
 	rename = require('rename'),
 	runSequence = require('run-sequence'),
@@ -227,14 +226,6 @@ gulp.task('server-responsive-check', function() {
 			console.log('responsive-check server.js restarted');
 		}
 	});
-});
-/*
- * gulp postmortem task to stop server on termination of gulp
- */
-gulp.task('server-responsive-check-postMortem', function() {
-	return gulp.src( watchFilesFor['server-responsive-check'] )
-		.pipe(postMortem({gulp: gulp, tasks: [ 'server-responsive-check:stop' ]}))
-		;
 });
 
 /*

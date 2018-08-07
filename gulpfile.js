@@ -297,8 +297,8 @@ gulp.task('iconfont-preview', function(){
  * lint javascript files
  */
 watchFilesFor.jshint = [
-  path.join(gulpDir, '**', 'gulpfile.js'),
-  path.join(gulpDir, '**', 'package.json')
+  path.join(gulpDir, 'gulpfile.js'),
+  path.join(gulpDir, 'package.json')
 ];
 gulp.task('jshint', function(callback) {
   return gulp.src(watchFilesFor.jshint)
