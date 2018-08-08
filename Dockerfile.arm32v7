@@ -1,7 +1,7 @@
 #
 # Dockerfile for frontend-development
 #
-# docker build -t uwegerdes/frontend-development -f Dockerfile.armhf .
+# docker build -t uwegerdes/frontend-development -f Dockerfile.arm32v7 .
 
 FROM uwegerdes/nodejs
 
