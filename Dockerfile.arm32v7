@@ -1,19 +1,17 @@
 #
-# Dockerfile for compare-layouts
+# Dockerfile for frontend-development
 #
-# docker build -t uwegerdes/gulp-frontend -f Dockerfile.armhf .
+# docker build -t uwegerdes/frontend-development -f Dockerfile.armhf .
 
 FROM uwegerdes/nodejs
 
 MAINTAINER Uwe Gerdes <entwicklung@uwegerdes.de>
 
+ARG DISPLAY=':0.0'
 ARG GULP_LIVERELOAD='5381'
 ARG RESPONSIVE_CHECK_HTTP='5382'
 ARG COMPARE_LAYOUTS_HTTP='5383'
 
-ENV NODE_ENV development
-ENV HOME ${NODE_HOME}
-ENV APP_HOME ${NODE_HOME}/app
 ENV GULP_LIVERELOAD ${GULP_LIVERELOAD}
 ENV RESPONSIVE_CHECK_HTTP ${RESPONSIVE_CHECK_HTTP}
 ENV COMPARE_LAYOUTS_HTTP ${COMPARE_LAYOUTS_HTTP}
@@ -30,13 +28,16 @@ RUN apt-get update && \
 	apt-get dist-upgrade -y && \
 	apt-get install -y \
 					dh-autoreconf \
-					firefox \
 					graphviz \
 					imagemagick \
 					php-cli \
 					python \
+					software-properties-common \
 					xvfb \
 					zlib1g-dev && \
+	add-apt-repository -y ppa:mozillateam/ppa && \
+	apt-get update && \
+	apt-get install -y firefox-esr && \
 	apt-get clean && \
 	rm -rf /var/lib/apt/lists/* && \
 	npm -g config set user ${USER_NAME} && \
@@ -46,30 +47,28 @@ RUN apt-get update && \
 				gulp \
 				marked \
 				node-gyp \
-				npm-check-updates \
-				phplint \
-				varstream && \
-	npm install -g git+https://github.com/laurentj/slimerjs.git && \
+				phplint && \
+	npm install -g git+https://github.com/laurentj/slimerjs.git#v0.10 && \
 	export NODE_TLS_REJECT_UNAUTHORIZED=0 && \
-	npm install -g ttf2woff2 && \
+	npm install && \
 	chown -R ${USER_NAME}:${USER_NAME} ${NODE_HOME} && \
 	if [ -f "${APP_HOME}/build/phantomjs/bin/phantomjs" ] ; then \
 		cp "${APP_HOME}/build/phantomjs/bin/phantomjs" "/usr/local/bin/phantomjs" ; \
 		chmod 755 "/usr/local/bin/phantomjs" ; \
 	else \
 		echo "ERROR ${APP_HOME}/build/phantomjs/bin/phantomjs not found - please compile it and copy phantomjs to /usr/local/bin/phantomjs" ; \
+		exit 1 ; \
 	fi
+
+ENV SLIMERJSLAUNCHER '/usr/bin/firefox-esr'
 
 COPY build/entrypoint.sh /usr/local/bin/
 RUN chmod 755 /usr/local/bin/entrypoint.sh
 ENTRYPOINT ["/usr/local/bin/entrypoint.sh"]
 
-USER ${USER_NAME}
-
-RUN export NODE_TLS_REJECT_UNAUTHORIZED=0 && \
-	npm install
-
 WORKDIR ${APP_HOME}
+
+USER ${USER_NAME}
 
 VOLUME [ "${APP_HOME}" ]
 
