@@ -31,7 +31,6 @@ RUN apt-get update && \
 					graphviz \
 					imagemagick \
 					php-cli \
-					python \
 					software-properties-common \
 					xvfb \
 					zlib1g-dev && \
