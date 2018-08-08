@@ -1,7 +1,4 @@
 digraph Docker {
-	graph [
-		rankdir = "LR"
-	];
 	node [
 		fontsize = "14"
 		shape = "record"
@@ -10,31 +7,33 @@ digraph Docker {
 	];
 
 	"HTTP Server" [
-		label = "{ { <Webserver> HTTP Server | <nginx> nginx } }"
+		label = "{ <Webserver> HTTP Server | <nginx> nginx }"
 		tooltip = "HTTP Server @GitHub"
 		URL = "https://github.com/UweGerdes/docker-nginx"
+		rank = "min"
 	];
 
 	"PHP-FPM Server" [
-		label = "{ { <PHP-Server> PHP-FPM Server | <php-fpm> php-fpm } }"
+		label = "{ <PHP-Server> PHP-FPM Server | <php-fpm> php-fpm }"
 		tooltip = "PHP-FPM Server @GitHub"
 		URL = "https://github.com/UweGerdes/docker-php-fpm"
+		rank = "min"
 	];
 
 	"Database-Server" [
-		label = "{ { <DB-Server> Database-Server | <mysql> mysql } }"
+		label = "{ <DB-Server> Database-Server | <mysql> mysql }"
 		tooltip = "Database-Server @GitHub"
 		URL = "https://github.com/UweGerdes/docker-mysql"
 	];
 
 	"Mail-Server" [
-		label = "{ { <Mail-Server> Mail-Server | <smtp> smtp / imap } }"
+		label = "{ <Mail-Server> Mail-Server | <smtp> smtp / imap }"
 		tooltip = "Mail-Server @GitHub"
 		URL = "https://github.com/UweGerdes/docker-mail"
 	];
 
 	"Data Container" [
-		label = "{ {<Data> Data Container | <htdocs> /var/www/htdocs } }"
+		label = "{ <Data> Data Container | <htdocs> /var/www/htdocs }"
 		tooltip = "Data Container @GitHub"
 		URL = "https://github.com/UweGerdes/docker-data"
 	];
@@ -45,7 +44,12 @@ digraph Docker {
 	];
 
 	"Browser" [
-		label = "Browser / Gulp"
+		label = "Browser"
+		shape = "ellipse"
+	];
+
+	"Tests" [
+		label = "Tests"
 		shape = "ellipse"
 	];
 
@@ -54,12 +58,13 @@ digraph Docker {
 		fontsize = "20px";
 		color=grey;
 		node [style=filled,color=white];
-		"HTTP Server":"nginx" -> "Data Container":"htdocs" [color=black];
-		"PHP-FPM Server":"php-fpm" -> "Data Container":"htdocs" [color=black];
-		"PHP-FPM Server":"php-fpm" -> "Mail-Server":"smtp" [color=green, label="mail:25\nmail:143"];
-		"HTTP Server" -> "PHP-FPM Server" [constraint=false, color=black, label="unix:php-fpm.sock"];
-		"PHP-FPM Server" -> "Database-Server" [constraint=false, color=green, label="mysql:3306"];
+		"HTTP Server":"nginx" -> "Data Container" [color=black];
+		"PHP-FPM Server":"php-fpm" -> "Data Container" [color=black];
+		"HTTP Server" -> "PHP-FPM Server" [color=black, label="unix:php-fpm.sock"];
+		"PHP-FPM Server":"php-fpm" -> "Mail-Server" [color=green, label="mail:25\nmail:143"];
+		"PHP-FPM Server":"php-fpm" -> "Database-Server" [color=green, label="mysql:3306"];
 	}
-	"Browser" -> "HTTP Server" [constraint=false, color=green, label="localhost:3080\nnginx:80"];
+	"Browser" -> "HTTP Server" [color=green, label="localhost:3080\nnginx:80"];
+	"Tests" -> "HTTP Server" [color=green];
 	"Data Container":"htdocs" -> "File System" [color=black];
 }

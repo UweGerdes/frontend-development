@@ -18,7 +18,7 @@ before_install:
   # scripts handling this.
   #- docker/web/provision.sh
 
-  - docker build -t uwegerdes/gulp-frontend .
+  - docker build -t uwegerdes/frontend-development .
 
 script:
-  - docker run -it --rm --network="$(docker inspect --format='{{.HostConfig.NetworkMode}}' nginx)" --add-host dockerhost:$(docker inspect --format='{{range .NetworkSettings.Networks}}{{.IPAddress}} {{end}}' nginx) uwegerdes/gulp-frontend npm test
+  - docker run --rm --network="$(docker inspect --format='{{.HostConfig.NetworkMode}}' nginx)" --add-host dockerhost:$(docker inspect --format='{{range .NetworkSettings.Networks}}{{.IPAddress}} {{end}}' nginx) uwegerdes/frontend-development npm test

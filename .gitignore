@@ -11,8 +11,8 @@
 /src/img/gv/
 /src/less/iconfont.less
 /tests/test-forms/err.log
-/tests/tests.log
-/tests/tests.html
+/tests/*/tests.log
+/tests/*/tests.html
 
 # general ignores
 bower_components/

@@ -25,7 +25,6 @@ var autoprefixer = require('gulp-autoprefixer'),
 	gulpLivereload = require('gulp-livereload'),
 	notify = require('gulp-notify'),
 	path = require('path'),
-	postMortem = require('gulp-postmortem'),
 	os = require('os'),
 	rename = require('rename'),
 	runSequence = require('run-sequence'),
@@ -214,14 +213,6 @@ gulp.task('server-compare-layouts', function() {
 		}
 	});
 });
-/*
- * gulp postmortem task to stop server on termination of gulp
- */
-gulp.task('server-compare-layouts-postMortem', function() {
-	return gulp.src( watchFilesFor['server-compare-layouts'] )
-		.pipe(postMortem({gulp: gulp, tasks: [ 'server-compare-layouts:stop' ]}))
-		;
-});
 
 /*
  * run all build tasks
@@ -260,7 +251,6 @@ gulp.task('watch', function() {
 gulp.task('compare-layouts-init', function(callback) {
 	runSequence('compare-layouts-less',
 		'server-compare-layouts:start',
-		'server-compare-layouts-postMortem',
 		callback);
 });
 
@@ -271,7 +261,6 @@ gulp.task('default', function(callback) {
 	runSequence('build',
 		'server-compare-layouts:start',
 		'watch',
-		'server-compare-layouts-postMortem',
 		callback);
 });
 

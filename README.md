@@ -51,7 +51,6 @@ If you have an apt-cacher-ng proxy server (I have a [docker](https://github.com/
 Now build and start the servers:
 
 ```bash
-$ export TZ=Europe/Berlin
 $ docker-compose up -d
 $ docker ps
 ```

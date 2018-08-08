@@ -1,11 +1,5 @@
 /*
- * gulpfile for project Frontend
- *
- * $ sudo npm install --global gulp
- * $ cd myProject/build/Gulp
- * $ npm install
- *
- * edit /node_modules/gulp-less/index.js:68 : replace 'done' with 'then'
+ * gulpfile for project frontend-development
  *
  * (c) Uwe Gerdes, entwicklung@uwegerdes.de
  */
@@ -304,8 +298,8 @@ gulp.task('iconfont-preview', function(){
  * lint javascript files
  */
 watchFilesFor.jshint = [
-  path.join(gulpDir, '**', 'gulpfile.js'),
-  path.join(gulpDir, '**', 'package.json')
+  path.join(gulpDir, 'gulpfile.js'),
+  path.join(gulpDir, 'package.json')
 ];
 gulp.task('jshint', function(callback) {
   return gulp.src(watchFilesFor.jshint)

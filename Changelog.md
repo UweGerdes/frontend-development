@@ -2,6 +2,11 @@
 
 ## latest
 
+1.12.1 refactoring
+
+1.12.0
+rebasing on NodeJS 8.x
+
 1.11.0
 using git repository for slimerjs master branch - this should run with latest firefox version
 
