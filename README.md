@@ -95,7 +95,7 @@ Run a container from the image just created and connect to your environment (wit
 Removes the container after if your nginx ip address changes.
 
 ```bash
-$ docker run -it --rm \
+$ docker run -it \
 	--name frontend-development \
 	-v $(pwd):/home/node/app \
 	-p 5381:5381 \
