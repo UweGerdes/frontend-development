@@ -248,6 +248,10 @@ watchFilesFor['iconfont-build'] = [
 gulp.task('iconfont-build', function(){
   var fontName = 'iconfont';
   var destDirFont = path.join(destDir, 'css', 'fonts');
+  var formats = ['ttf', 'eot', 'woff', 'woff2', 'svg'];
+  if (process.arch == 'arm') { // ttf2woff2 fails on arm architecture
+    formats = ['ttf', 'eot', 'woff', 'svg'];
+  }
   gulp.src(watchFilesFor['iconfont-build'])
     .pipe(iconfontCss({
       fontName: fontName,
@@ -258,16 +262,12 @@ gulp.task('iconfont-build', function(){
     .pipe(iconfont({
       fontName: fontName,
       fontHeight: 1001,
-      formats: ['ttf', 'eot', 'woff', 'woff2', 'svg'],
+      formats: formats,
       log: function(){},
       normalize: true,
       prependUnicode: true,
       timestamp: Date.now(),
     }))
-    .on('glyphs', function(glyphs, options) {
-      // CSS templating, e.g.
-      // console.log(glyphs, options);
-    })
     .pipe(gulp.dest(destDirFont))
     .pipe(log({ message: 'saved: <%= file.path %>', title: 'Gulp iconfont' }))
     ;

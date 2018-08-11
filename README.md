@@ -86,7 +86,7 @@ $ docker build -t uwegerdes/frontend-development \
 	.
 ```
 
-The build will take about 30 minutes because some packages have to be compiled.
+The build will take about 30 minutes because some packages have to be compiled. Some compliations fail but the packages will be included.
 
 ## Start the gulp container
 
