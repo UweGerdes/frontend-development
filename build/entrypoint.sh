@@ -17,11 +17,6 @@ if [ ! -w "${APP_HOME}/" ]; then
 	exit 1
 fi
 
-if [ ! -d "${APP_HOME}/bower_components" ]; then
-	echo "initial loading frontend dependencies"
-	bower install
-fi
-
 if [ ! -f "${APP_HOME}/htdocs/css/fonts/iconfont.ttf" ]; then
 	echo "initial building iconfont"
 	gulp iconfont

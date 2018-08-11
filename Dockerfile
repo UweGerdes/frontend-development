@@ -36,7 +36,6 @@ RUN apt-get update && \
 	apt-get clean && \
 	rm -rf /var/lib/apt/lists/* && \
 	npm install -g \
-				bower \
 				casperjs \
 				gulp \
 				marked \
