@@ -20,7 +20,7 @@ USER root
 
 COPY . ${APP_HOME}
 
-RUN if [ -n -f "${APP_HOME}/build/phantomjs/bin/phantomjs" ] ; then \
+RUN if [ ! -f "${APP_HOME}/build/phantomjs/bin/phantomjs" ] ; then \
 		echo "ERROR ${APP_HOME}/build/phantomjs/bin/phantomjs not found - please compile it and copy phantomjs to /usr/local/bin/phantomjs" ; \
 		exit 1 ; \
 	fi
