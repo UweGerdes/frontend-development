@@ -17,7 +17,7 @@ var fs = require('fs'),
 	obj2html = require('./bin/obj2html.js'),
 	styleTree = require('./bin/style-tree.js');
 
-var timeout = 10000;
+var timeout = 50000;
 
 var configFile = 'config/default.js',
 	config = null;
