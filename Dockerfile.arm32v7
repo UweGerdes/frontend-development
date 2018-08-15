@@ -20,6 +20,11 @@ USER root
 
 COPY . ${APP_HOME}
 
+RUN if [ -n -f "${APP_HOME}/build/phantomjs/bin/phantomjs" ] ; then \
+		echo "ERROR ${APP_HOME}/build/phantomjs/bin/phantomjs not found - please compile it and copy phantomjs to /usr/local/bin/phantomjs" ; \
+		exit 1 ; \
+	fi
+
 COPY package.json ${NODE_HOME}/
 
 WORKDIR ${NODE_HOME}
@@ -42,7 +47,8 @@ RUN apt-get update && \
 	apt-get install -y firefox-esr && \
 	apt-get clean && \
 	rm -rf /var/lib/apt/lists/* && \
-	npm -g config set user ${USER_NAME} && \
+	cp "${APP_HOME}/build/phantomjs/bin/phantomjs" "/usr/local/bin/phantomjs" && \
+	chmod 755 "/usr/local/bin/phantomjs" && \
 	npm install -g \
 				casperjs \
 				gulp \
@@ -60,15 +66,7 @@ RUN apt-get update && \
 	ln -s /usr/bin/optipng ${NODE_HOME}/node_modules/optipng-bin/vendor/optipng && \
 	mkdir -p ${NODE_HOME}/node_modules/jpegtran-bin/vendor/ && \
 	ln -s /usr/bin/jpegtran ${NODE_HOME}/node_modules/jpegtran-bin/vendor/jpegtran && \
-	chown -R ${USER_NAME}:${USER_NAME} ${NODE_HOME} && \
-	chown -R ${USER_NAME}:${USER_NAME} ${NODE_HOME} && \
-	if [ -f "${APP_HOME}/build/phantomjs/bin/phantomjs" ] ; then \
-		cp "${APP_HOME}/build/phantomjs/bin/phantomjs" "/usr/local/bin/phantomjs" ; \
-		chmod 755 "/usr/local/bin/phantomjs" ; \
-	else \
-		echo "ERROR ${APP_HOME}/build/phantomjs/bin/phantomjs not found - please compile it and copy phantomjs to /usr/local/bin/phantomjs" ; \
-		exit 1 ; \
-	fi
+	chown -R ${USER_NAME}:${USER_NAME} ${NODE_HOME}
 
 ENV SLIMERJSLAUNCHER '/usr/bin/firefox-esr'
 

@@ -92,7 +92,7 @@ The build will take about 30 minutes because some packages have to be compiled. 
 
 Run a container from the image just created and connect to your environment (with the localhost ports of gulp livereload on 5381, responsive-check on 5382, compare-layouts on 5383 and a running nginx docker container, the hostname `dockerhost` is used in test configs).
 
-Removes the container after if your nginx ip address changes.
+Remove the container and run again if your nginx ip address changes.
 
 ```bash
 $ docker run -it \
