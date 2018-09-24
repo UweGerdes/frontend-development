@@ -77,7 +77,7 @@ The command is built into `compare-layouts.js`.
 
 ## Run gulp docker image
 
-Run a container from the image `uwegerdes/gulp-frontend` and connect to your environment (with the localhost ports of gulp livereload on 5381, compare-layouts on 5383 and a running nginx docker container, the hostname `dockerhost` is used in test configs).
+Run a container from the image `uwegerdes/gulp-frontend` and connect to your environment (with the localhost ports of gulp livereload on 8081, compare-layouts on 8083 and a running nginx docker container, the hostname `dockerhost` is used in test configs).
 
 This command removes the container after end - useful if your nginx ip address changes.
 
@@ -85,13 +85,13 @@ This command removes the container after end - useful if your nginx ip address c
 $ docker run -it --rm \
 	--name compare-layouts \
 	-v $(pwd):/usr/src/app \
-	-p 5381:5381 \
-	-p 5383:5383 \
+	-p 8081:8081 \
+	-p 8083:8083 \
 	--network="$(docker inspect --format='{{.HostConfig.NetworkMode}}' nginx)" \
 	--add-host dockerhost:$(docker inspect --format='{{range .NetworkSettings.Networks}}{{.IPAddress}} {{end}}' nginx) \
 	uwegerdes/gulp-frontend
 ```
 
-Open `http://localhost:5383/` in your favourite browser.
+Open `http://localhost:8083/` in your favourite browser.
 
 Stop the container with CTRL-C and exit the container with CTRL-D.

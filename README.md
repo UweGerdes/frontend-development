@@ -55,7 +55,7 @@ $ docker-compose up -d
 $ docker ps
 ```
 
-About 5 minutes and about 2 GB later open [http://localhost:3080/](http://localhost:3080/) in your preferred browser
+About 5 minutes and about 2 GB later open [http://localhost:8080/](http://localhost:8080/) in your preferred browser
 
 ## Create gulp docker image
 
@@ -63,9 +63,9 @@ Now build the gulp docker image - mind the '.' at the end of the command (meanin
 
 ```bash
 $ docker build -t uwegerdes/frontend-development \
-	--build-arg GULP_LIVERELOAD="5381" \
-	--build-arg RESPONSIVE_CHECK_HTTP="5382" \
-	--build-arg COMPARE_LAYOUTS_HTTP="5383" \
+	--build-arg GULP_LIVERELOAD="8081" \
+	--build-arg RESPONSIVE_CHECK_HTTP="8082" \
+	--build-arg COMPARE_LAYOUTS_HTTP="8083" \
 	.
 ```
 
@@ -79,9 +79,9 @@ You should also build the https://github.com/uwegerdes/baseimage-arm32v7 as uweg
 
 ```bash
 $ docker build -t uwegerdes/frontend-development \
-	--build-arg GULP_LIVERELOAD="5381" \
-	--build-arg RESPONSIVE_CHECK_HTTP="5382" \
-	--build-arg COMPARE_LAYOUTS_HTTP="5383" \
+	--build-arg GULP_LIVERELOAD="8081" \
+	--build-arg RESPONSIVE_CHECK_HTTP="8082" \
+	--build-arg COMPARE_LAYOUTS_HTTP="8083" \
 	-f Dockerfile.arm32v7 \
 	.
 ```
@@ -90,7 +90,7 @@ The build will take about 30 minutes because some packages have to be compiled. 
 
 ## Start the gulp container
 
-Run a container from the image just created and connect to your environment (with the localhost ports of gulp livereload on 5381, responsive-check on 5382, compare-layouts on 5383 and a running nginx docker container, the hostname `dockerhost` is used in test configs).
+Run a container from the image just created and connect to your environment (with the localhost ports of gulp livereload on 8081, responsive-check on 8082, compare-layouts on 8083 and a running nginx docker container, the hostname `dockerhost` is used in test configs).
 
 Remove the container and run again if your nginx ip address changes.
 
@@ -98,9 +98,9 @@ Remove the container and run again if your nginx ip address changes.
 $ docker run -it \
 	--name frontend-development \
 	-v $(pwd):/home/node/app \
-	-p 5381:5381 \
-	-p 5382:5382 \
-	-p 5383:5383 \
+	-p 8081:8081 \
+	-p 8082:8082 \
+	-p 8083:8083 \
 	--network="$(docker inspect --format='{{.HostConfig.NetworkMode}}' nginx)" \
 	--add-host dockerhost:$(docker inspect --format='{{range .NetworkSettings.Networks}}{{.IPAddress}} {{end}}' nginx) \
 	uwegerdes/frontend-development bash
@@ -112,7 +112,7 @@ Stop (CTRL-D) and restart the server with:
 $ docker start -ai frontend-development
 ```
 
-When gulp (and the test servers) is started inside the container, open `http://localhost:5382` and `http://localhost:5383` in your favorite browser.
+When gulp (and the test servers) is started inside the container, open `http://localhost:8082` and `http://localhost:8083` in your favorite browser.
 
 You should exit (CTRL-C) and restart the container if you change a `gulpfile.js`.
 

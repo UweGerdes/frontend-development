@@ -58,9 +58,9 @@ If you have npm-proxy-cache running please make sure you build uwegerdes/nodejs 
 
 ```bash
 $ docker build -t uwegerdes/frontend-development \
-	--build-arg GULP_LIVERELOAD="5381" \
-	--build-arg RESPONSIVE_CHECK_HTTP="5382" \
-	--build-arg COMPARE_LAYOUTS_HTTP="5383" \
+	--build-arg GULP_LIVERELOAD="8081" \
+	--build-arg RESPONSIVE_CHECK_HTTP="8082" \
+	--build-arg COMPARE_LAYOUTS_HTTP="8083" \
 	.
 ```
 
@@ -70,7 +70,7 @@ If you are using Docker on armhf you should add `-f Dockerfile.armhf` to the bui
 
 ## Start the gulp container
 
-Run a container from the image just created and connect to your environment (with the ports of gulp livereload on 5381, responsive-check on 5382 and a running nginx docker container, the hostname `dockerhost` is used in test configs).
+Run a container from the image just created and connect to your environment (with the ports of gulp livereload on 8081, responsive-check on 8082 and a running nginx docker container, the hostname `dockerhost` is used in test configs).
 
 This command removes the container after end - useful if your nginx ip address changes.
 
@@ -78,9 +78,9 @@ This command removes the container after end - useful if your nginx ip address c
 $ docker run -it --rm \
 	--name frontend-development \
 	-v $(pwd):/home/node/app \
-	-p 5381:5381 \
-	-p 5382:5382 \
-	-p 5383:5383 \
+	-p 8081:8081 \
+	-p 8082:8082 \
+	-p 8083:8083 \
 	--network="$(docker inspect --format='{{.HostConfig.NetworkMode}}' nginx)" \
 	--add-host dockerhost:$(docker inspect --format='{{range .NetworkSettings.Networks}}{{.IPAddress}} {{end}}' nginx) \
 	uwegerdes/frontend-development \

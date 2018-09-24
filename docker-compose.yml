@@ -50,7 +50,7 @@ services:
     image: uwegerdes/nginx
     container_name: nginx
     ports:
-      - "3080:80"
+      - "8080:80"
     volumes_from:
       - data
       - php-fpm
