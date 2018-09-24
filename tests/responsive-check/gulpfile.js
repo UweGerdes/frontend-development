@@ -34,7 +34,7 @@ var autoprefixer = require('gulp-autoprefixer'),
 	;
 
 var testDir = __dirname;
-var bowerDir = path.join(__dirname, '..', '..', 'bower_components');
+var modulesDir = path.join(__dirname, '..', '..', '..', 'node_modules');
 var testLogfile = path.join(testDir, 'tests.log');
 var testHtmlLogfile = path.join(testDir, 'tests.html');
 var logMode = 0;
@@ -90,10 +90,10 @@ gulp.task('responsive-check-less', function () {
 });
 
 watchFilesFor['responsive-check-less-bootstrap'] = [
-	path.join(bowerDir, 'bootstrap', 'less', '**', '*.less')
+	path.join(modulesDir, 'bootstrap', 'less', '**', '*.less')
 ];
 gulp.task('responsive-check-less-bootstrap', function () {
-	return gulp.src( [ path.join(bowerDir, 'bootstrap', 'less', 'bootstrap.less') ] )
+	return gulp.src( [ path.join(modulesDir, 'bootstrap', 'less', 'bootstrap.less') ] )
 		.pipe(changed(path.join(testDir, 'css'), {extension: '.css'}))
 		.pipe(less())
 		.on('error', log.onError({ message:  'Error: <%= error.message %>' , title: 'LESS Error'}))
