@@ -29,7 +29,6 @@ $ sudo mkdir -p /srv/docker/npm-proxy-cache
 $ sudo chmod a+w /srv/docker/npm-proxy-cache
 $ docker run -d \
 	--name npm-proxy-cache \
-	--net=host \
 	--restart=always \
 	-p 3143:8080 \
 	-v /srv/docker/npm-proxy-cache:/cache \
@@ -43,7 +42,7 @@ Build the dockers in the `docker-compose.yml` - the servers are needed for tests
 ```bash
 $ export APT_PROXY=http://$(hostname -i):3142 && \
   export TZ=Europe/Berlin && \
-  docker-compose up
+  docker-compose up -d
 ```
 
 Some Minutes and 2.5 GB later...
