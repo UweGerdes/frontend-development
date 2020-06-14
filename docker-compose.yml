@@ -36,7 +36,7 @@ services:
   php-fpm:
     build:
       context: https://github.com/UweGerdes/docker-php-fpm.git
-    image: uwegerdes/php-fpm
+    image: uwegerdes/php-fpm-9000
     container_name: php-fpm
     volumes_from:
       - data
@@ -51,9 +51,10 @@ services:
     container_name: nginx
     ports:
       - "8080:80"
+    links:
+      - php-fpm
     volumes_from:
       - data
-      - php-fpm
     volumes:
       - ./build/nginx/sites-available:/etc/nginx/sites-available
 
