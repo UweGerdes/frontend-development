@@ -141,9 +141,10 @@ $ alias dockergulp='docker exec -t frontend-development gulp'
 
 ### e2e-workflow
 
-Start the docker-e2e-workflow test dockers in your project directory:
+Start the docker-e2e-workflow test dockers in your project directory (results directory required):
 
 ```bash
+$ mkdir tests/e2e-workflow/results
 $ docker-compose -f docker-compose-e2e-workflow.yaml up
 ```
 

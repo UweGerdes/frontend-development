@@ -297,7 +297,7 @@ module.exports = {
     'Aktivierung fehlt': {
       uri: domain + '/login/',
       steps: {
-        'Login-Seite 2': {
+        'Login-Seite': {
           title: 'Bitte anmelden',
           elements: {
             '//h1' : 'Bitte anmelden',
@@ -427,8 +427,466 @@ module.exports = {
             '//*[contains(@class,"has-error")]'
           ],
           click: '//a[@href="/login/index.php?editAccount"]'
+        }
+      }
+    },
+    'Benutzer ändern': {
+      uri: domain + '/login/?editAccount',
+      steps: {
+        'Zugangsdaten bearbeiten': {
+          title: 'Login Zugangsdaten bearbeiten',
+          elements: {
+            '//body[@class="editAccountBody"]': '',
+            '//*[@id="headline"]': 'Benutzerdaten bearbeiten',
+            '//form[@name="editAccount"]': '',
+            '//input[@type="text"][@name="Name"][@value="Testuser 1"]': '',
+            '//input[@type="text"][@name="eMail"][@value="testbox@mail.local"]': '',
+            '//input[@type="text"][@name="Username"][@value="testuser"]': '',
+            '//input[@type="password"][@name="Password"]': '',
+            '//input[@type="password"][@name="Password2"]': '',
+            '//*[@type="submit"][@name="submit"]': 'Speichern',
+            '//a[@href="/login/index.php"]': 'zurück zum Start'
+          },
+          elementsNotExist: [
+            '//*[contains(@class,"has-error")]'
+          ],
+          input: {
+            '//input[@name="Name"]': '',
+            '//input[@name="eMail"]': '',
+            '//input[@name="Username"]': '',
+            '//input[@name="Password"]': '',
+            '//input[@name="Password2"]': ''
+          },
+          click: '//*[@type="submit"]',
+        },
+        'Leere Eingabefelder': {
+          title: 'Login Zugangsdaten bearbeiten',
+          elements: {
+            '//body[@class="editAccountBody"]': '',
+            '//*[@id="headline"]': 'Benutzerdaten bearbeiten',
+            '//form[@name="editAccount"]': '',
+            '//*[@id="editAccountError"]': 'Anwendername fehlt.\nMail-Adresse fehlt.\nAnmeldename fehlt.',
+            '//div[contains(@class,"has-error")]//input[@type="text"][@name="Name"][@value="Testuser 1"][contains(@class,"has-error")]': '',
+            '//div[contains(@class,"has-error")]//input[@type="text"][@name="eMail"][@value="testbox@mail.local"][contains(@class,"has-error")]': '',
+            '//div[contains(@class,"has-error")]//input[@type="text"][@name="Username"][@value="testuser"][contains(@class,"has-error")]': '',
+            '//input[@type="password"][@name="Password"]': '',
+            '//input[@type="password"][@name="Password2"]': '',
+            '//*[@type="submit"][@name="submit"]': 'Speichern',
+            '//a[@href="/login/index.php"]': 'zurück zum Start'
+          },
+          input: {
+            '//input[@name="eMail"]': 'testbox_mail.local',
+          },
+          click: '//*[@type="submit"]',
+        },
+        'E-Mail Syntaxfehler': {
+          title: 'Login Zugangsdaten bearbeiten',
+          elements: {
+            '//body[@class="editAccountBody"]': '',
+            '//*[@id="headline"]': 'Benutzerdaten bearbeiten',
+            '//form[@name="editAccount"]': '',
+            '//*[@id="editAccountError"]': 'Mail-Adresse falsch.',
+            '//input[@type="text"][@name="Name"][@value="Testuser 1"]': '',
+            '//div[contains(@class,"has-error")]//input[@type="text"][@name="eMail"][@value="testbox@mail.local"][contains(@class,"has-error")]': '',
+            '//input[@type="text"][@name="Username"][@value="testuser"]': '',
+            '//input[@type="password"][@name="Password"]': '',
+            '//input[@type="password"][@name="Password2"]': '',
+            '//*[@type="submit"][@name="submit"]': 'Speichern',
+            '//a[@href="/login/index.php"]': 'zurück zum Start'
+          },
+          input: {
+            '//input[@name="Username"]': 'uwe',
+          },
+          click: '//*[@type="submit"]',
+        },
+        'Username existiert': {
+          title: 'Login Zugangsdaten bearbeiten',
+          elements: {
+            '//body[@class="editAccountBody"]': '',
+            '//*[@id="headline"]': 'Benutzerdaten bearbeiten',
+            '//form[@name="editAccount"]': '',
+            '//*[@id="editAccountError"]': 'Anwendername \'uwe\' bereits vorhanden.',
+            '//input[@type="text"][@name="Name"][@value="Testuser 1"]': '',
+            '//input[@type="text"][@name="eMail"][@value="testbox@mail.local"]': '',
+            '//div[contains(@class,"has-error")]//input[@type="text"][@name="Username"][@value="testuser"][contains(@class,"has-error")]': '',
+            '//input[@type="password"][@name="Password"]': '',
+            '//input[@type="password"][@name="Password2"]': '',
+            '//*[@type="submit"][@name="submit"]': 'Speichern',
+            '//a[@href="/login/index.php"]': 'zurück zum Start'
+          },
+          input: {
+            '//input[@name="Password"]': 'testpassword',
+            '//input[@name="Password2"]': 'testpassword2',
+          },
+          click: '//*[@type="submit"]',
+        },
+        'Passworte nicht gleich': {
+          title: 'Login Zugangsdaten bearbeiten',
+          elements: {
+            '//body[@class="editAccountBody"]': '',
+            '//*[@id="headline"]': 'Benutzerdaten bearbeiten',
+            '//form[@name="editAccount"]': '',
+            '//*[@id="editAccountError"]': 'Passworte stimmen nicht überein.',
+            '//input[@type="text"][@name="Name"][@value="Testuser 1"]': '',
+            '//input[@type="text"][@name="eMail"][@value="testbox@mail.local"]': '',
+            '//input[@type="text"][@name="Username"][@value="testuser"]': '',
+            '//div[contains(@class,"has-error")]//input[@type="password"][@name="Password"][contains(@class,"has-error")]': '',
+            '//div[contains(@class,"has-error")]//input[@type="password"][@name="Password2"][contains(@class,"has-error")]': '',
+            '//*[@type="submit"][@name="submit"]': 'Speichern',
+            '//a[@href="/login/index.php"]': 'zurück zum Start'
+          },
+          input: {
+            '//input[@name="Password"]': 'test',
+            '//input[@name="Password2"]': 'test',
+          },
+          click: '//*[@type="submit"]',
+        },
+        'Passworte nicht gleich': {
+          title: 'Login Zugangsdaten bearbeiten',
+          elements: {
+            '//body[@class="editAccountBody"]': '',
+            '//*[@id="headline"]': 'Benutzerdaten bearbeiten',
+            '//form[@name="editAccount"]': '',
+            '//*[@id="editAccountError"]': 'Passworte stimmen nicht überein.',
+            '//input[@type="text"][@name="Name"][@value="Testuser 1"]': '',
+            '//input[@type="text"][@name="eMail"][@value="testbox@mail.local"]': '',
+            '//input[@type="text"][@name="Username"][@value="testuser"]': '',
+            '//div[contains(@class,"has-error")]//input[@type="password"][@name="Password"][contains(@class,"has-error")]': '',
+            '//div[contains(@class,"has-error")]//input[@type="password"][@name="Password2"][contains(@class,"has-error")]': '',
+            '//*[@type="submit"][@name="submit"]': 'Speichern',
+            '//a[@href="/login/index.php"]': 'zurück zum Start'
+          },
+          input: {
+            '//input[@name="Name"]': 'Testuser 2'
+          },
+          click: '//*[@type="submit"]',
+        },
+        'Name geändert': {
+          title: 'Login Zugangsdaten gespeichert',
+          elements: {
+            '//body[@class="editAccountBodyOk"]': '',
+            '//*[@id="headline"]': 'Daten gespeichert:',
+            '//*[@id="NameContainer"]//*[contains(@class,"form-control-static")]': 'Testuser 2',
+            '//*[@id="eMailContainer"]//*[contains(@class,"form-control-static")]': 'testbox@mail.local',
+            '//*[@id="UsernameContainer"]//*[contains(@class,"form-control-static")]': 'testuser',
+            '//*[@id="PasswordContainer"]//*[contains(@class,"form-control-static")]': 'nicht geändert',
+            '//a[@href="/login/index.php"]': 'zurück zum Start'
+          },
+          click: '//a[@href="/login/index.php"]',
+        },
+        'Benutzerdaten erneut bearbeiten': {
+          title: 'Startseite',
+          elements: {
+            '//body[@class="indexBody"]': '',
+            '//*[@id="headline"]': 'Vielen Dank für die Anmeldung!',
+            '//*[@id="editAccountLink"][@href="/login/index.php?editAccount"]': 'Daten bearbeiten',
+            '//*[@id="deleteAccountLink"][@href="/login/index.php?deleteAccount"]': 'Meine Zugangsdaten löschen',
+            '//*[@id="logoutLink"][@href="/login/index.php?logout=true"]': 'abmelden'
+          },
+          elementsNotExist: [
+            '//*[contains(@class,"has-error")]'
+          ],
+          click: '//a[@href="/login/index.php?editAccount"]'
+        },
+        'eMail und Username ändern': {
+          title: 'Login Zugangsdaten bearbeiten',
+          elements: {
+            '//body[@class="editAccountBody"]': '',
+            '//*[@id="headline"]': 'Benutzerdaten bearbeiten',
+            '//form[@name="editAccount"]': '',
+            '//input[@type="text"][@name="Name"][@value="Testuser 2"]': '',
+            '//input[@type="text"][@name="eMail"][@value="testbox@mail.local"]': '',
+            '//input[@type="text"][@name="Username"][@value="testuser"]': '',
+            '//input[@type="password"][@name="Password"]': '',
+            '//input[@type="password"][@name="Password2"]': '',
+            '//*[@type="submit"][@name="submit"]': 'Speichern',
+            '//a[@href="/login/index.php"]': 'zurück zum Start'
+          },
+          input: {
+            '//input[@name="eMail"]': 'testbox@uwegerdes.de',
+            '//input[@name="Username"]': 'testuser2'
+          },
+          click: '//*[@type="submit"]',
+        },
+        'eMail und Username geändert': {
+          title: 'Login Zugangsdaten gespeichert',
+          elements: {
+            '//body[@class="editAccountBodyOk"]': '',
+            '//*[@id="headline"]': 'Daten gespeichert:',
+            '//*[@id="NameContainer"]//*[contains(@class,"form-control-static")]': 'Testuser 2',
+            '//*[@id="eMailContainer"]//*[contains(@class,"form-control-static")]': 'testbox@uwegerdes.de',
+            '//*[@id="UsernameContainer"]//*[contains(@class,"form-control-static")]': 'testuser2',
+            '//*[@id="PasswordContainer"]//*[contains(@class,"form-control-static")]': 'nicht geändert',
+            '//a[@href="/login/index.php"]': 'zurück zum Start'
+          },
+          click: '//a[@href="/login/index.php"]',
         },
       }
-    }
+    },
+    'Benutzer zurück ändern': {
+      uri: domain + '/login/',
+      steps: {
+        'Login-Seite vor Login': {
+          title: 'Bitte anmelden',
+          elements: {
+            '//h1' : 'Bitte anmelden',
+            '//form[@id="login"]': '',
+            '//form//h2' : 'Anmelden',
+            '//input[@name="Username"]': '',
+            '//input[@name="Password"]': '',
+            '//input[@name="rememberMe"]': '',
+            '//button[@type="submit"]': '',
+            '//a[@href="/login/index.php?newAccount"]' : 'Login beantragen'
+          },
+          elementsNotExist: [
+            '//*[@id="loginError"]',
+            '//*[contains(@class,"has-error")]',
+            '//*[contains(@class,"loggedIn")]'
+          ],
+          input: {
+            '//input[@name="Username"]': 'testuser2',
+            '//input[@name="Password"]': 'testpass'
+          },
+          click: '//button[@type="submit"]'
+        },
+        'Anmeldung ok': {
+          title: 'Startseite',
+          elements: {
+            '//body[@class="indexBody"]': '',
+            '//*[@id="headline"]': 'Vielen Dank für die Anmeldung!',
+            '//*[@id="editAccountLink"][@href="/login/index.php?editAccount"]': 'Daten bearbeiten',
+            '//*[@id="deleteAccountLink"][@href="/login/index.php?deleteAccount"]': 'Meine Zugangsdaten löschen',
+            '//*[@id="lastLogin"]': '',
+            '//*[@id="logoutLink"][@href="/login/index.php?logout=true"]': 'abmelden'
+          },
+          elementsNotExist: [
+            '//*[contains(@class,"has-error")]'
+          ],
+          click: '//a[@href="/login/index.php?editAccount"]'
+        },
+        'Zugangsdaten bearbeiten': {
+          title: 'Login Zugangsdaten bearbeiten',
+          elements: {
+            '//body[@class="editAccountBody"]': '',
+            '//*[@id="headline"]': 'Benutzerdaten bearbeiten',
+            '//form[@name="editAccount"]': '',
+            '//input[@type="text"][@name="Name"][@value="Testuser 2"]': '',
+            '//input[@type="text"][@name="eMail"][@value="testbox@uwegerdes.de"]': '',
+            '//input[@type="text"][@name="Username"][@value="testuser2"]': '',
+            '//input[@type="password"][@name="Password"]': '',
+            '//input[@type="password"][@name="Password2"]': '',
+            '//*[@type="submit"][@name="submit"]': 'Speichern',
+            '//a[@href="/login/index.php"]': 'zurück zum Start'
+          },
+          elementsNotExist: [
+            '//*[contains(@class,"has-error")]'
+          ],
+          input: {
+            '//input[@name="Name"]': 'Testuser 1',
+            '//input[@name="eMail"]': 'testbox@mail.local',
+            '//input[@name="Username"]': 'testuser'
+          },
+          click: '//*[@type="submit"]',
+        },
+        'Name, eMail und Username geändert': {
+          title: 'Login Zugangsdaten gespeichert',
+          elements: {
+            '//body[@class="editAccountBodyOk"]': '',
+            '//*[@id="headline"]': 'Daten gespeichert:',
+            '//*[@id="NameContainer"]//*[contains(@class,"form-control-static")]': 'Testuser 1',
+            '//*[@id="eMailContainer"]//*[contains(@class,"form-control-static")]': 'testbox@mail.local',
+            '//*[@id="UsernameContainer"]//*[contains(@class,"form-control-static")]': 'testuser',
+            '//*[@id="PasswordContainer"]//*[contains(@class,"form-control-static")]': 'nicht geändert',
+            '//a[@href="/login/index.php"]': 'zurück zum Start'
+          },
+          click: '//a[@href="/login/index.php"]',
+        },
+      }
+    },
+    'Benutzer löschen': {
+      uri: domain + '/login/',
+      steps: {
+        'Login-Seite vor Login': {
+          title: 'Bitte anmelden',
+          elements: {
+            '//h1' : 'Bitte anmelden',
+            '//form[@id="login"]': '',
+            '//form//h2' : 'Anmelden',
+            '//input[@name="Username"]': '',
+            '//input[@name="Password"]': '',
+            '//input[@name="rememberMe"]': '',
+            '//button[@type="submit"]': '',
+            '//a[@href="/login/index.php?newAccount"]' : 'Login beantragen'
+          },
+          elementsNotExist: [
+            '//*[@id="loginError"]',
+            '//*[contains(@class,"has-error")]',
+            '//*[contains(@class,"loggedIn")]'
+          ],
+          input: {
+            '//input[@name="Username"]': 'testuser',
+            '//input[@name="Password"]': 'testpass'
+          },
+          click: '//button[@type="submit"]'
+        },
+        'Anmeldung ok': {
+          title: 'Startseite',
+          elements: {
+            '//body[@class="indexBody"]': '',
+            '//*[@id="headline"]': 'Vielen Dank für die Anmeldung!',
+            '//*[@id="editAccountLink"][@href="/login/index.php?editAccount"]': 'Daten bearbeiten',
+            '//*[@id="deleteAccountLink"][@href="/login/index.php?deleteAccount"]': 'Meine Zugangsdaten löschen',
+            '//*[@id="lastLogin"]': '',
+            '//*[@id="logoutLink"][@href="/login/index.php?logout=true"]': 'abmelden'
+          },
+          elementsNotExist: [
+            '//*[contains(@class,"has-error")]'
+          ],
+          click: '//a[@href="/login/index.php?deleteAccount"]'
+        },
+        'Zugangsdaten löschen': {
+          title: 'Login Zugang löschen',
+          elements: {
+            '//body[@class="deleteAccountBody"]': '',
+            '//*[@id="headline"]': 'Wirklich löschen?',
+            '//form[@name="deleteAccount"]': '',
+            '//*[@id="NameContainer"]//*[contains(@class,"form-control-static")]': 'Testuser 1',
+            '//*[@id="eMailContainer"]//*[contains(@class,"form-control-static")]': 'testbox@mail.local',
+            '//*[@id="UsernameContainer"]//*[contains(@class,"form-control-static")]': 'testuser',
+            '//input[@type="password"][@name="Password"]': '',
+            '//input[@type="checkbox"][@name="deleteConfirm"]': '',
+            '//label[@for="deleteConfirm"][//input[@type="checkbox"][@name="deleteConfirm"]]': 'wirklich löschen?',
+            '//*[@type="submit"][@name="submit"]': 'Löschen',
+            '//a[@href="/login/index.php"]': 'nein - zurück zum Start'
+          },
+          elementsNotExist: [
+            '//*[contains(@class,"has-error")]'
+          ],
+          click: '//*[@type="submit"]',
+        },
+        'Fehler Passwort fehlt': {
+          title: 'Login Zugang löschen',
+          elements: {
+            '//body[@class="deleteAccountBody"]': '',
+            '//*[@id="headline"]': 'Wirklich löschen?',
+            '//form[@name="deleteAccount"]': '',
+            '//*[contains(@class,"has-error")]': 'Bitte Passwort eingeben und Bestätigung anklicken.',
+            '//*[@id="NameContainer"]//*[contains(@class,"form-control-static")]': 'Testuser 1',
+            '//*[@id="eMailContainer"]//*[contains(@class,"form-control-static")]': 'testbox@mail.local',
+            '//*[@id="UsernameContainer"]//*[contains(@class,"form-control-static")]': 'testuser',
+            '//div[contains(@class,"has-error")]//input[@type="password"][@name="Password"][contains(@class,"has-error")]': '',
+            '//div[contains(@class,"has-error")]//input[@type="checkbox"][@name="deleteConfirm"]': '',
+            '//input[@type="password"][@name="Password"]': '',
+            '//*[@type="submit"][@name="submit"]': 'Löschen',
+            '//a[@href="/login/index.php"]': 'nein - zurück zum Start'
+          },
+          input: {
+            '//input[@name="Password"]': 'testpass'
+          },
+          click: '//*[@type="submit"]',
+        },
+        'Fehler Bestätigung fehlt': {
+          title: 'Login Zugang löschen',
+          elements: {
+            '//body[@class="deleteAccountBody"]': '',
+            '//*[@id="headline"]': 'Wirklich löschen?',
+            '//form[@name="deleteAccount"]': '',
+            '//*[contains(@class,"has-error")]': 'Bitte Passwort eingeben und Bestätigung anklicken.',
+            '//*[@id="NameContainer"]//*[contains(@class,"form-control-static")]': 'Testuser 1',
+            '//*[@id="eMailContainer"]//*[contains(@class,"form-control-static")]': 'testbox@mail.local',
+            '//*[@id="UsernameContainer"]//*[contains(@class,"form-control-static")]': 'testuser',
+            '//div[contains(@class,"has-error")]//input[@type="password"][@name="Password"][contains(@class,"has-error")]': '',
+            '//div[contains(@class,"has-error")]//input[@type="checkbox"][@name="deleteConfirm"]': '',
+            '//input[@type="password"][@name="Password"]': '',
+            '//*[@type="submit"][@name="submit"]': 'Löschen',
+            '//a[@href="/login/index.php"]': 'nein - zurück zum Start'
+          },
+          input: {
+            '//input[@name="Password"]': 'testpass',
+            '//input[@name="deleteConfirm"]': true
+          },
+          click: '//*[@type="submit"]',
+        },
+        'Login Zugang löschen ok': {
+          title: 'Login Zugang gelöscht',
+          elements: {
+            '//body[@class="deleteAccountBodyOk"]': '',
+            '//*[@id="headline"]': 'Daten gelöscht.',
+            '//a[@href="/login/index.php"]': 'zurück zur Anmeldeseite'
+          },
+          elementsNotExist: [
+            '//*[contains(@class,"has-error")]'
+          ],
+          click: '//a[@href="/login/index.php"]',
+        },
+      }
+    },
+    'Anmeldund nach Löschen versuchen': {
+      uri: domain + '/login/',
+      steps: {
+        'Login-Seite': {
+          title: 'Bitte anmelden',
+          elements: {
+            '//h1' : 'Bitte anmelden',
+            '//form[@id="login"]': '',
+            '//form//h2' : 'Anmelden',
+            '//input[@name="Username"]': '',
+            '//input[@name="Password"]': '',
+            '//input[@name="rememberMe"]': '',
+            '//form[//h2[contains(., "Anmelden")]]//label[//input[@name="rememberMe"]]' : 'Auf diesem Computer angemeldet bleiben',
+            '//form[//h2[contains(., "Anmelden")]]//label[//*[contains(., "Auf diesem Computer angemeldet bleiben")]]//input[@name="rememberMe"]' : '',
+            '//button[@type="submit"]': '',
+            '//a[@href="/login/index.php?newAccount"]' : 'Login beantragen'
+          },
+          elementsNotExist: [
+            '//*[@id="loginError"]',
+            '//*[contains(@class,"has-error")]',
+            '//*[contains(@class,"loggedIn")]'
+          ],
+          click: '//button[@type="submit"]'
+        },
+        'Login-Seite ohne Login': {
+          title: 'Bitte anmelden',
+          elements: {
+            '//h1' : 'Bitte anmelden',
+            '//form[@id="login"]': '',
+            '//form//h2' : 'Anmelden',
+            '//input[@name="Username"]': '',
+            '//input[@name="Password"]': '',
+            '//input[@name="rememberMe"]': '',
+            '//button[@type="submit"]': '',
+            '//a[@href="/login/index.php?newAccount"]' : 'Login beantragen'
+          },
+          elementsNotExist: [
+            '//*[@id="loginError"]',
+            '//*[contains(@class,"loggedIn")]'
+          ],
+          input: {
+            '//input[@name="Username"]': 'testuser',
+            '//input[@name="Password"]': 'testpass'
+          },
+          click: '//button[@type="submit"]'
+        },
+        'Login-Seite ohne gültiges Login': {
+          title: 'Bitte anmelden',
+          elements: {
+            '//h1' : 'Bitte anmelden',
+            '//form[@id="login"]': '',
+            '//form//h2' : 'Anmelden',
+            '//*[@id="loginError"]': 'Anmeldung fehlgeschlagen!',
+            '//*[contains(@class,"has-error")]': 'Anmeldung fehlgeschlagen!',
+            '//*[contains(@class,"messages")]': 'Sitzung nicht (mehr) gültig\nBenutzername / Passwort nicht gültig',
+            '//input[@name="Username"]': '',
+            '//input[@name="Password"]': '',
+            '//input[@name="rememberMe"]': '',
+            '//button[@type="submit"]': '',
+            '//a[@href="/login/index.php?newAccount"]' : 'Login beantragen'
+          },
+          elementsNotExist: [
+            '//*[contains(@class,"loggedIn")]'
+          ]
+        },
+      }
+    },
   }
 };
