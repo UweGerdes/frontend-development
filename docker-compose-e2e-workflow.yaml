@@ -115,6 +115,3 @@ services:
       - ./tests/e2e-workflow:/home/node/app/config/modules/fd/tests/e2e-workflow
       - ./tests/e2e-workflow/results:/home/node/app/results/config/modules/fd/tests/e2e-workflow
     command: npm run dev
-
-volumes:
-  php-fpm-sock:
