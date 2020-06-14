@@ -31,5 +31,8 @@ if (isset($fail)) {
 ?>
 		</div>
 	</div>
+	<div class="footer">
+		<span class="copyright">&copy; 2020 by <a href="mailto:entwicklung@uwegerdes.de">Uwe Gerdes</a></span>
+	</div>
 <?php $content = ob_get_clean() ?>
 <?php include 'page.php' ?>

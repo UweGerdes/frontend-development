@@ -1,0 +1,120 @@
+# To execute this docker-compose yml file use docker-compose -f <file_name> up
+# Add the "-d" flag at the end for deattached execution
+version: "3.5"
+
+services:
+  fd-baseimage:
+    build:
+      context: https://github.com/UweGerdes/docker-baseimage.git
+      args:
+        - APT_PROXY
+        - TZ
+    image: uwegerdes/baseimage
+    container_name: fd-baseimage
+
+  fd-data:
+    build:
+      context: https://github.com/UweGerdes/docker-data.git
+    image: uwegerdes/data
+    container_name: fd-data
+    volumes:
+      - ./htdocs:/var/www/htdocs
+
+  fd-mysql:
+    build:
+      context: https://github.com/UweGerdes/docker-mysql.git
+      args:
+        - MYSQL_ROOT_PASSWORD=123456
+    image: uwegerdes/mysql
+    container_name: fd-mysql
+    hostname: mysql
+    volumes:
+      - ./build/mysql:/entrypoint-initdb.d
+
+  fd-mail:
+    build:
+      context: https://github.com/UweGerdes/docker-mail.git
+    image: uwegerdes/mail
+    container_name: fd-mail
+    hostname: mail
+
+  fd-php-fpm:
+    build:
+      context: https://github.com/UweGerdes/docker-php-fpm.git
+    image: uwegerdes/php-fpm-9000
+    container_name: fd-php-fpm
+    hostname: php-fpm
+    volumes:
+      - ./htdocs:/var/www/htdocs
+    links:
+      - fd-mysql:mysql
+      - fd-mail:mail.local
+
+  fd-nginx:
+    build:
+      context: https://github.com/UweGerdes/docker-nginx.git
+    image: uwegerdes/nginx
+    container_name: fd-nginx
+    hostname: nginx
+    ports:
+      - "51289:80"
+    links:
+      - fd-php-fpm:php-fpm
+    volumes:
+      - ./build/nginx/sites-available:/etc/nginx/sites-available
+      - ./htdocs:/var/www/htdocs
+
+  fd-e2e-hub:
+    image: selenium/hub
+    container_name: fd-e2e-hub
+    hostname: fd-e2e-hub
+
+  fd-e2e-chrome:
+    image: selenium/node-chrome
+    container_name: fd-e2e-chrome
+    volumes:
+      - /dev/shm:/dev/shm
+    depends_on:
+      - fd-e2e-hub
+    environment:
+      HUB_HOST: fd-e2e-hub
+      HUB_PORT: 4444
+      JAVA_OPTS: -Dselenium.LOGGER.level=WARNING
+    links:
+      - fd-nginx:nginx
+
+  fd-e2e-firefox:
+    image: selenium/node-firefox
+    container_name: fd-e2e-firefox
+    volumes:
+      - /dev/shm:/dev/shm
+    depends_on:
+      - fd-e2e-hub
+    environment:
+      HUB_HOST: fd-e2e-hub
+      HUB_PORT: 4444
+      JAVA_OPTS: -Dselenium.LOGGER.level=WARNING
+    links:
+      - fd-nginx:nginx
+
+  fd-e2e-frontend:
+    image: uwegerdes/e2e-workflow
+    container_name: fd-e2e-frontend
+    hostname: fd-e2e-frontend
+    ports:
+      - 51287:8080
+      - 51288:8081
+    depends_on:
+      - fd-e2e-hub
+    environment:
+      HUB_HOST: fd-e2e-hub
+      HUB_PORT: 4444
+      NODE_ENV: staging
+      LIVERELOAD_PORT: 51288
+    volumes:
+      - ./tests/e2e-workflow:/home/node/app/config/modules/fd/tests/e2e-workflow
+      - ./tests/e2e-workflow/results:/home/node/app/results/config/modules/fd/tests/e2e-workflow
+    command: npm run dev
+
+volumes:
+  php-fpm-sock:

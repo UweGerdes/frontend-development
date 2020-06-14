@@ -13,6 +13,9 @@ require 'head.php';
 	</div>
 	<script src="/js/vendor/jquery.min.js"></script>
 	<script src="/js/vendor/bootstrap.min.js"></script>
+	<div class="footer">
+		<span class="copyright">&copy; 2020 by <a href="mailto:entwicklung@uwegerdes.de">Uwe Gerdes</a></span>
+	</div>
 	<div id="pagecomplete" class="hidden pagecomplete<?php if (isset($login) && $login['loginOk']) { echo " loginOk";}; if ($_POST) { echo " submitted";} ?> <?php echo $pageId; ?>">Seite geladen</div>
 </body>
 </html>

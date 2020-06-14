@@ -19,5 +19,8 @@ $_SERVER = <?php var_export($_SERVER); ?>
 </pre>
 		</div>
 	</div>
+	<div class="footer">
+		<span class="copyright">&copy; 2020 by <a href="mailto:entwicklung@uwegerdes.de">Uwe Gerdes</a></span>
+	</div>
 </body>
 </html>

@@ -137,6 +137,18 @@ To ease your live you might want to define an alias:
 $ alias dockergulp='docker exec -t frontend-development gulp'
 ```
 
+## More Docker
+
+### e2e-workflow
+
+Start the docker-e2e-workflow test dockers in your project directory:
+
+```bash
+$ docker-compose -f docker-compose-e2e-workflow.yaml up
+```
+
+Open in your browser: `http://localhost:51287/` for the e2e-workflow server and `http://localhost:51285/` for the boilerplate server.
+
 ## Known Problems
 
 The first start of the container might take a while - keep calm, the next start is done within 5 seconds.
