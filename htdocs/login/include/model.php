@@ -577,8 +577,8 @@ function last_unseen_mail() {
 	$inbox = imap_open($imapLogin['hostname'], $imapLogin['username'], $imapLogin['password']);
 	if ($inbox) {
 		$emails = imap_search($inbox,'ALL');
-		rsort($emails);
 		if($emails) {
+			rsort($emails);
 			$overview = imap_fetch_overview($inbox, $emails[0], 0);
 			$message = imap_fetchbody($inbox, $emails[0], 1);
 
@@ -592,6 +592,8 @@ function last_unseen_mail() {
 			$message = preg_replace("/\n/", "<br />", $message);
 			$message = preg_replace("/http:\/\/[^\s]+/", '<a href="$0" class="link">$0</a>', $message);
 			$result['message'] = $message;
+		} else {
+			$result['fail'] = "no mails in inbox";
 		}
 		$result['errors'] = imap_errors();
 		$result['alerts'] = imap_alerts();
