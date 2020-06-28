@@ -87,7 +87,7 @@
 					</div>
 				</div>
 				<ul class="configs">
-					<% list.forEach(function(config) { %><% include listItem %><% }) %>
+					<% list.forEach(function(config) { %><%- include('listItem', { config: config }) -%><% }) %>
 				</ul>
 			</div>
 			<% if (config.error) { %>
@@ -136,7 +136,7 @@
 							<th>Selektor 1</th>
 							<th>Selektor 2</th>
 						</thead>
-						<tbody><% Object.keys(config.result).forEach(function(resultKey) { %><% result = config.result[resultKey] %><% include showItem %><% }) %></tbody>
+						<tbody><% Object.keys(config.result).forEach(function(resultKey) { %><% result = config.result[resultKey] %><%- include('showItem.ejs', { resultKey: resultKey }) -%><% }) %></tbody>
 					</table>
 				</div>
 				<% } %>
