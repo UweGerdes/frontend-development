@@ -2,14 +2,14 @@
  * default configuration for responsive-check
  */
 
-var slimerjs = 'slimerjs';
+// var slimerjs = 'slimerjs'; not supported anymore
 var phantomjs = 'phantomjs';
 
 var server = 'dockerhost';
 var baseUrl = 'http://' + server + '/login/index.php?newAccount';
 var selector = 'form[name="newAccount"]';
 var destDir = 'newAccount';
-var engines = [ phantomjs, slimerjs ];
+var engines = [ phantomjs ];
 var viewports = [
 	{
 		'name': 'smartphone-portrait',

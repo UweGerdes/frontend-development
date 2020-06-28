@@ -42,7 +42,6 @@ RUN apt-get update && \
 				marked \
 				node-gyp \
 				phplint && \
-	npm install -g git+https://github.com/laurentj/slimerjs.git#v0.10 && \
 	export NODE_TLS_REJECT_UNAUTHORIZED=0 && \
 	npm install && \
 	chown -R ${USER_NAME}:${USER_NAME} ${NODE_HOME}

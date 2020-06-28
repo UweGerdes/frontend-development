@@ -2,7 +2,7 @@
 // default configuration for compare-layouts
 //
 
-var slimerjs = 'slimerjs';
+// var slimerjs = 'slimerjs'; not supported anymore
 var phantomjs = 'phantomjs';
 
 module.exports = {
@@ -16,10 +16,10 @@ module.exports = {
 			'engine': phantomjs,
 			'cache': false
 		},
-		'index-slimerjs': {
+		'index-phantomjs1': {
 			'url': 'http://dockerhost/',
 			'selector': 'body',
-			'engine': slimerjs,
+			'engine': phantomjs,
 			'cache': false
 		},
 		'app-phantomjs': {
@@ -28,24 +28,24 @@ module.exports = {
 			'engine': phantomjs,
 			'cache': false
 		},
-		'app-slimerjs': {
+		'app-phantomjs1': {
 			'url': 'http://dockerhost/login/index.php',
 			'selector': 'body',
-			'engine': slimerjs,
+			'engine': phantomjs,
 			'cache': false
 		}
 	},
 	compares: {
-		'index-phantomjs-slimerjs': {
+		'index-phantomjs-phantomjs1': {
 			compare: ['tagName', 'type', 'textContent', 'name', 'value'],
 			page1: 'index-phantomjs',
-			page2: 'index-slimerjs',
+			page2: 'index-phantomjs1',
 			showHTML: true
 		},
-		'app-phantomjs-slimerjs': {
+		'app-phantomjs-phantomjs1': {
 			compare: ['tagName', 'type', 'textContent', 'name', 'value'],
 			page1: 'app-phantomjs',
-			page2: 'app-slimerjs',
+			page2: 'app-phantomjs1',
 			showHTML: true
 		}
 	}
