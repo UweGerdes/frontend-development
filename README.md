@@ -101,8 +101,8 @@ $ docker run -it \
 	-p 8081:8081 \
 	-p 8082:8082 \
 	-p 8083:8083 \
-	--network="$(docker inspect --format='{{.HostConfig.NetworkMode}}' nginx)" \
-	--add-host dockerhost:$(docker inspect --format='{{range .NetworkSettings.Networks}}{{.IPAddress}} {{end}}' nginx) \
+	--network="$(docker inspect --format='{{.HostConfig.NetworkMode}}' fd-nginx)" \
+	--add-host dockerhost:$(docker inspect --format='{{range .NetworkSettings.Networks}}{{.IPAddress}} {{end}}' fd-nginx) \
 	uwegerdes/frontend-development bash
 ```
 
