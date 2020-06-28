@@ -3,63 +3,46 @@
 version: "3.5"
 
 services:
-  fd-baseimage:
-    build:
-      context: https://github.com/UweGerdes/docker-baseimage.git
-      args:
-        - APT_PROXY
-        - TZ
-    image: uwegerdes/baseimage
-    container_name: fd-baseimage
-
-  fd-data:
-    build:
-      context: https://github.com/UweGerdes/docker-data.git
-    image: uwegerdes/data
-    container_name: fd-data
-    volumes:
-      - ./htdocs:/var/www/htdocs
-
-  fd-mysql:
+  fd-e2e-mysql:
     build:
       context: https://github.com/UweGerdes/docker-mysql.git
       args:
         - MYSQL_ROOT_PASSWORD=123456
     image: uwegerdes/mysql
-    container_name: fd-mysql
+    container_name: fd-e2e-mysql
     hostname: mysql
     volumes:
       - ./build/mysql:/entrypoint-initdb.d
 
-  fd-mail:
+  fd-e2e-mail:
     build:
       context: https://github.com/UweGerdes/docker-mail.git
     image: uwegerdes/mail
-    container_name: fd-mail
+    container_name: fd-e2e-mail
     hostname: mail
 
-  fd-php-fpm:
+  fd-e2e-php-fpm:
     build:
       context: https://github.com/UweGerdes/docker-php-fpm.git
-    image: uwegerdes/php-fpm-9000
-    container_name: fd-php-fpm
+    image: uwegerdes/php-fpm
+    container_name: fd-e2e-php-fpm
     hostname: php-fpm
     volumes:
       - ./htdocs:/var/www/htdocs
     links:
-      - fd-mysql:mysql
-      - fd-mail:mail.local
+      - fd-e2e-mysql:mysql
+      - fd-e2e-mail:mail.local
 
-  fd-nginx:
+  fd-e2e-nginx:
     build:
       context: https://github.com/UweGerdes/docker-nginx.git
     image: uwegerdes/nginx
-    container_name: fd-nginx
+    container_name: fd-e2e-nginx
     hostname: nginx
     ports:
       - "51289:80"
     links:
-      - fd-php-fpm:php-fpm
+      - fd-e2e-php-fpm:php-fpm
     volumes:
       - ./build/nginx/sites-available:/etc/nginx/sites-available
       - ./htdocs:/var/www/htdocs
@@ -81,7 +64,7 @@ services:
       HUB_PORT: 4444
       JAVA_OPTS: -Dselenium.LOGGER.level=WARNING
     links:
-      - fd-nginx:nginx
+      - fd-e2e-nginx:nginx
 
   fd-e2e-firefox:
     image: selenium/node-firefox
@@ -95,7 +78,7 @@ services:
       HUB_PORT: 4444
       JAVA_OPTS: -Dselenium.LOGGER.level=WARNING
     links:
-      - fd-nginx:nginx
+      - fd-e2e-nginx:nginx
 
   fd-e2e-frontend:
     image: uwegerdes/e2e-workflow

@@ -1,60 +1,48 @@
-version: '2'
+# To execute this docker-compose yml file use docker-compose -f <file_name> up
+# Add the "-d" flag at the end for deattached execution
+version: "3.5"
+
 services:
-  baseimage:
-    build:
-      context: https://github.com/UweGerdes/docker-baseimage.git
-      args:
-        - APT_PROXY
-        - TZ
-    image: uwegerdes/baseimage
-    container_name: baseimage
-
-  data:
-    build:
-      context: https://github.com/UweGerdes/docker-data.git
-    image: uwegerdes/data
-    container_name: data
-    volumes:
-      - ./htdocs:/var/www/htdocs
-
-  mysql:
+  fd-mysql:
     build:
       context: https://github.com/UweGerdes/docker-mysql.git
       args:
         - MYSQL_ROOT_PASSWORD=123456
     image: uwegerdes/mysql
-    container_name: mysql
+    container_name: fd-mysql
+    hostname: mysql
     volumes:
       - ./build/mysql:/entrypoint-initdb.d
 
-  mail:
+  fd-mail:
     build:
       context: https://github.com/UweGerdes/docker-mail.git
     image: uwegerdes/mail
-    container_name: mail
+    container_name: fd-mail
+    hostname: mail
 
-  php-fpm:
+  fd-php-fpm:
     build:
       context: https://github.com/UweGerdes/docker-php-fpm.git
-    image: uwegerdes/php-fpm-9000
-    container_name: php-fpm
-    volumes_from:
-      - data
+    image: uwegerdes/php-fpm
+    container_name: fd-php-fpm
+    hostname: php-fpm
+    volumes:
+      - ./htdocs:/var/www/htdocs
     links:
-      - mysql
-      - mail:mail.local
+      - fd-mysql:mysql
+      - fd-mail:mail.local
 
-  nginx:
+  fd-nginx:
     build:
       context: https://github.com/UweGerdes/docker-nginx.git
     image: uwegerdes/nginx
-    container_name: nginx
+    container_name: fd-nginx
+    hostname: nginx
     ports:
-      - "8080:80"
+      - "51289:80"
     links:
-      - php-fpm
-    volumes_from:
-      - data
+      - fd-php-fpm:php-fpm
     volumes:
       - ./build/nginx/sites-available:/etc/nginx/sites-available
-
+      - ./htdocs:/var/www/htdocs
