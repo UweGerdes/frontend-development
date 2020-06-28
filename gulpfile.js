@@ -215,7 +215,6 @@ watchFilesFor.imagemin = [
 gulp.task('imagemin', () => {
   const IMAGE_OPTION = [
     imagemin.gifsicle({ interlaced: true }),
-    imagemin.jpegtran({ progressive: true }),
     imagemin.optipng({ optimizationLevel: 5 }),
     imagemin.svgo({ plugins: [{ removeViewBox: true }] }),
   ];

@@ -64,8 +64,6 @@ RUN apt-get update && \
 	ln -s /usr/bin/gifsicle ${NODE_HOME}/node_modules/gifsicle/vendor/gifsicle && \
 	mkdir -p ${NODE_HOME}/node_modules/optipng-bin/vendor/ && \
 	ln -s /usr/bin/optipng ${NODE_HOME}/node_modules/optipng-bin/vendor/optipng && \
-	mkdir -p ${NODE_HOME}/node_modules/jpegtran-bin/vendor/ && \
-	ln -s /usr/bin/jpegtran ${NODE_HOME}/node_modules/jpegtran-bin/vendor/jpegtran && \
 	chown -R ${USER_NAME}:${USER_NAME} ${NODE_HOME}
 
 ENV SLIMERJSLAUNCHER '/usr/bin/firefox-esr'
