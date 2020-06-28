@@ -25,6 +25,7 @@ WORKDIR ${NODE_HOME}
 RUN apt-get update && \
 	apt-get dist-upgrade -y && \
 	apt-get install -y \
+					dh-autoreconf \
 					graphviz \
 					imagemagick \
 					php-cli \
@@ -37,7 +38,7 @@ RUN apt-get update && \
 	rm -rf /var/lib/apt/lists/* && \
 	npm install -g \
 				casperjs \
-				gulp \
+				gulp@3.9.1 \
 				marked \
 				node-gyp \
 				phplint && \
