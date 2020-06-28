@@ -2,6 +2,8 @@
 
 ## latest
 
+1.12.2 package upgrade, removed unsupported packages, updates for syntax changes
+
 1.12.1 refactoring
 
 1.12.0
