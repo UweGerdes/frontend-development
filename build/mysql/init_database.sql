@@ -2,7 +2,8 @@
 -- Create database and user
 --
 CREATE DATABASE IF NOT EXISTS demoDb;
-GRANT ALL PRIVILEGES ON demoDb.* TO 'demoUser' IDENTIFIED BY 'demoPass';
+CREATE USER 'demoUser' IDENTIFIED BY 'demoPass';
+GRANT ALL ON demoDb.* TO 'demoUser';
 USE `demoDb`;
 
 --
